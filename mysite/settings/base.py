@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+# Source of the code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 

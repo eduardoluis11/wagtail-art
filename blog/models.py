@@ -1,3 +1,5 @@
+# Source of the code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
 # New imports added for forms and ParentalManyToManyField, and MultiFieldPanel
 from django import forms
 from django.db import models
