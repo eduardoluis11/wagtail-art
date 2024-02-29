@@ -1,0 +1,28 @@
+{# Load navigation_tags at the top of the file: #}
+{% load navigation_tags %}
+
+<footer>
+    <p>Built with Wagtail</p>
+
+    {% with twitter_url=settings.base.NavigationSettings.twitter_url github_url=settings.base.NavigationSettings.github_url twitter_url=settings.base.NavigationSettings.twitter_url facebook_url=settings.base.NavigationSettings.facebook_url %}
+        {% if twitter_url or github_url or facebook_url %}
+            <p>
+                Follow me on:
+                {% if github_url %}
+                    <a href="{{ github_url }}">GitHub</a>
+                {% endif %}
+
+                {% if twitter_url %}
+                    <a href="{{ twitter_url }}">Twitter</a>
+                {% endif %}
+
+                {% if facebook_url %}
+                    <a href="{{ facebook_url }}">Facebook</a>
+                {% endif %}
+            </p>
+        {% endif %}
+    {% endwith %}
+
+    {# Add footer_text: #}
+    {% get_footer_text %}
+</footer>
