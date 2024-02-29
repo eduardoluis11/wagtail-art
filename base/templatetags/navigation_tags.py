@@ -1,5 +1,6 @@
 """ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create-footer_for_all_pages.html
 
+I also use some code from this source: https://docs.wagtail.org/en/stable/tutorial/set_up_site_menu.html
 """
 
 from django import template
