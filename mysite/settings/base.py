@@ -185,6 +185,10 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
+""" This installs the Wagtail AI pip module so that I can use ChatGPT to generate me entries on my blog while
+editing entries on the "Wordpress" stile text editor of each blog entry. The ChatGPT module also lets me fix any
+grammar mistakes.
+"""
 WAGTAIL_AI = {
     "BACKENDS": {
         "default": {
