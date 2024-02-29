@@ -1,3 +1,7 @@
+""" Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/create_portfolio_page.html
+
+"""
+
 # import CharBlock, ListBlock, PageChooserBlock, RichTextBlock, and StructBlock:
 from wagtail.blocks import (
     CharBlock,

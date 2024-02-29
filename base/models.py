@@ -1,5 +1,7 @@
 """ I used code from this source: https://docs.wagtail.org/en/stable/tutorial/create-footer_for_all_pages.html
 
+I also used some code from this source: https://docs.wagtail.org/en/stable/tutorial/create_contact_page.html
+
 """
 
 from django.db import models

@@ -1,3 +1,7 @@
+""" Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/create_portfolio_page.html
+
+"""
+
 from wagtail.models import Page
 from wagtail.fields import StreamField
 from wagtail.admin.panels import FieldPanel

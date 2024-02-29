@@ -1,3 +1,7 @@
+""" Source of some of these snippets: https://docs.wagtail.org/en/stable/tutorial/create_portfolio_page.html
+
+"""
+
 from wagtail.blocks import (
     CharBlock,
     RichTextBlock,
