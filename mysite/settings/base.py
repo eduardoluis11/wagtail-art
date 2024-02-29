@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-# Source of the code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+# Source of some of this code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
+# I also used code from this source: https://docs.wagtail.org/en/stable/tutorial/create-footer_for_all_pages.html
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os

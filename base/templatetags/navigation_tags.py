@@ -1,3 +1,7 @@
+""" Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create-footer_for_all_pages.html
+
+"""
+
 from django import template
 
 # import site:

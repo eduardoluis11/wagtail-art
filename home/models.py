@@ -1,4 +1,7 @@
-# Source of this code: Official Wagtail tutorial from https://docs.wagtail.org/en/stable/getting_started/tutorial.html 
+""" Source of this code: Official Wagtail tutorial from https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
+I also used snippets from this source: https://docs.wagtail.org/en/stable/tutorial/customize_homepage.html
+"""
 
 from django.db import models
 
