@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "base",     # <- Our new base app.
     "wagtail.contrib.settings",     # <- Add this to add models across all the web pages in the project
     "portfolio",     # <- Our new portfolio app.
+    "wagtail_ai",    # <- Wagtail AI's app so that I can use ChatGPT.
     "home",
     "search",
     "wagtail.contrib.forms",
@@ -183,3 +184,18 @@ WAGTAILSEARCH_BACKENDS = {
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
+
+WAGTAIL_AI = {
+    "BACKENDS": {
+        "default": {
+            "CLASS": "wagtail_ai.ai.llm.LLMBackend",
+            "CONFIG": {
+                # Model ID recognizable by the "LLM" library.
+                "MODEL_ID": "gpt-3.5-turbo",
+
+                # This is for inserting my ChatGPT's API Key
+                "INIT_KWARGS": {"key": os.environ.get('OPENAI_API_KEY')},
+            },
+        }
+    }
+}
