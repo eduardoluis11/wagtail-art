@@ -164,4 +164,5 @@ cython_debug/
 media/
 
 # This excludes the "vendor" stuff from the "static" folder of the 2 Bootstrapmade themes.
-mysite/
+mysite/static/flexstart
+mysite/static/nice-admin
