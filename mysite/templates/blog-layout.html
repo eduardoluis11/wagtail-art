@@ -1,0 +1,60 @@
+<!-- Aquí meteré los estilos y el JS de Flexstart. Luego, desde los archivos de la app de “blog”, llamaré al archivo
+blog-layout.html con un “extends”.
+-->
+
+<!-- I add this to load all my JS and CSS from my "static" folder to prevent a bug that rendered the entire page as
+white, or a Django bug that said "there's no "static" tag. You're using an unresolved variable. "-->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Blog's Head -->
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Blog - FlexStart Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'flexstart/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'flexstart/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'flexstart/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'flexstart/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'flexstart/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'flexstart/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'flexstart/assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: FlexStart
+  * Updated: Jan 29 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+    {% include "includes/blog-header.html" %}
+
+        {# Wrap your block content within a <main> HTML5 tag: #}
+        {# Add a unique identifier: #}
+        <main id="main">
+            {% block content %}{% endblock %}
+        </main>
+
+        {# Add this to the file: #}
+        {% include "includes/blog-footer.html" %}

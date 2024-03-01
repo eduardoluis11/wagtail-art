@@ -1,0 +1,99 @@
+{% load static %}
+
+
+
+{#    <!-- Google Fonts. REEMPLAZARLO POR BUNNY FONTS -->#}
+{#    <link href="https://fonts.gstatic.com" rel="preconnect">#}
+{#    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">#}
+
+    <!-- Tipografías de Bunny Fonts.
+
+    Estas tipografías las usé para reemplazar a las de Google Fonts, ya que las tipografías de Google Fonts respetan
+    tu privacidad y cumplen con la RGPD. En cambio, Google Fonts NO respeta tu privacidad. -->
+{#    <link rel="preconnect" href="https://fonts.bunny.net">#}
+
+    <!-- Open Sans, Nunito, y Poppins de Bunny Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=open-sans:300,300i,400,400i,600,600i,700,700i|poppins:300,300i,400,400i,500,500i,600,600i,700,700i|nunito:300,300i,400,400i,600,600i,700,700i"
+          rel="stylesheet" />   <!-- Fin de las tipografías de Bunny Fonts -->
+
+    <!-- Vendor CSS Files -->
+
+
+
+
+
+    <!-- Archivo CSS con estilos del banner de las cookies -->
+{#    <link href="{% static 'assets/css/estilos-banner-cookies.css' %}" rel="stylesheet">#}
+
+    <!-- Archivo CSS con estilos de Formularios -->
+{#    <link href="{% static 'assets/css/estilos-de-formularios.css' %}" rel="stylesheet">#}
+
+    <!-- Archivo CSS con los estilos de las Tablas -->
+{#    <link href="{% static 'assets/css/estilos-de-tablas.css' %}" rel="stylesheet">#}
+
+    {# Archivos CSS para el plugin de Datatables de datatables.net #}
+    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+
+    <!-- Archivo CSS con otros estilos -->
+{#    <link href="{% static 'assets/css/estilos-customizados.css' %}" rel="stylesheet">#}
+
+    {#    Archivos con el JS del Datatable de datatables.net. #}
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    {# Plugin de colResize para cambiarle el tamaño de las columnas al datatable de Datatables.net #}
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colResize.min.js"></script>
+
+
+
+
+   <div>    {#    Aquí se mete el texto individual de cada página distinta #}
+        {% block body %}
+        {% endblock %}
+   </div>  {#    Fin del texto y el contenido de cada página distinta#}
+
+{#   <!-- Banner de consentimiento de cookies.#}
+{##}
+{#        Parte del código fue tomado de: https://github.com/Godsont/Cookie-Consent-Banner/blob/master/index.html  -->#}
+{#        <div class="container-banner-cookies">  <!-- Texto del banner de consentimiento de cookies -->#}
+{##}
+{#        <p>#}
+{#            Este sitio web usa cookies para poder funcionar, las cuales toman parte de su información privada.#}
+{#            Clique en "Acepto" si está de acuerdo con que tomemos sus datos personales. De lo contrario, abandone#}
+{#            el sitio web.#}
+{#        </p>#}
+{##}
+{#        <button class="boton-aceptar-cookies">  <!-- Botón de "Acepto" -->#}
+{#            Acepto#}
+{#        </button>#}
+{#    </div>                      <!-- Fin del banner del consentimiento de cookies -->#}
+
+    <!-- ======= Footer =======. -->
+    {#    El <span> con la id "year" al lado de "Grupo Alvi" imprime el año usando código JS.#}
+    <footer>
+
+
+        {#        <script>    // Esto agarra el año actual y lo pone en el pie de la página#}
+        {#            const date = new Date();#}
+        {#            const year = date.getFullYear();#}
+        {#            document.getElementById("year").innerHTML = year;#}
+        {#        </script>#}
+    </footer><!-- End Footer -->
+
+
+    <!-- Vendor JS Files -->
+
+
+    <!-- Template Main JS File -->
+
+
+    <!-- Archivo con el JS del Banner de las Cookies -->
+{#    <script src="{% static 'assets/js/script-banner-cookies.js' %}"></script>#}
+
+
+
+</body>
+</html>
