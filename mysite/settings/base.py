@@ -17,6 +17,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+import wagtail_ai.prompts
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
@@ -195,6 +197,7 @@ WAGTAIL_AI = {
             "CLASS": "wagtail_ai.ai.llm.LLMBackend",
             "CONFIG": {
                 # Model ID recognizable by the "LLM" library.
+                # This is for using OpenAI's ChatGPT Default free model.
                 "MODEL_ID": "gpt-3.5-turbo",
 
                 # This is for inserting my ChatGPT's API Key
@@ -203,3 +206,68 @@ WAGTAIL_AI = {
         }
     }
 }
+
+""" Custom prompts for the ChatGPT model. 
+
+When you click on the magic wand icon while you're editing or adding a text entry in Wagtail's text editor, 
+I will add 2 new prompts: one for suggesting a story based on the highlighted text, and another for creating 
+a poem in the style of Romanticism.
+"""
+# # DEBUG: DELETE LATER
+# print("This will print the Default Prompts stored in wagtail_ai.prompts.DEFAULT_PROMPTS: ")
+# print(wagtail_ai.prompts.DEFAULT_PROMPTS)
+
+# # Define your custom prompts
+# custom_prompts = [
+#     {
+#         "label": "My Custom Prompt",
+#         "description": "This is a description of what my custom prompt does.",
+#         "prompt": "This is the actual text that will be sent to the AI model.",
+#         "method": "suggest",  # Use a valid method
+#     },
+# ]
+#
+# # Add your custom prompts to the module's DEFAULT_PROMPTS list
+# wagtail_ai.prompts.DEFAULT_PROMPTS.extend(custom_prompts)
+
+# # Convert DEFAULT_PROMPTS to a list
+# WAGTAIL_AI_PROMPTS = list(wagtail_ai.prompts.DEFAULT_PROMPTS)
+#
+# # Append your custom prompts
+# WAGTAIL_AI_PROMPTS.append(
+#     {
+#         "label": "My Custom Prompt",
+#         "description": "This is a description of what my custom prompt does.",
+#         "prompt": "This is the actual text that will be sent to the AI model.",
+#         "method": "suggest",  # Use a valid method
+#     }
+# )
+
+# WAGTAIL_AI_PROMPTS = {
+#     "label": "Suggest a story",
+#     "description": "Create a story based on the highlighted text.",
+#     "prompt": "Create a story based on the highlighted text.",
+#     "method": "suggest",  # Use a valid method
+# },
+
+
+
+# WAGTAIL_AI_PROMPTS = wagtail_ai.prompts.DEFAULT_PROMPTS + [
+#     {
+#         "label": "My Custom Prompt",
+#         "description": "This is a description of what my custom prompt does.",
+#         "prompt": "This is the actual text that will be sent to the AI model.",
+#         "method": "suggest",  # Use a valid method
+#     },
+# ]
+
+
+
+# WAGTAIL_AI_PROMPTS = wagtail_ai.prompts.DEFAULT_PROMPTS + [
+#     {
+#         "label": "Suggest a story",
+#         "description": "Create a story based on the highlighted text.",
+#         "prompt": "Create a story based on the highlighted text.",
+#         "method": "suggest",  # Use a valid method
+#     },
+# ]
