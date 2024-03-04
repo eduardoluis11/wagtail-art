@@ -250,10 +250,24 @@
 
               <h3 class="sidebar-title">Search</h3>
               <div class="sidebar-item search-form">
-                <form action="">
-                  <input type="text">
-                  <button type="submit"><i class="bi bi-search"></i></button>
+
+                <!-- Search Form.
+
+                 This will redirect to the "search" URL, which is the URL of the search view, and show the user the
+                 results of the search. This was created using Wagtail snippets.
+                 -->
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+
+                    <!-- Magnifying glass button to make the Search -->
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                    {#                    <input type="submit" value="Search" class="button">#}
                 </form>
+
+                {#                <form action="">#}
+                {#                  <input type="text">#}
+                {#                  <button type="submit"><i class="bi bi-search"></i></button>#}
+                {#                </form>#}
               </div><!-- End sidebar search formn-->
 
               <h3 class="sidebar-title">Categories</h3>
