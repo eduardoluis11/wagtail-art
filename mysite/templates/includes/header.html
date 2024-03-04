@@ -10,6 +10,7 @@ I also used some code from: https://docs.wagtail.org/en/stable/tutorial/add_sear
 <header>
     <a href="#main" class="skip-link">Skip to content</a>
 
+    <!-- I need this Wagtail tag to get my Navbar -->
     {% get_site_root as site_root %}
     <nav>   <!-- Navbar -->
         <p>
@@ -23,7 +24,7 @@ I also used some code from: https://docs.wagtail.org/en/stable/tutorial/add_sear
                 | <a href="/search/">Search</a>
             {% endfor %}
         </p>
-    </nav>
+    </nav>  <!-- End of the Navbar -->
 
     {% wagtailuserbar "top-right" %}
 </header>
