@@ -282,14 +282,19 @@
                 </ul>
               </div><!-- End sidebar categories-->
 
-              <!-- Recent Posts -->
+              <!-- Recent Posts.
+
+               The ' |slice:":5" ' filder is used to limit the number of items processed in the for loop to the first 5
+               items in blogpages. That way, only 5 blog entries will be printed from the database. And they just so
+               happen to be the 5 most recent blog entries.
+               -->
               <h3 class="sidebar-title">Recent Posts</h3>
 
               <!-- Div with the Recent Posts -->
               <div class="sidebar-item recent-posts">
 
                 <!-- "For" loop with Each of the Recent Posts -->
-                {% for post in blogpages %}
+                {% for post in blogpages|slice:":5" %}
                     {% with post=post.specific %}
                         <!-- Article (a blog entry). -->
                         <div class="post-item clearfix">
