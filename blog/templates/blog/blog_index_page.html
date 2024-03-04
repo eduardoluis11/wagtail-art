@@ -4,18 +4,28 @@
  project. -->
 {% extends "blog-layout.html" %}
 
+<!-- This loads the Wagtail tags that I will use in this template -->
+{% load wagtailcore_tags navigation_tags wagtailuserbar %}
+
 <!-- This loads my CSS and JS -->
 {% load static %}
+
+<!-- I need this Wagtail tag to get my Navbar and my URL "views" from Wagtail -->
+{% get_site_root as site_root %}
 
 <!-- Load wagtailimages_tags: -->
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
 
-    <!-- Title of the Page -->
-    <h1>{{ page.title }}</h1>
+{#    <!-- Title of the Page -->#}
+{#    <h1>{{ page.title }}</h1>#}
 
     <div class="intro">{{ page.intro|richtext }}</div>
+
+    <!-- Main content -->
+    <main id="main">
+
 
     <!-- ======= Blog Section ======= -->
     <section id="blog" class="blog">
@@ -31,9 +41,11 @@
                 <img src="{% static 'flexstart/assets/img/blog/blog-1.jpg' %}" alt="" class="img-fluid">
               </div>
 
+                {#                {% if site_root %}#}
               <h2 class="entry-title">
-                <a href="blog-single.html">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</a>
+                <a href="#">Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia</a>
               </h2>
+                {#                {% endif %}#}
 
               <div class="entry-meta">
                 <ul>
@@ -260,4 +272,6 @@
             {{ post.body|richtext }}
         {% endwith %}
     {% endfor %}
+
+    </main><!-- End #main -->
 {% endblock %}
