@@ -11,7 +11,7 @@ I also used some code from: https://docs.wagtail.org/en/stable/tutorial/add_sear
     <a href="#main" class="skip-link">Skip to content</a>
 
     {% get_site_root as site_root %}
-    <nav>
+    <nav>   <!-- Navbar -->
         <p>
             <a href="{% pageurl site_root %}">{{ site_root.title }}</a> |
             {% for menuitem in site_root.get_children.live.in_menu %}
