@@ -40,6 +40,11 @@
 
              Each item is a preview of a blog entry. Each preview of the blog entry will have a small image and a URL to the
              page with the detailed view of that corresponding blog entry.
+
+             The "original" filter is added as a filter spec to the "image" tag. This will prevent the
+             TemplateSyntaxError from being raised and the image will be displayed in its original dimensions. The image
+             Wagtail snippet code will display the blog post's main image in its original dimensions if it exists, and
+             it will have the CSS class img-fluid.
             -->
 
             {% for post in blogpages %}
@@ -57,7 +62,8 @@
                             {% if main_image %}
                               <div class="entry-img">
                                   {#                            <img src="{% static 'flexstart/assets/img/blog/blog-1.jpg' %}" alt="" class="img-fluid">#}
-                                {% image main_image fill-160x100 %}
+{#                                {% image main_image fill-160x100 class="img-fluid" %}#}
+                                {% image main_image original class="img-fluid" %}
                               </div>
 
                             {% endif %}

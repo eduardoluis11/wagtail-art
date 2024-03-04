@@ -89,3 +89,57 @@ Then, in your template, you can use the `site_root` variable with the `pageurl` 
 ```
 
 This should render the URL of the site root page in your template.
+
+=======================================================================================================================
+Well, could you modify the {% image %} tag so that you can assign the resulting   tag the following class?: "class="img-fluid"".
+
+Sure, you can add a CSS class to the `{% image %}` tag by using the `class` attribute. Here's how you can modify your code:
+
+```djangotemplate
+<!-- Image of the blog entry, if it has one. -->
+{% with post.main_image as main_image %}
+    {% if main_image %}
+      <div class="entry-img">
+        {% image main_image fill-160x100 class="img-fluid" %}
+      </div>
+    {% endif %}
+{% endwith %}
+```
+
+In the above code, `class="img-fluid"` is added to the `{% image %}` tag. This will add the `img-fluid` class to the resulting `<img>` tag.
+
+=======================================================================================================================
+
+/fix If I use this wagtail snippet, I will get the following Django error message: "TemplateSyntaxError at /blog/  Invalid arguments provided to image: Image tags must be used with at least one filter spec. Image tags should be of the form {% image self.photo max-320x200 [ custom-attr="value" ... ] %} or {% image self.photo max-320x200 as img %}. ". It seems that I need to pass a parameter to that Wagtail snippet. Could you recommend me a generic parameter to it that doesn't do any visible changes to the image so that I don't get the Django error message, but the resulting image isn't modified anyways?
+
+Problem 1: Missing Filter Spec in Wagtail Image Tag
+
+The error message you're seeing is due to the absence of a filter spec in your Wagtail image tag. The filter spec is a requirement for the Wagtail image tag and it defines how the image should be processed. If you don't want to modify the image, you can use the `original` filter which will display the image in its original dimensions without any modifications.
+
+Here's how you can fix the issue:
+
+Before:
+```djangotemplate
+{% image main_image class="img-fluid" %}
+```
+
+After:
+```djangotemplate
+{% image main_image original class="img-fluid" %}
+```
+
+In the fixed code, `original` is added as a filter spec to the `{% image %}` tag. This will prevent the `TemplateSyntaxError` from being raised and the image will be displayed in its original dimensions.
+
+Here's the completely fixed version of your code:
+
+```djangotemplate
+<!-- Image of the blog entry, if it has one. -->
+{% with post.main_image as main_image %}
+    {% if main_image %}
+      <div class="entry-img">
+        {% image main_image original class="img-fluid" %}
+      </div>
+    {% endif %}
+{% endwith %}
+```
+This code will display the blog post's main image in its original dimensions if it exists, and it will have the CSS class `img-fluid`.
