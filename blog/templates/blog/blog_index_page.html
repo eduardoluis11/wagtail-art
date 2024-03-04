@@ -49,6 +49,8 @@
                         <h2 class="entry-title">
                             <a href="{% pageurl post %}">{{ post.title }}</a>
                         </h2>
+                        <!-- This fixes the bug that makes the images to cover the titles of the Blog Entries. -->
+                        <br>
 
                         <!-- Image of the blog entry, if it has one. -->
                         {% with post.main_image as main_image %}
@@ -85,12 +87,12 @@
                             </div>
                         </div>
 
-                        <div class="entry-meta">
-                            <ul>
-                              <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-single.html">John Doe</a></li>
-                              <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>
-                            </ul>
-                        </div>
+                        {#                        <div class="entry-meta">#}
+                        {#                            <ul>#}
+                        {#                              <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-single.html">John Doe</a></li>#}
+                        {#                              <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>#}
+                        {#                            </ul>#}
+                        {#                        </div>#}
 
 
 
