@@ -198,11 +198,36 @@ class BlogTagIndexPage(Page):
         return context
 
 
-""" Terms and Conditions "view", that is, this is the Terms and Conditions page
+""" Terms and Conditions "view", that is, this is the Terms and Conditions page.
+
+To create a simple "Terms and Conditions" page in your Wagtail project, you can follow these steps:  
+
+1) Create a new model for the "Terms and Conditions" page in your blog/models.py file. This model will inherit from the 
+Page model provided by Wagtail. You can add a RichTextField to this model to store the content of the "Terms and 
+Conditions" page.
+  
+2) Register the new model in the Wagtail admin interface by adding it to the content_panels attribute.  
+
+3) Create a new template for the "Terms and Conditions" page in your blog/templates/blog directory.
+
+After creating the model and the template, you can create a new "Terms and Conditions" page from the Wagtail admin 
+interface. The content of the page can be edited using the rich text editor provided by Wagtail.
 """
 
 
 class TermsAndConditionsPage(Page):
+    content = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('content', classname="full"),
+    ]
+
+
+""" Privacy Policy "view", that is, this is the Privacy Policy page.
+"""
+
+
+class PrivacyPolicyPage(Page):
     content = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
