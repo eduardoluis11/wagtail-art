@@ -204,3 +204,108 @@ To limit the number of blog entries displayed to 5, you can use Django's `slice`
 ```
 
 In the above code, `|slice:":5"` is used to limit the number of items processed in the `for` loop to the first 5 items in `blogpages`.
+
+=======================================================================================================================
+
+Modify this wagtail snipet so that the Blog Index Page can have tags. That is, if you click on a tag, you will be taken to a results page shpwing all the blog entries with that specific tag. As a reference, the BlogPage class has tags, and look at the code for that class: "class BlogPage(Page): date = models.DateField("Post date") intro = models.CharField(max_length=250) body = RichTextField(blank=True) authors = ParentalManyToManyField('blog.Author', blank=True)
+# This adds the tags so that I can render the tags in the Wagtail admin panel:
+tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+
+# Add the main_image method:
+def main_image(self):
+    gallery_item = self.gallery_images.first()
+    if gallery_item:
+        return gallery_item.image
+    else:
+        return None
+
+search_fields = Page.search_fields + [
+    index.SearchField('intro'),
+    index.SearchField('body'),
+]
+
+# ... Keep the main_image method and search_fields definition. Modify your content_panels:
+content_panels = Page.content_panels + [
+    MultiFieldPanel([
+        FieldPanel('date'),
+        FieldPanel('authors', widget=forms.CheckboxSelectMultiple),
+
+        # Add this:
+        FieldPanel('tags'),
+    ], heading="Blog information"),
+    FieldPanel('intro'),
+    FieldPanel('body'),
+    InlinePanel('gallery_images', label="Gallery images"),
+]".
+
+To add tags to the `BlogIndexPage` model, you can follow a similar approach as the `BlogPage` model. You need to add a `ClusterTaggableManager` field to the `BlogIndexPage` model and update the `content_panels` to include the tags field.
+
+Here is the modified `BlogIndexPage` model:
+
+```python
+class BlogIndexPage(Page):
+    intro = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+
+    def get_context(self, request):
+        # Update context to include only published posts, ordered by reverse-chron
+        context = super().get_context(request)
+        blogpages = self.get_children().live().order_by('-first_published_at')
+        context['blogpages'] = blogpages
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('tags'),
+    ]
+```
+
+In this code, `tags = ClusterTaggableManager(through=BlogPageTag, blank=True)` adds a tags field to the `BlogIndexPage` model. The `through=BlogPageTag` argument specifies the model that will be used to store the tags. The `blank=True` argument allows the tags field to be empty.
+
+The `FieldPanel('tags')` line in `content_panels` allows the tags to be edited in the Wagtail admin interface.
+
+Remember to run migrations after modifying the model:
+
+```shell
+python manage.py makemigrations
+python manage.py migrate
+```
+
+This will update your database schema to include the new tags field for the `BlogIndexPage` model.
+
+=======================================================================================================================
+
+/fix I modified my code like you told me and used "makemigrations" and "migrate", and then entered into the Wagtail Admin page. However, when I tried to edit the Blog Index Page from the Wagtail admin panel, I got a Django error message. The message says this: " File "C:\Users\Eduar\Envs\wagtail-art\Lib\site-packages\django\forms\models.py", line 117, in model_to_dict data[f.name] = f.value_from_object(instance) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ File "C:\Users\Eduar\Envs\wagtail-art\Lib\site-packages\modelcluster\contrib\taggit.py", line 162, in value_from_object ret = getattr(instance, rel_name).all() ^^^^^^^^^^^^^^^^^^^^^^^^^^^ AttributeError: 'BlogIndexPage' object has no attribute 'tagged_items'". What happened, and how do I fix this error?
+
+Problem 1: AttributeError in ClusterTaggableManager
+The error message indicates that the `BlogIndexPage` object does not have an attribute `tagged_items`. This is because the `ClusterTaggableManager` in the `BlogIndexPage` model is using `BlogPageTag` as the through model, which is designed for `BlogPage` not `BlogIndexPage`.
+
+To fix this, you need to create a new through model for `BlogIndexPage`. Let's call it `BlogIndexPageTag`. This model will have a `content_object` field that is a `ParentalKey` to `BlogIndexPage`. Then, in `BlogIndexPage`, you should use `ClusterTaggableManager(through=BlogIndexPageTag, blank=True)` instead of `ClusterTaggableManager(through=BlogPageTag, blank=True)`.
+
+Here is how you can fix this:
+
+```python
+class BlogIndexPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogIndexPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+class BlogIndexPage(Page):
+    intro = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=BlogIndexPageTag, blank=True)
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        blogpages = self.get_children().live().order_by('-first_published_at')
+        context['blogpages'] = blogpages
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('tags'),
+    ]
+```
+
+After making these changes, you should run `makemigrations` and `migrate` again to update your database schema.

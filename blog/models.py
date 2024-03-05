@@ -49,9 +49,52 @@ class Author(models.Model):
 # keep the definition of BlogIndexPage model, and add the BlogPage model:
 # Keep the definition of BlogIndexPage, update the content_panels of BlogPage, and add a new BlogPageGalleryImage model:
 
+# ... Keep the definition of BlogIndexPage model and add a new BlogPageTag model
+
+""" Tags for the "view" that renders each specific Blog Entry. 
+"""
+
+
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+
+""" Tags for the Blog Index Page.
+
+You need to create a new through model for BlogIndexPage. Let's call it BlogIndexPageTag. This model will have a 
+content_object field that is a ParentalKey to BlogIndexPage. Then, in BlogIndexPage, you should use 
+ClusterTaggableManager(through=BlogIndexPageTag, blank=True) instead of ClusterTaggableManager(through=BlogPageTag, 
+blank=True).
+"""
+
+
+class BlogIndexPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogIndexPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+""" This is the "view" that rendered the page that displays all the blog entries. That is, this is the Blog Index Page.
+
+I want to add tags to this page.
+
+To get the Tags, I need to use "BlogIndexPageTag" instead of "BlogPageTag" in the BlogIndexPage model. The 
+BlogIndexPageTag is the through model for the tags of the Blog Index Page. Meanwhile, the BlogPageTag is the through
+model for the tags of the Blog Entry pages (the "view" for each individual Blog Entry page). That's why I get a bug if
+I use the BlogPageTag instead of the BlogIndexPageTag for the "tags" field.
+"""
+
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
+
+    # Add the "tags" field using the Tags for the Blog Index Page, NOT for the individual Blog Entry pages.
+    tags = ClusterTaggableManager(through=BlogIndexPageTag, blank=True)
 
     # Add the get_context method
     def get_context(self, request):
@@ -63,19 +106,15 @@ class BlogIndexPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('intro'),
+        FieldPanel('tags'),
     ]
 
-# ... Keep the definition of BlogIndexPage model and add a new BlogPageTag model
 
 
-class BlogPageTag(TaggedItemBase):
-    content_object = ParentalKey(
-        'BlogPage',
-        related_name='tagged_items',
-        on_delete=models.CASCADE
-    )
+""" This is the "view" that rendered the page each specific Blog Entry.
 
-# Modify the BlogPage model:
+Modify the BlogPage model.
+"""
 
 
 class BlogPage(Page):
@@ -84,7 +123,7 @@ class BlogPage(Page):
     body = RichTextField(blank=True)
     authors = ParentalManyToManyField('blog.Author', blank=True)
 
-    # Add this:
+    # This adds the tags so that I can render the tags in the Wagtail admin panel:
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
     # Add the main_image method:
@@ -126,6 +165,12 @@ class BlogPageGalleryImage(Orderable):
         FieldPanel('image'),
         FieldPanel('caption'),
     ]
+
+
+""" This is a page similar to the "Search" page, but that displays all the blog entries that have the tag
+that you clicked on. This is just a list of results of blog entries with a selected tag. This is NOT the  Blog Index
+Page.
+"""
 
 
 class BlogTagIndexPage(Page):

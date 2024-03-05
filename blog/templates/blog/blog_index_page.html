@@ -354,7 +354,31 @@
 
               </div><!-- End of the Recent Posts div -->
 
+              <!-- Tags 
+              
+              I'll use the tags that are generated using Wagtail.
+              -->
               <h3 class="sidebar-title">Tags</h3>
+              <!-- Tags functionality, which was added using Wagtail
+              
+              iT's NOT WORKING, since I never added any tags for the Blog Index Page, only to specific log Entries. I'll help myself
+              using copilot.
+              -->
+                Hello world
+              {% with tags=page.tags.all %}
+              {% if tags %}
+                  <div class="tags">
+                      <h3>Tags</h3>
+                      {% for tag in tags %}
+                          <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                              <button type="button">{{ tag }}</button>
+                          </a>
+                      {% endfor %}
+                  </div>
+              {% endif %}
+          {% endwith %}
+
+
               <div class="sidebar-item tags">
                 <ul>
                   <li><a href="#">App</a></li>
