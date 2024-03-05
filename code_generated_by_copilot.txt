@@ -309,3 +309,26 @@ class BlogIndexPage(Page):
 ```
 
 After making these changes, you should run `makemigrations` and `migrate` again to update your database schema.
+
+=======================================================================================================================
+
+Thanks. Now, could you modify the "if main_image" condition of this snippet to add an "else" statement that renders a gray rectangle if the post of the current iteration doesn't have an image?
+
+Sure, you can use the `{% else %}` clause in your Django template to handle the case where a blog post does not have an associated image. In the `else` clause, you can add an `img` tag with a placeholder image. Here's how you can do it:
+
+```djangotemplate
+<!-- Image of the blog entry, if it has one. -->
+{% with post.main_image as main_image %}
+    {% if main_image %}
+        <div class="entry-img">
+            {% image main_image original class="img-fluid" %}
+        </div>
+    {% else %}
+        <div class="entry-img">
+            <img src="{% static 'path/to/your/placeholder.jpg' %}" alt="Placeholder image" class="img-fluid">
+        </div>
+    {% endif %}
+{% endwith %}
+```
+
+In this code, replace `'path/to/your/placeholder.jpg'` with the actual path to your placeholder image. This image will be displayed when a blog post does not have an associated image.

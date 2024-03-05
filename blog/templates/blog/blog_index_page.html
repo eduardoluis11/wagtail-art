@@ -268,25 +268,29 @@
                 {#                  <input type="text">#}
                 {#                  <button type="submit"><i class="bi bi-search"></i></button>#}
                 {#                </form>#}
-              </div><!-- End sidebar search formn-->
+              </div><!-- End sidebar search formn -->
 
-              <h3 class="sidebar-title">Categories</h3>
-              <div class="sidebar-item categories">
-                <ul>
-                  <li><a href="#">General <span>(25)</span></a></li>
-                  <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                  <li><a href="#">Travel <span>(5)</span></a></li>
-                  <li><a href="#">Design <span>(22)</span></a></li>
-                  <li><a href="#">Creative <span>(8)</span></a></li>
-                  <li><a href="#">Educaion <span>(14)</span></a></li>
-                </ul>
-              </div><!-- End sidebar categories-->
+                {#              <!-- Categories. I MAY REMOVE THIS FUNCTIONALITY FROM THE FINAL VERSION OF THE WEB APP. -->#}
+                {#              <h3 class="sidebar-title">Categories</h3>#}
+                {#              <div class="sidebar-item categories">#}
+                {#                <ul>#}
+                {#                  <li><a href="#">General <span>(25)</span></a></li>#}
+                {#                  <li><a href="#">Lifestyle <span>(12)</span></a></li>#}
+                {#                  <li><a href="#">Travel <span>(5)</span></a></li>#}
+                {#                  <li><a href="#">Design <span>(22)</span></a></li>#}
+                {#                  <li><a href="#">Creative <span>(8)</span></a></li>#}
+                {#                  <li><a href="#">Educaion <span>(14)</span></a></li>#}
+                {#                </ul>#}
+                {#              </div><!-- End sidebar categories-->#}
 
               <!-- Recent Posts.
 
                The ' |slice:":5" ' filder is used to limit the number of items processed in the for loop to the first 5
                items in blogpages. That way, only 5 blog entries will be printed from the database. And they just so
                happen to be the 5 most recent blog entries.
+
+               I added an "else" statement with a placeholder image that will be displayed when a blog post does not
+               have an associated image.
                -->
               <h3 class="sidebar-title">Recent Posts</h3>
 
@@ -305,6 +309,13 @@
                                   <div class="entry-img">
                                     {% image main_image fill-160x100 class="img-fluid" %}
                                   </div>
+
+                                {% else %}
+                                    <!-- Placeholder image in case the blog entry doesn't have an image. -->
+                                    <div class="entry-img">
+                                        <img src="{% static 'flexstart/assets/custom-img/blank-profile-picture.png' %}"
+                                             alt="Placeholder image" class="img-fluid">
+                                    </div>
 
                                 {% endif %}
                             {% endwith %}
