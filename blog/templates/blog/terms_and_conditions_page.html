@@ -45,65 +45,10 @@
              it will have the CSS class img-fluid.
             -->
 
-            {% for post in blogpages %}
-                {% with post=post.specific %}
-                    <!-- Article (a blog entry). -->
-                    <article class="entry">
-                        <h2 class="entry-title">
-                            <a href="{% pageurl post %}">{{ post.title }}</a>
-                        </h2>
-                        <!-- This fixes the bug that makes the images to cover the titles of the Blog Entries. -->
-                        <br>
 
-                        <!-- Image of the blog entry, if it has one. -->
-                        {% with post.main_image as main_image %}
-                            {% if main_image %}
-                              <div class="entry-img">
-                                  {#                            <img src="{% static 'flexstart/assets/img/blog/blog-1.jpg' %}" alt="" class="img-fluid">#}
-{#                                {% image main_image fill-160x100 class="img-fluid" %}#}
-                                {% image main_image original class="img-fluid" %}
-                              </div>
+            <h1>{{ page.title }}</h1>
+            <div>{{ page.content|richtext }}</div>
 
-                            {% endif %}
-                        {% endwith %}
-
-
-
-                        <!-- Text and Description of the Blog Entry. -->
-                        <div class="entry-content">
-
-                            <!-- Short, 1 line description of the blog entry. -->
-                            {{ post.intro }}
-
-                            <!-- Entire text of the blog entry. -->
-                            <p>
-                              {{ post.body|richtext }}
-                            </p>
-
-                            <!-- "Read more" link, which is a redundant link to make you go to the detailed view of the
-                            post.
-
-                            It's redundant for UX reasons. The title of the blog entry already has a link to the
-                            detailed view of the post.
-                            -->
-                            <div class="read-more">
-                              <a href="{% pageurl post %}">Read More</a>
-                            </div>
-                        </div>
-
-                        {#                        <div class="entry-meta">#}
-                        {#                            <ul>#}
-                        {#                              <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="blog-single.html">John Doe</a></li>#}
-                        {#                              <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-single.html"><time datetime="2020-01-01">Jan 1, 2020</time></a></li>#}
-                        {#                            </ul>#}
-                        {#                        </div>#}
-
-
-
-                    </article><!-- End of the blog entry -->
-
-                {% endwith %}
-            {% endfor %}
 
             {#            <!-- Article (a blog entry). -->#}
             {#            <article class="entry">#}

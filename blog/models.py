@@ -19,6 +19,8 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+
+
 # ... Keep BlogIndexPage, BlogPage, BlogPageGalleryImage models, and then add the Author model:
 
 
@@ -194,3 +196,15 @@ class BlogTagIndexPage(Page):
         context = super().get_context(request)
         context['blogpages'] = blogpages
         return context
+
+
+""" Terms and Conditions "view", that is, this is the Terms and Conditions page
+"""
+
+
+class TermsAndConditionsPage(Page):
+    content = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('content', classname="full"),
+    ]
