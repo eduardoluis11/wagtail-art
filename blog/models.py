@@ -79,6 +79,7 @@ class BlogIndexPageTag(TaggedItemBase):
         on_delete=models.CASCADE
     )
 
+
 """ This is the "view" that rendered the page that displays all the blog entries. That is, this is the Blog Index Page.
 
 I want to add tags to this page.
@@ -87,6 +88,14 @@ To get the Tags, I need to use "BlogIndexPageTag" instead of "BlogPageTag" in th
 BlogIndexPageTag is the through model for the tags of the Blog Index Page. Meanwhile, the BlogPageTag is the through
 model for the tags of the Blog Entry pages (the "view" for each individual Blog Entry page). That's why I get a bug if
 I use the BlogPageTag instead of the BlogIndexPageTag for the "tags" field.
+
+To add tags to the BlogIndexPage model, you can follow a similar approach as the BlogPage model. You need to add a
+ ClusterTaggableManager field to the BlogIndexPage model and update the content_panels to include the tags field.
+ 
+In this code, tags = ClusterTaggableManager(through=BlogPageTag, blank=True) adds a tags field to the BlogIndexPage 
+model. The through=BlogPageTag argument specifies the model that will be used to store the tags. The blank=True 
+argument allows the tags field to be empty.  The FieldPanel('tags') line in content_panels allows the tags to be edited 
+in the Wagtail admin interface.
 """
 
 

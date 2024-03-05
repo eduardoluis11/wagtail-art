@@ -354,46 +354,55 @@
 
               </div><!-- End of the Recent Posts div -->
 
-              <!-- Tags 
+              <!-- Tags.
               
               I'll use the tags that are generated using Wagtail.
               -->
               <h3 class="sidebar-title">Tags</h3>
-              <!-- Tags functionality, which was added using Wagtail
-              
-              iT's NOT WORKING, since I never added any tags for the Blog Index Page, only to specific log Entries. I'll help myself
-              using copilot.
-              -->
-                Hello world
-              {% with tags=page.tags.all %}
-              {% if tags %}
-                  <div class="tags">
-                      <h3>Tags</h3>
-                      {% for tag in tags %}
-                          <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                              <button type="button">{{ tag }}</button>
-                          </a>
-                      {% endfor %}
-                  </div>
-              {% endif %}
-          {% endwith %}
 
 
+              <!-- This div contains all the tags as buttons, and gives them their corresponding CSS styles -->
               <div class="sidebar-item tags">
                 <ul>
-                  <li><a href="#">App</a></li>
-                  <li><a href="#">IT</a></li>
-                  <li><a href="#">Business</a></li>
-                  <li><a href="#">Mac</a></li>
-                  <li><a href="#">Design</a></li>
-                  <li><a href="#">Office</a></li>
-                  <li><a href="#">Creative</a></li>
-                  <li><a href="#">Studio</a></li>
-                  <li><a href="#">Smart</a></li>
-                  <li><a href="#">Tips</a></li>
-                  <li><a href="#">Marketing</a></li>
+
+                  <!-- Tags functionality, which was added using Wagtail.
+
+                  The "for" loop within the "with" Jinja notation will iterate through all the tags of the blog entries
+                  and will print them as buttons.
+                  Each button will have a link to the "tags" URL, which is the URL of the tags view, and will show the
+                  user the results of the search. This was created using Wagtail snippets.
+                  -->
+                  {% with tags=page.tags.all %}
+                      {% if tags %}
+                          <div class="tags">
+                              {% for tag in tags %}
+                                  <li>
+                                      <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                        {#                                          <button type="button">{{ tag }}</button>#}
+                                         {{ tag }}
+                                      </a>
+                                  </li>
+
+                              {% endfor %}
+                          </div>
+                      {% endif %}
+                  {% endwith %}
+
+
+
+                    {#                  <li><a href="#">App</a></li>#}
+                    {#                  <li><a href="#">IT</a></li>#}
+                    {#                  <li><a href="#">Business</a></li>#}
+                    {#                  <li><a href="#">Mac</a></li>#}
+                    {#                  <li><a href="#">Design</a></li>#}
+                    {#                  <li><a href="#">Office</a></li>#}
+                    {#                  <li><a href="#">Creative</a></li>#}
+                    {#                  <li><a href="#">Studio</a></li>#}
+                    {#                  <li><a href="#">Smart</a></li>#}
+                    {#                  <li><a href="#">Tips</a></li>#}
+                    {#                  <li><a href="#">Marketing</a></li>#}
                 </ul>
-              </div><!-- End sidebar tags-->
+              </div><!-- End of the sidebar with the tags-->
 
             </div><!-- End sidebar -->
 
