@@ -20,8 +20,8 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="{% static 'flexstart/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'flexstart/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
 {#  <!-- Google Fonts.#}
 {##}
@@ -46,10 +46,11 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
   <link href="{% static 'flexstart/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
   <link href="{% static 'flexstart/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
-
-
   <!-- Template Main CSS File -->
   <link href="{% static 'flexstart/assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- Archivo CSS con estilos del banner de las cookies -->
+  <link href="{% static 'css/cookie-banner-styles.css' %}" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: FlexStart
@@ -67,6 +68,22 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
         <main id="main">
             {% block content %}{% endblock %}
         </main>
+
+        <!-- Banner de consentimiento de cookies.
+
+        Parte del código fue tomado de: https://github.com/Godsont/Cookie-Consent-Banner/blob/master/index.html  -->
+        <div class="container-banner-cookies">  <!-- Texto del banner de consentimiento de cookies -->
+
+            <p>
+                Este sitio web usa cookies para poder funcionar, las cuales toman parte de su información privada.
+                Clique en "Acepto" si está de acuerdo con que tomemos sus datos personales. De lo contrario, abandone
+                el sitio web.
+            </p>
+
+            <button class="boton-aceptar-cookies">  <!-- Botón de "Acepto" -->
+                I Accept
+            </button>
+        </div>                      <!-- Fin del banner del consentimiento de cookies -->
 
         {# Add this to the file: #}
         {% include "includes/blog-footer.html" %}
