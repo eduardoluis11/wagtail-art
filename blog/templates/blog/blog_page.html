@@ -1,6 +1,12 @@
-<!-- Source of the code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html -->
+<!-- Detailed view of a Blog Entry.
 
-{% extends "base.html" %}
+Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
+-->
+
+{#{% extends "base.html" %}#}
+
+{% extends "blog-layout.html" %}
 
 <!-- Load the wagtailimages_tags: -->
 {% load wagtailcore_tags wagtailimages_tags %}
@@ -8,52 +14,85 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    <p class="meta">
-        {{ page.date }}
-    </p>
 
-    <!-- Add this: -->
-    {% with authors=page.authors.all %}
-        {% if authors %}
-            <h3>Posted by:</h3>
-            <ul>
-                {% for author in authors %}
-                    <li style="display: inline">
-                        {% image author.author_image fill-40x60 style="vertical-align: middle" %}
-                        {{ author.name }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
 
-    <div class="intro">{{ page.intro }}</div>
+    <!-- ======= Blog Section =======
 
-    {{ page.body|richtext }}
+    This, alongside the "container" div, will make the text and the images will give the text and images the same margin
+    as the margin of the Navbar's logo.
+    -->
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
 
-    <!-- Add this: -->
-    {% for item in page.gallery_images.all %}
-        <div style="float: inline-start; margin: 10px;">
-            {% image item.image fill-320x240 %}
-            <p>{{ item.caption }}</p>
-        </div>
-    {% endfor %}
+            <div class="row">
 
-    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+                <div class="col-lg-8 entries">
 
-    <!-- Tags functionality, which was added using Wagtail -->
-    {% with tags=page.tags.all %}
-        {% if tags %}
-            <div class="tags">
-                <h3>Tags</h3>
-                {% for tag in tags %}
-                    <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                        <button type="button">{{ tag }}</button>
-                    </a>
-                {% endfor %}
+                    <!-- The entire entry will be here.
+
+
+                     -->
+                    <article class="entry entry-single">
+
+                        <h2 class="entry-title">
+                            {{ page.title }}
+                            {#                            <a href="blog-single.html">#}
+                            {#                                {{ page.title }}#}
+                            {#                            </a>#}
+                        </h2>
+
+                    </article>
+                </div>
             </div>
-        {% endif %}
-    {% endwith %}
+
+            <p class="meta">
+                {{ page.date }}
+            </p>
+
+            <!-- Add this: -->
+            {% with authors=page.authors.all %}
+                {% if authors %}
+                    <h3>Posted by:</h3>
+                    <ul>
+                        {% for author in authors %}
+                            <li style="display: inline">
+                                {% image author.author_image fill-40x60 style="vertical-align: middle" %}
+                                {{ author.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <div class="intro">{{ page.intro }}</div>
+
+            {{ page.body|richtext }}
+
+            <!-- Add this: -->
+            {% for item in page.gallery_images.all %}
+                <div style="float: inline-start; margin: 10px;">
+                    {% image item.image fill-320x240 %}
+                    <p>{{ item.caption }}</p>
+                </div>
+            {% endfor %}
+
+            <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+
+            <!-- Tags functionality, which was added using Wagtail -->
+            {% with tags=page.tags.all %}
+                {% if tags %}
+                    <div class="tags">
+                        <h3>Tags</h3>
+                        {% for tag in tags %}
+                            <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                <button type="button">{{ tag }}</button>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+        </div>
+    </section> <!-- End Blog Section -->
 
 {% endblock %}
