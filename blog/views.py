@@ -7,4 +7,4 @@ from django.shortcuts import render
 
 
 def terms_and_conditions(request):
-    return render(request, 'legal/templates/blog/terms_and_conditions_page.html')
+    return render(request, 'blog/terms_and_conditions_page.html')

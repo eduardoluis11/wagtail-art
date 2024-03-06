@@ -8,6 +8,8 @@ Y todo de manera instantánea en el front-end, sin la necesidad de refrescar la 
 
 The URL for the view that gets the product of a "Pedido" from its respective "Cotización" includes a dynamic segment
 (<int:cotizacion_id>/) that will capture the order id from the URL and pass it to the view.
+
+You should add a trailing slash to the URL pattern in blog/urls.py.
 """
 
 
@@ -17,8 +19,8 @@ from . import views
 urlpatterns = [
     # path('', views.index, name='index'),    # Página de inicio
 
-    # Términos y Condiciones
-    path('terms-and-conditions-no-usar', views.terms_and_conditions, name='terms_and_conditions'),
+    # Terms and conditions. I need to add the trailing slash to the URL so that it works
+    path('terms-and-conditions-no-usar/', views.terms_and_conditions, name='terms_and_conditions'),
 
     # # Política de Privacidad
     # path('politica-de-privacidad', views.politica_de_privacidad, name='politica_de_privacidad'),
