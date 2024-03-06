@@ -45,12 +45,46 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
 
             {#            <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>#}
 
-            <!-- Redes Sociales  -->
+            <!-- Social Media accounts.
+
+            I will use the "with" tag to create a variable for each social media account using Wagtail. I will use the
+            "if" tag to check if the variable that contains the Social Media URL is not empty. If the variable is not
+            empty, it will render the link. If the variable is empty, it will skip the current iteration and move to the
+            next variable.
+              -->
             <div class="social-links mt-3">
+
+                {% with github_url=settings.base.NavigationSettings.github_url twitter_url=settings.base.NavigationSettings.twitter_url facebook_url=settings.base.NavigationSettings.facebook_url linkedin_url=settings.base.NavigationSettings.linkedin_url %}
+                    {% if github_url or linkedin_url %}
+                        <p>
+                            Follow me on:
+                        </p>
+                            {% if github_url %}
+                                <a href="{{ github_url }}">
+                                    {#                                    GitHub#}
+
+                                    <!-- Github's icon -->
+                                    <i class="bi bi-github"></i>
+                                </a>
+
+                            {% endif %}
+
+                            {% if linkedin_url %}
+                                <a href="{{ linkedin_url }}" class="linkedin">
+                                {#                                    LinkedIn#}
+                                    <!-- LinkedIn's icon -->
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            {% endif %}
+
+                    {% endif %}
+                {% endwith %}
+
                 {#              <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>#}
                 {#              <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>#}
                 {#              <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>#}
-              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+
+                {#              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>#}
             </div>
           </div>
 
