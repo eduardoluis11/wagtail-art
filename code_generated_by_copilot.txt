@@ -564,3 +564,22 @@ urlpatterns = [
 ```
 
 Please replace the existing code in `blog/urls.py` with the corrected version above. Now, the URL for the `terms_and_conditions` view should be `http://127.0.0.1:8000/blog/terms-and-conditions-no-usar/`.
+
+=======================================================================================================================
+
+Is there a way for this Wagtail "for" loop to NOT to print the links "Terms and Conditions", nor "Privacy Policy"?
+
+Yes, you can modify the loop to skip certain pages based on their title. Here's how you can do it:
+
+```djangotemplate
+{% for menuitem in site_root.get_children.live.in_menu %}
+    {% if menuitem.title != "Terms and Conditions" and menuitem.title != "Privacy Policy" %}
+        <li>
+            <i class="bi bi-chevron-right"></i>
+            <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+        </li>
+    {% endif %}
+{% endfor %}
+```
+
+In this code, the `if` statement checks if the title of the current `menuitem` is not "Terms and Conditions" and not "Privacy Policy". If the condition is true, it will render the link. If the condition is false (meaning the title is either "Terms and Conditions" or "Privacy Policy"), it will skip the current iteration and move to the next `menuitem`.

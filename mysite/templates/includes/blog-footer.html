@@ -52,7 +52,14 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
 
 
 
-            <!-- List of links -->
+            <!-- List of links.
+
+             I don't want to print the Terms and Condtions nor the Privacy Policy links in the "Useful Links" section.
+             I want to print them in the "Legal" section. The if statement checks if the title of the current menuitem
+             is not "Terms and Conditions" and not "Privacy Policy". If the condition is true, it will render the link.
+             If the condition is false (meaning the title is either "Terms and Conditions" or "Privacy Policy"), it will
+             skip the current iteration and move to the next menuitem.
+             -->
             <ul>
                 <!-- This renders the Home Page link by using Wagtail -->
                 <li>
@@ -63,10 +70,14 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
                 <!-- This renders the rest of the navbar links (including links such as "Our Blog" and "Contact Us")
                 from by using Wagtail -->
                 {% for menuitem in site_root.get_children.live.in_menu %}
-                    <li>
-                        <i class="bi bi-chevron-right"></i>
-                        <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
-                    </li>
+
+                    <!-- This prevents the Terms and Conditions and Privacy Policy links from being rendered -->
+                    {% if menuitem.title != "Terms and Conditions" and menuitem.title != "Privacy Policy" %}
+                        <li>
+                            <i class="bi bi-chevron-right"></i>
+                            <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
                 {# Link to the Search function.  #}
                 <li>
@@ -83,19 +94,41 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
           </div>
           <!-- End of the "Useful Links" section of the Footer -->
 
+          <!-- Legal section of the Footer.
+
+          I will only print the Terms and Conditions and Privacy Policy links in this section. I don't want to print the
+            rest of the links in the Navbar. I need to use "or" so that the if statement checks if the title of the
+            current iteration of the "for" loop is either "Terms and Conditions" or "Privacy Policy". If the condition
+            is true, it will render the link.
+
+          -->
           <div class="col-lg-2 col-6 footer-links">
-            <h4>Our Services</h4>
+            <h4>Legal</h4>
             <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
+
+                <!-- This renders the rest of the navbar links (including links such as "Our Blog" and "Contact Us")
+                from by using Wagtail -->
+                {% for menuitem in site_root.get_children.live.in_menu %}
+
+                    <!-- This prevents the Terms and Conditions and Privacy Policy links from being rendered -->
+                    {% if menuitem.title == "Terms and Conditions" or menuitem.title == "Privacy Policy" %}
+                        <li>
+                            <i class="bi bi-chevron-right"></i>
+                            <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>#}
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-            <h4>Contact Us</h4>
+            <h4>Contact Me</h4>
             <p>
               A108 Adam Street <br>
               New York, NY 535022<br>
