@@ -1,7 +1,13 @@
   <!-- Blog's footer -->
+<!-- This loads the Wagtail tags that I will use in this template -->
+{% load wagtailcore_tags navigation_tags wagtailuserbar %}
+
   <!-- I add this to load all my JS and CSS from my "static" folder to prevent a bug that rendered the entire page as
 white, or a Django bug that said "there's no "static" tag. You're using an unresolved variable. "-->
 {% load static %}
+
+<!-- I need this Wagtail tag to get my Navbar and my URL "views" from Wagtail -->
+{% get_site_root as site_root %}
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -27,7 +33,7 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-5 col-md-12 footer-info">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="{% pageurl site_root %}" class="logo d-flex align-items-center">
               <img src="{% static 'flexstart/assets/img/logo.png' %}" alt="">
               <span>FlexStart</span>
             </a>
@@ -40,16 +46,42 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
             </div>
           </div>
 
+          <!-- Navbar links, but on the "Useful Links" section of the Footer. -->
           <div class="col-lg-2 col-6 footer-links">
             <h4>Useful Links</h4>
+
+
+
+            <!-- List of links -->
             <ul>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                <!-- This renders the Home Page link by using Wagtail -->
+                <li>
+                    <i class="bi bi-chevron-right"></i>
+                    <a class="nav-link scrollto" href="{% pageurl site_root %}">{{ site_root.title }}</a>
+                </li>
+
+                <!-- This renders the rest of the navbar links (including links such as "Our Blog" and "Contact Us")
+                from by using Wagtail -->
+                {% for menuitem in site_root.get_children.live.in_menu %}
+                    <li>
+                        <i class="bi bi-chevron-right"></i>
+                        <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                    </li>
+                {% endfor %}
+                {# Link to the Search function.  #}
+                <li>
+                    <i class="bi bi-chevron-right"></i>
+                    <a class="nav-link scrollto" href="/search/">Search</a>
+                </li>
+
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>#}
+                {#              <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>#}
             </ul>
           </div>
+          <!-- End of the "Useful Links" section of the Footer -->
 
           <div class="col-lg-2 col-6 footer-links">
             <h4>Our Services</h4>
