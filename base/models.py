@@ -77,11 +77,19 @@ class FormPage(AbstractEmailForm):
 # Create your models here.
 
 
+""" This adds a new page in the Wagtail Admin Panel in the "Settings" section called "Navigation Settings", which
+is where I'll be able to type the URL for my Social Media Accounts. I won't type my social media accounts directly
+in my code. Instead, I will add it from the Wagtail Admin panel.
+
+"""
+
+
 @register_setting
 class NavigationSettings(BaseGenericSetting):
     twitter_url = models.URLField(verbose_name="Twitter URL", blank=True)
     github_url = models.URLField(verbose_name="Github URL", blank=True)
     facebook_url = models.URLField(verbose_name="Facebook URL", blank=True)
+    linkedin_url = models.URLField(verbose_name="LinkedIn URL", blank=True)
 
     panels = [
         MultiFieldPanel(
@@ -89,6 +97,7 @@ class NavigationSettings(BaseGenericSetting):
                 FieldPanel('twitter_url'),
                 FieldPanel('github_url'),
                 FieldPanel('facebook_url'),
+                FieldPanel('linkedin_url'),
             ],
             "Social settings",
         ),
