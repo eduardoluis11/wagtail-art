@@ -116,8 +116,10 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         {#                        {% endwith %}#}
 
                         <!-- Intro and text of the article.   -->
-                        <!-- This is the div with the "entry-content" class. -->
-                        <div class="entry-content">
+                        <!-- I removed the div with the "entry-content" class, since it ruined the 1x2 Bootstrap Grid,
+                        which was removing the sidebar on the right, and putting it at the bottom of the page.
+                        -->
+                        {#                        <div class="entry-content">#}
                             {{ page.intro }}
 
                             {{ page.body|richtext }}
@@ -146,6 +148,10 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                                     {% image item.image width-320 %}
                                     <p>{{ item.caption }}</p>
                                 </div>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
                                 <br>
                                 <br>
                                 <br>
@@ -213,7 +219,7 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
 
                         </article>  <!-- End of the Blog Entry -->
-                    </div> <!-- End of the div with the text of the article and the "entry-content" class  -->
+                    {#                    </div> <!-- End of the div with the text of the article and the "entry-content" class  -->#}
                 </div>  <!-- End of the Left column and the entire Blog Entry  -->
 
 
