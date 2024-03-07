@@ -67,17 +67,17 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         <!-- Date and author of the article -->
                         <div class="entry-meta">
                             <ul>
-                                <!-- Authors with their respective profile images. -->
-                                {% with authors=page.authors.all %}
-                                    {% if authors %}
-                                        {% for author in authors %}
-                                            <li style="display: inline">
-                                                <i class="bi bi-person"></i>
-                                                <a>{{ author.name }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endwith %}
+                                {#                                <!-- Authors with their respective profile images. -->#}
+                                {#                                {% with authors=page.authors.all %}#}
+                                {#                                    {% if authors %}#}
+                                {#                                        {% for author in authors %}#}
+                                {#                                            <li style="display: inline">#}
+                                {#                                                <i class="bi bi-person"></i>#}
+                                {#                                                <a>{{ author.name }}</a>#}
+                                {#                                            </li>#}
+                                {#                                        {% endfor %}#}
+                                {#                                    {% endif %}#}
+                                {#                                {% endwith %}#}
 
                                 {#                          <li class="d-flex align-items-center">#}
                                 {#                              <i class="bi bi-person"></i>#}
@@ -114,6 +114,25 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         {#                                </ul>#}
                         {#                            {% endif %}#}
                         {#                        {% endwith %}#}
+
+                        <!-- Authors with their respective profile images.
+
+                        I changed the profile pictures so that they are shaped like a circle.
+                        -->
+                        {% with authors=page.authors.all %}
+                            {% if authors %}
+                                {#                                <h3>Posted by:</h3>#}
+                                <ul style="padding-left: 0">
+                                    {% for author in authors %}
+                                        <li style="display: inline">
+                                            {#                                             {% image author.author_image fill-40x60 style="vertical-align: middle"  %}#}
+                                            {% image author.author_image fill-60x60 style="vertical-align: middle" class="rounded-circle float-left" %}
+                                            {{ author.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
 
                         <!-- Intro and text of the article.   -->
                         <!-- I removed the div with the "entry-content" class, since it ruined the 1x2 Bootstrap Grid,
