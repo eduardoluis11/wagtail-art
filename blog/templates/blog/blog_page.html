@@ -41,24 +41,56 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                             {#                            </a>#}
                         </h2>
 
-                        <p class="meta">
-                            {{ page.date }}
-                        </p>
-
-                        <!-- Add this: -->
+                        <!-- Date and author of the article -->
+                        <div class="entry-meta">
+                            <ul>
+                                                        <!-- Authors with their respective profile images. -->
                         {% with authors=page.authors.all %}
                             {% if authors %}
-                                <h3>Posted by:</h3>
-                                <ul>
-                                    {% for author in authors %}
-                                        <li style="display: inline">
-                                            {% image author.author_image fill-40x60 style="vertical-align: middle" %}
-                                            {{ author.name }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                {% for author in authors %}
+                                    <li style="display: inline">
+                                        <i class="bi bi-person"></i>
+                                        <a>{{ author.name }}</a>
+                                    </li>
+                                {% endfor %}
                             {% endif %}
                         {% endwith %}
+
+                        {#                          <li class="d-flex align-items-center">#}
+                        {#                              <i class="bi bi-person"></i>#}
+                        {#                              <a>John Doe</a>#}
+                        {#                          </li>#}
+                              <li class="d-flex align-items-center">
+
+                                  <!-- Gray clock icon. It needs the "a" tag to make the date gray. -->
+                                  <i class="bi bi-clock"></i> <a>
+                                    {#                                  <a href="blog-single.html">#}
+
+                                  <!-- Date of the article. -->
+                                  <time datetime="2020-01-01">{{ page.date }}</time></a>
+                              </li>
+                                {#                              <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>#}
+                            </ul>
+                        </div>
+
+                        {#                        <p class="meta">#}
+                        {#                            {{ page.date }}#}
+                        {#                        </p>#}
+
+                        {#                        <!-- Authors with their respective profile images. -->#}
+                        {#                        {% with authors=page.authors.all %}#}
+                        {#                            {% if authors %}#}
+                        {#                                <h3>Posted by:</h3>#}
+                        {#                                <ul>#}
+                        {#                                    {% for author in authors %}#}
+                        {#                                        <li style="display: inline">#}
+                        {#                                            {% image author.author_image fill-40x60 style="vertical-align: middle" %}#}
+                        {#                                            {{ author.name }}#}
+                        {#                                        </li>#}
+                        {#                                    {% endfor %}#}
+                        {#                                </ul>#}
+                        {#                            {% endif %}#}
+                        {#                        {% endwith %}#}
 
                         <div class="intro">{{ page.intro }}</div>
 
@@ -71,7 +103,12 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
                          -->
                         {% for item in page.gallery_images.all %}
-                            <div style="float: inline-start; margin: 10px;">
+                                {#                            <div style="float: inline-start; margin: 10px;">#}
+
+                                <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
+                                 should appear to the left side of the screen.
+                                 -->
+                                <div style="float: left; margin: 10px;">
                                 {% image item.image fill-320x240 %}
                                 <p>{{ item.caption }}</p>
                             </div>
