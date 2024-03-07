@@ -127,7 +127,9 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                                         <li style="display: inline">
                                             {#                                             {% image author.author_image fill-40x60 style="vertical-align: middle"  %}#}
                                             {% image author.author_image fill-60x60 style="vertical-align: middle" class="rounded-circle float-left" %}
-                                            {{ author.name }}
+                                            <a style="font-size: 14px; color: #777777">{{ author.name }}</a>
+                                            <br>
+                                            <br>
                                         </li>
                                     {% endfor %}
                                 </ul>
