@@ -19,7 +19,8 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-
+# This will let me import all the blog pages in the blog_page.html for the side navbar.
+from django.shortcuts import render
 
 # ... Keep BlogIndexPage, BlogPage, BlogPageGalleryImage models, and then add the Author model:
 
@@ -125,6 +126,14 @@ class BlogIndexPage(Page):
 """ This is the "view" that rendered the page each specific Blog Entry.
 
 Modify the BlogPage model.
+
+To pass the blogpages variable to the blog_page.html template, you need to modify the serve method in your BlogPage 
+model. The serve method is called when a request is made to a page's URL. By overriding this method, you can add 
+additional context variables to the template. 
+
+In this code, BlogPage.objects.all() is used to retrieve all blog pages. You might want to replace this with a more 
+specific query depending on your needs. The serve method then renders the blog_page.html template and passes the 
+current page (self) and the blogpages variable to the template.
 """
 
 
@@ -163,6 +172,17 @@ class BlogPage(Page):
         FieldPanel('body'),
         InlinePanel('gallery_images', label="Gallery images"),
     ]
+
+    # This will sent the blogpages variable with the most recent blog entries to the blog_page.html template:
+    def serve(self, request):
+        # Retrieve all blog pages, and sort them by date (from most recent to oldest)
+        blogpages = BlogPage.objects.all().order_by('-first_published_at')
+
+        # Render the template
+        return render(request, 'blog/blog_page.html', {
+            'page': self,
+            'blogpages': blogpages,
+        })  # End of the snippet that sends the blogpages variable to the blog_page.html template.
 
 
 class BlogPageGalleryImage(Orderable):

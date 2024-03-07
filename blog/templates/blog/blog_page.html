@@ -11,6 +11,11 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 <!-- Load the wagtailimages_tags: -->
 {% load wagtailcore_tags wagtailimages_tags %}
 
+
+
+<!-- This loads my CSS and JS -->
+{% load static %}
+
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
@@ -24,8 +29,10 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
     <section id="blog" class="blog">
         <div class="container" data-aos="fade-up">
 
+            <!-- Bootstrap Row. -->
             <div class="row">
 
+                <!-- Left column. The entire entry will be here. -->
                 <div class="col-lg-8 entries">
 
                     <!-- The entire entry will be here.
@@ -108,7 +115,7 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                                 <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
                                  should appear to the left side of the screen.
                                  -->
-                                <div style="float: left; margin: 10px;">
+                            <div style="float: left; margin: 10px;">
                                 {% image item.image fill-320x240 %}
                                 <p>{{ item.caption }}</p>
                             </div>
@@ -138,36 +145,173 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         {#                            <br>#}
                         {#                        {% endif %}#}
 
+                        <br>
                         <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 
+                        <!-- Tags at the bottom of the "card" container.
+
+                        This contains the icons and the styles for the tags.
+                        -->
+                        <div class="entry-footer">
+
+                            <!-- Tags icon  -->
+                            <i class="bi bi-tags"></i>
+
+                            <!-- Tags, which are taken from a Wagtail snippet from the database. -->
+                            {% with tags=page.tags.all %}
+                                {% if tags %}
+                                    <ul class="tags">
+                                        {% for tag in tags %}
+                                            <li>
+                                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                                    {{ tag }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endwith %}
+
+
+
+                            {#                            <ul class="tags">#}
+                            {#                              <li><a href="#">Creative</a></li>#}
+                            {#                              <li><a href="#">Tips</a></li>#}
+                            {#                              <li><a href="#">Marketing</a></li>#}
+                            {#                            </ul>#}
+                        </div>    <!-- End of the tags at the bottom of the "card" container. -->
+
+
+
+
+
+                    </article>  <!-- End of the Blog Entry -->
+                </div>  <!-- End of the Left column and the entire Blog Entry  -->
+
+
+
+                <!-- Right Column: Blog Sidebar that shows the "Search" function, the tags, and the 5 most recent posts.
+                -->
+                <div class="col-lg-4">
+
+                    <div class="sidebar">
+
+                      <h3 class="sidebar-title">Search</h3>
+                      <div class="sidebar-item search-form">
+
+                        <!-- Search Form.
+
+                         This will redirect to the "search" URL, which is the URL of the search view, and show the user the
+                         results of the search. This was created using Wagtail snippets.
+                         -->
+                        <form action="{% url 'search' %}" method="get">
+                            <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+
+                            <!-- Magnifying glass button to make the Search -->
+                            <button type="submit"><i class="bi bi-search"></i></button>
+                        </form>
+
+                      </div><!-- End sidebar search formn -->
+
+                      <!-- Recent Posts.
+
+                       The ' |slice:":5" ' filder is used to limit the number of items processed in the for loop to the first 5
+                       items in blogpages. That way, only 5 blog entries will be printed from the database. And they just so
+                       happen to be the 5 most recent blog entries.
+
+                       I added an "else" statement with a placeholder image that will be displayed when a blog post does not
+                       have an associated image.
+                       -->
+                      <h3 class="sidebar-title">Recent Posts</h3>
+
+                      <!-- Div with the Recent Posts -->
+                      <div class="sidebar-item recent-posts">
+
+                        <!-- "For" loop with Each of the Recent Posts -->
+                        {% for post in blogpages|slice:":5" %}
+                            {% with post=post.specific %}
+                                <!-- Article (a blog entry). -->
+                                <div class="post-item clearfix">
+
+                                    <!-- Image of the blog entry, if it has one. -->
+                                    {% with post.main_image as main_image %}
+                                        {% if main_image %}
+                                          <div class="entry-img">
+                                            {% image main_image fill-160x100 class="img-fluid" %}
+                                          </div>
+
+                                        {% else %}
+                                            <!-- Placeholder image in case the blog entry doesn't have an image. -->
+                                            <div class="entry-img">
+                                                <img src="{% static 'flexstart/assets/custom-img/blank-profile-picture.png' %}"
+                                                     alt="Placeholder image" class="img-fluid">
+                                            </div>
+
+                                        {% endif %}
+                                    {% endwith %}
+
+                                    <!-- Title of the blog entry with a link to that entry -->
+                                    <h4 class="entry-title">
+                                        <a href="{% pageurl post %}">{{ post.title }}</a>
+                                    </h4>
+                                    <!-- This fixes the bug that makes the images to cover the titles of the Blog Entries. -->
+                                    <br>
+
+                                </div><!-- End of the blog entry -->
+
+                            {% endwith %}
+                        {% endfor %} <!-- End of the "For" loop with the Recent Posts -->
+
+                      </div><!-- End of the Recent Posts div -->
+
+                      <!-- Tags.
+
+                      I'll use the tags that are generated using Wagtail.
+                      -->
+                      <h3 class="sidebar-title">Tags</h3>
+
+
+                      <!-- This div contains all the tags as buttons, and gives them their corresponding CSS styles -->
+                      <div class="sidebar-item tags">
+                        <ul>
+
+                          <!-- Tags functionality, which was added using Wagtail.
+
+                          The "for" loop within the "with" Jinja notation will iterate through all the tags of the blog entries
+                          and will print them as buttons.
+                          Each button will have a link to the "tags" URL, which is the URL of the tags view, and will show the
+                          user the results of the search. This was created using Wagtail snippets.
+                          -->
+                          {% with tags=page.tags.all %}
+                              {% if tags %}
+                                  <div class="tags">
+                                      {% for tag in tags %}
+                                          <li>
+                                              <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                                 {{ tag }}
+                                              </a>
+                                          </li>
+
+                                      {% endfor %}
+                                  </div>
+                              {% endif %}
+                          {% endwith %}
+                        </ul>
+                      </div><!-- End of the sidebar with the tags-->
+
+                    </div><!-- End sidebar -->
+
+                  </div><!-- End of the blog sidebar with the Search function, Tags, and the 5 most recent posts. -->
+            </div>  <!-- End of the Bootstrap Row. -->
 
 
 
 
 
 
-                    </article>
-                </div>
-            </div>
 
 
 
-
-
-
-            <!-- Tags functionality, which was added using Wagtail -->
-            {% with tags=page.tags.all %}
-                {% if tags %}
-                    <div class="tags">
-                        <h3>Tags</h3>
-                        {% for tag in tags %}
-                            <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                <button type="button">{{ tag }}</button>
-                            </a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
 
         </div>
     </section> <!-- End Blog Section -->
