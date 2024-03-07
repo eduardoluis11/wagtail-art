@@ -64,15 +64,44 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
                         {{ page.body|richtext }}
 
-                        <!-- This renders the images, if the Blog Entry has any -->
+                        <!-- This renders the images, if the Blog Entry has any.
+
+                         I added a ton of line breaks (<br>) so that the images always look inside the "card"
+                         that contains the text.
+
+                         -->
                         {% for item in page.gallery_images.all %}
                             <div style="float: inline-start; margin: 10px;">
                                 {% image item.image fill-320x240 %}
                                 <p>{{ item.caption }}</p>
                             </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
                         {% endfor %}
+                        {#                        {% if page.gallery_images.all %}#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                            <br>#}
+                        {#                        {% endif %}#}
 
-
+                        <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 
 
 
@@ -87,7 +116,7 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
 
 
-            <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+
 
             <!-- Tags functionality, which was added using Wagtail -->
             {% with tags=page.tags.all %}

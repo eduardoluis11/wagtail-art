@@ -583,3 +583,104 @@ Yes, you can modify the loop to skip certain pages based on their title. Here's 
 ```
 
 In this code, the `if` statement checks if the title of the current `menuitem` is not "Terms and Conditions" and not "Privacy Policy". If the condition is true, it will render the link. If the condition is false (meaning the title is either "Terms and Conditions" or "Privacy Policy"), it will skip the current iteration and move to the next `menuitem`.
+
+=======================================================================================================================
+/fix edit this snippet so that, if there's at least in item in the page.gallery_images.all variable, to render jsut two line break tags (< br >). I don't want to render 2 line breaks per each item in that variable in the "for" loop. I just want to render 2 lines breaks if there's at least 1 item in that for loop. Even if it has 2 or more images, the total number of line breaks that it should have should be just 2. Meanwhile, if there are no tiems whatsoever in that "for" loop, don't render any line breaks.
+
+**Problem 1: Rendering two line breaks only if there's at least one item in `page.gallery_images.all`**
+
+In the current code, the line breaks would be rendered for each item in `page.gallery_images.all`. To fix this, we can add a conditional statement to check if `page.gallery_images.all` is not empty, and if so, render two line breaks. This will ensure that the line breaks are rendered only once, regardless of the number of items in `page.gallery_images.all`.
+
+Here's how the code looks before and after the fix:
+
+**Before:**
+```djangotemplate
+{% for item in page.gallery_images.all %}
+    <div style="float: inline-start; margin: 10px;">
+        {% image item.image fill-320x240 %}
+        <p>{{ item.caption }}</p>
+    </div>
+{% endfor %}
+```
+
+**After:**
+```djangotemplate
+{% if page.gallery_images.all %}
+    <br>
+    <br>
+{% endif %}
+{% for item in page.gallery_images.all %}
+    <div style="float: inline-start; margin: 10px;">
+        {% image item.image fill-320x240 %}
+        <p>{{ item.caption }}</p>
+    </div>
+{% endfor %}
+```
+
+In the fixed version, the two line breaks (`<br>`) are rendered before the loop, only if `page.gallery_images.all` is not empty.
+
+Here's the complete fixed version of the code:
+
+```djangotemplate
+{% extends "blog-layout.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-lg-8 entries">
+                    <article class="entry entry-single">
+                        <h2 class="entry-title">
+                            {{ page.title }}
+                        </h2>
+                        <p class="meta">
+                            {{ page.date }}
+                        </p>
+                        {% with authors=page.authors.all %}
+                            {% if authors %}
+                                <h3>Posted by:</h3>
+                                <ul>
+                                    {% for author in authors %}
+                                        <li style="display: inline">
+                                            {% image author.author_image fill-40x60 style="vertical-align: middle" %}
+                                            {{ author.name }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                        <div class="intro">{{ page.intro }}</div>
+                        {{ page.body|richtext }}
+                        {% if page.gallery_images.all %}
+                            <br>
+                            <br>
+                        {% endif %}
+                        {% for item in page.gallery_images.all %}
+                            <div style="float: inline-start; margin: 10px;">
+                                {% image item.image fill-320x240 %}
+                                <p>{{ item.caption }}</p>
+                            </div>
+                        {% endfor %}
+                        <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+                    </article>
+                </div>
+            </div>
+            {% with tags=page.tags.all %}
+            {% endwith %}
+                {% if tags %}
+                    <div class="tags">
+                        <h3>Tags</h3>
+                        {% for tag in tags %}
+                            <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                <button type="button">{{ tag }}</button>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+        </div>
+    </section>
+{% endblock %}
+```
