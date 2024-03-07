@@ -34,8 +34,10 @@ Additionally, I used some snippets from: https://docs.wagtail.org/en/stable/tuto
         {# Add supported color schemes: #}
         <meta name="color-scheme" content="light dark">
 
-        {# Add a favicon with inline SVG: #}
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍩</text></svg>"/>
+        {# Add a favicon with inline SVG. This adds an icon on the browser's tab (this is the Favicon) #}
+        {#        For the time being, I'll add a Star emoji as the Favicon.#}
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+        <text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>"/>
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
