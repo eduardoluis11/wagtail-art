@@ -25,6 +25,10 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
     This, alongside the "container" div, will make the text and the images will give the text and images the same margin
     as the margin of the Navbar's logo.
+
+    The variable that holds the blog page data with the images is `page`, not `post`. So, you should replace `post` with
+    `page` in your template. So, to load the main image for the cover of the blog post, you should use `page.main_image`
+    instead of `post.main_image`.
     -->
     <section id="blog" class="blog">
         <div class="container" data-aos="fade-up">
@@ -48,34 +52,46 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                             {#                            </a>#}
                         </h2>
 
-                        <!-- Date and author of the article -->
-                        <div class="entry-meta">
-                            <ul>
-                                                        <!-- Authors with their respective profile images. -->
-                        {% with authors=page.authors.all %}
-                            {% if authors %}
-                                {% for author in authors %}
-                                    <li style="display: inline">
-                                        <i class="bi bi-person"></i>
-                                        <a>{{ author.name }}</a>
-                                    </li>
-                                {% endfor %}
+                        <br>
+
+                        <!-- Image of the blog entry, if it has one. -->
+                        {% with page.main_image as main_image %}
+                            {% if main_image %}
+                              <div class="entry-img">
+                                {% image main_image original class="img-fluid" %}
+                              </div>
+
                             {% endif %}
                         {% endwith %}
 
-                        {#                          <li class="d-flex align-items-center">#}
-                        {#                              <i class="bi bi-person"></i>#}
-                        {#                              <a>John Doe</a>#}
-                        {#                          </li>#}
-                              <li class="d-flex align-items-center">
+                        <!-- Date and author of the article -->
+                        <div class="entry-meta">
+                            <ul>
+                                <!-- Authors with their respective profile images. -->
+                                {% with authors=page.authors.all %}
+                                    {% if authors %}
+                                        {% for author in authors %}
+                                            <li style="display: inline">
+                                                <i class="bi bi-person"></i>
+                                                <a>{{ author.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
 
-                                  <!-- Gray clock icon. It needs the "a" tag to make the date gray. -->
-                                  <i class="bi bi-clock"></i> <a>
-                                    {#                                  <a href="blog-single.html">#}
+                                {#                          <li class="d-flex align-items-center">#}
+                                {#                              <i class="bi bi-person"></i>#}
+                                {#                              <a>John Doe</a>#}
+                                {#                          </li>#}
+                                <li class="d-flex align-items-center">
 
-                                  <!-- Date of the article. -->
-                                  <time datetime="2020-01-01">{{ page.date }}</time></a>
-                              </li>
+                                      <!-- Gray clock icon. It needs the "a" tag to make the date gray. -->
+                                      <i class="bi bi-clock"></i> <a>
+                                        {#                                  <a href="blog-single.html">#}
+
+                                      <!-- Date of the article. -->
+                                      <time datetime="2020-01-01">{{ page.date }}</time></a>
+                                </li>
                                 {#                              <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>#}
                             </ul>
                         </div>

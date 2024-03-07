@@ -748,3 +748,44 @@ class BlogPage(Page):
 
 In this code, `BlogPage.objects.all()` is used to retrieve all blog pages. You might want to replace this with a more specific query depending on your needs. The `serve` method then renders the `blog_page.html` template and passes the current page (`self`) and the `blogpages` variable to the template.
 
+=======================================================================================================================
+
+/fix Thanks. That worked. Now, I have a similar issue with another snippet: this snippet doesn't work in blog_page.html, but works perfectly in blog_index_page.html. Do I need to edit once again the BlogPage() model in blog/models.py so that I can make this "with" loop to rendered those images from the post.main_image varible?
+
+**Problem 1: Inconsistent variable context between templates**
+
+The issue here is that the variable `post` is not defined in the context of the `blog_page.html` template, while it is
+defined in the `blog_index_page.html` template. This is why the same code snippet works in `blog_index_page.html` but
+not in `blog_page.html`.
+
+Here is the problematic code snippet:
+
+```djangotemplate
+<!-- Image of the blog entry, if it has one. -->
+{% with post.main_image as main_image %}
+    {% if main_image %}
+      <div class="entry-img">
+        {% image main_image original class="img-fluid" %}
+      </div>
+    {% endif %}
+{% endwith %}
+```
+
+To fix this issue, you need to ensure that `post` is defined in the context of the `blog_page.html` template. However,
+in the context of `blog_page.html`, the variable that holds the blog page data is `page`, not `post`. So, you should
+replace `post` with `page` in your template. Here is the corrected code snippet:
+
+```djangotemplate
+<!-- Image of the blog entry, if it has one. -->
+{% with page.main_image as main_image %}
+    {% if main_image %}
+      <div class="entry-img">
+        {% image main_image original class="img-fluid" %}
+      </div>
+    {% endif %}
+{% endwith %}
+```
+
+Please note that you need to ensure that the `main_image` method is properly defined in your `BlogPage` model and it
+returns the main image of the blog page.
+
