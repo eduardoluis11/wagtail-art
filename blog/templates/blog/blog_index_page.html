@@ -71,16 +71,22 @@
 
 
 
-                        <!-- Text and Description of the Blog Entry. -->
+                        <!-- Text and Description of the Blog Entry.
+
+                         I will remove the body of the blog entry from the list of blog entries. I will only show the
+                            "intro" of the blog entry. This is because the "intro" is a short description of the blog
+                            entry, and the "body" is the entire text of the blog entry. I will only show the "body" of
+                            the blog entry in the detailed view of the blog entry.
+                         -->
                         <div class="entry-content">
 
                             <!-- Short, 1 line description of the blog entry. -->
                             {{ post.intro }}
 
-                            <!-- Entire text of the blog entry. -->
-                            <p>
-                              {{ post.body|richtext }}
-                            </p>
+                            {#                            <!-- Entire text of the blog entry. -->#}
+                            {#                            <p>#}
+                            {#                              {{ post.body|richtext }}#}
+                            {#                            </p>#}
 
                             <!-- "Read more" link, which is a redundant link to make you go to the detailed view of the
                             post.
