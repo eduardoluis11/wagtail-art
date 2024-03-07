@@ -789,3 +789,49 @@ replace `post` with `page` in your template. Here is the corrected code snippet:
 Please note that you need to ensure that the `main_image` method is properly defined in your `BlogPage` model and it
 returns the main image of the blog page.
 
+=======================================================================================================================
+
+/fix The images rendered by this "for" loop with a Wagtail snippet are being cropped. The signatures in my images aren't
+visible. Is ther a way to keep the images at this exact same size, but without croppping them? Or, at the very least,
+would there be a way to show these images at these dimensions without cropping them so much?
+
+Problem 1: Image cropping
+The images are being cropped because of the `fill-320x240` parameter in the `{% image %}` tag. This parameter tells Wagtail to resize the image to fit within the specified dimensions while retaining the original aspect ratio. If the aspect ratio of the original image doesn't match the specified dimensions, some parts of the image will be cropped out.
+
+Solution: Change the resizing rule
+To avoid cropping, you can use the `width` or `height` rule instead of `fill`. The `width` rule resizes the image to the specified width while maintaining the original aspect ratio. The `height` rule does the same but with the specified height.
+
+Here's how you can change the code:
+
+Before:
+```djangotemplate
+{% image item.image fill-320x240 %}
+```
+
+After:
+```djangotemplate
+{% image item.image width-320 %}
+```
+
+Or:
+
+```djangotemplate
+{% image item.image height-240 %}
+```
+
+Please note that using `width` or `height` might result in images that are smaller or larger than expected if their aspect ratio is significantly different from the 320x240 ratio. If maintaining the exact dimensions is crucial, you might need to consider other solutions, such as modifying the images themselves to fit the desired aspect ratio.
+
+Here's the completely fixed version of the code:
+
+```djangotemplate
+{% for item in page.gallery_images.all %}
+    <div style="float: left; margin: 10px;">
+        {% image item.image width-320 %}
+        <p>{{ item.caption }}</p>
+    </div>
+{% endfor %}
+```
+
+=======================================================================================================================
+
+

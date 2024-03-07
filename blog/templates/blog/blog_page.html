@@ -94,7 +94,7 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                                 </li>
                                 {#                              <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="blog-single.html">12 Comments</a></li>#}
                             </ul>
-                        </div>
+                        </div>  <!-- End of the Date and author of the article -->
 
                         {#                        <p class="meta">#}
                         {#                            {{ page.date }}#}
@@ -115,93 +115,105 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         {#                            {% endif %}#}
                         {#                        {% endwith %}#}
 
-                        <div class="intro">{{ page.intro }}</div>
+                        <!-- Intro and text of the article.   -->
+                        <!-- This is the div with the "entry-content" class. -->
+                        <div class="entry-content">
+                            {{ page.intro }}
 
-                        {{ page.body|richtext }}
+                            {{ page.body|richtext }}
 
-                        <!-- This renders the images, if the Blog Entry has any.
+                            <!-- This renders the images, if the Blog Entry has any.
 
-                         I added a ton of line breaks (<br>) so that the images always look inside the "card"
-                         that contains the text.
+                             I added a ton of line breaks (<br>) so that the images always look inside the "card"
+                             that contains the text.
 
-                         -->
-                        {% for item in page.gallery_images.all %}
-                                {#                            <div style="float: inline-start; margin: 10px;">#}
+                             I changed the resizing rule. To avoid cropping, you can use the width or height rule
+                             instead of fill. The width rule resizes the image to the specified width while maintaining
+                             the original aspect ratio. The height rule does the same but with the specified height.
+                             Please note that using width or height might result in images that are smaller or larger
+                             than expected if their aspect ratio is significantly different from the 320x240 ratio. If
+                             maintaining the exact dimensions is crucial, you might need to consider other solutions,
+                             such as modifying the images themselves to fit the desired aspect ratio.
+                             -->
+                            {% for item in page.gallery_images.all %}
+                                    {#                            <div style="float: inline-start; margin: 10px;">#}
 
-                                <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
-                                 should appear to the left side of the screen.
-                                 -->
-                            <div style="float: left; margin: 10px;">
-                                {% image item.image fill-320x240 %}
-                                <p>{{ item.caption }}</p>
-                            </div>
+                                    <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
+                                     should appear to the left side of the screen.
+                                     -->
+                                <div style="float: left; margin: 10px;">
+                                    {#                                    {% image item.image fill-320x240 %}#}
+                                    {% image item.image width-320 %}
+                                    <p>{{ item.caption }}</p>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                            {% endfor %}
+                            {#                        {% if page.gallery_images.all %}#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                            <br>#}
+                            {#                        {% endif %}#}
+
                             <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                        {% endfor %}
-                        {#                        {% if page.gallery_images.all %}#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                            <br>#}
-                        {#                        {% endif %}#}
+                            <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
 
-                        <br>
-                        <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+                            <!-- Tags at the bottom of the "card" container.
 
-                        <!-- Tags at the bottom of the "card" container.
+                            This contains the icons and the styles for the tags.
+                            -->
+                            <div class="entry-footer">
 
-                        This contains the icons and the styles for the tags.
-                        -->
-                        <div class="entry-footer">
+                                <!-- Tags icon  -->
+                                <i class="bi bi-tags"></i>
 
-                            <!-- Tags icon  -->
-                            <i class="bi bi-tags"></i>
-
-                            <!-- Tags, which are taken from a Wagtail snippet from the database. -->
-                            {% with tags=page.tags.all %}
-                                {% if tags %}
-                                    <ul class="tags">
-                                        {% for tag in tags %}
-                                            <li>
-                                                <a href="{% slugurl 'tags' %}?tag={{ tag }}">
-                                                    {{ tag }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            {% endwith %}
+                                <!-- Tags, which are taken from a Wagtail snippet from the database. -->
+                                {% with tags=page.tags.all %}
+                                    {% if tags %}
+                                        <ul class="tags">
+                                            {% for tag in tags %}
+                                                <li>
+                                                    <a href="{% slugurl 'tags' %}?tag={{ tag }}">
+                                                        {{ tag }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endwith %}
 
 
 
-                            {#                            <ul class="tags">#}
-                            {#                              <li><a href="#">Creative</a></li>#}
-                            {#                              <li><a href="#">Tips</a></li>#}
-                            {#                              <li><a href="#">Marketing</a></li>#}
-                            {#                            </ul>#}
-                        </div>    <!-- End of the tags at the bottom of the "card" container. -->
+                                {#                            <ul class="tags">#}
+                                {#                              <li><a href="#">Creative</a></li>#}
+                                {#                              <li><a href="#">Tips</a></li>#}
+                                {#                              <li><a href="#">Marketing</a></li>#}
+                                {#                            </ul>#}
+                            </div>    <!-- End of the tags at the bottom of the "card" container. -->
 
 
 
 
 
-                    </article>  <!-- End of the Blog Entry -->
+                        </article>  <!-- End of the Blog Entry -->
+                    </div> <!-- End of the div with the text of the article and the "entry-content" class  -->
                 </div>  <!-- End of the Left column and the entire Blog Entry  -->
 
 
