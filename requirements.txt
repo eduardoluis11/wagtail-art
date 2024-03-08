@@ -10,7 +10,7 @@ click-default-group==1.2.4
 colorama==0.4.6
 defusedxml==0.7.1
 distro==1.9.0
-Django==5.0.2
+Django==5.0.3
 django-filter==23.5
 django-modelcluster==6.2.1
 django-permissionedforms==0.1
