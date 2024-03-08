@@ -33,7 +33,7 @@
 
         <div class="row">
 
-          <!-- Div for the entirety of the List of Blog Entries. -->
+          <!-- Left Column of the 1x2 Bootstrap Grid: Div for the entirety of the List of Blog Entries. -->
           <div class="col-lg-8 entries">
 
             <!-- "For" loop with the list of all the blog entries.
@@ -244,10 +244,44 @@
             {#              </ul>#}
             {#            </div>#}
 
-          </div><!-- End of the div with the entire List of the Blog Entries  -->
+            <!-- Pagination. 
+            
+            To see the rest of the Blog entries, you need to click on "2" or "3", etc. 
+            -->
+            <div class="blog-pagination">
+              <ul class="justify-content-center">
+                  {% if blogpages.has_previous %}
+                      <li><a href="?page={{ blogpages.previous_page_number }}">Previous</a></li>
+                  {% endif %}
+          
+                  {% for i in blogpages.paginator.page_range %}
+                      {% if blogpages.number == i %}
+                          <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                      {% else %}
+                          <li><a href="?page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                  {% endfor %}
+          
+                  {% if blogpages.has_next %}
+                      <li><a href="?page={{ blogpages.next_page_number }}">Next</a></li>
+                  {% endif %}
+              </ul>
+          </div>  <!-- End of the Pagination -->
+
+            <!-- <div class="blog-pagination">
+              <ul class="justify-content-center">
+                <li><a href="#">1</a></li>
+                <li class="active"><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+              </ul>
+            </div>   -->
+            <!-- End of the Pagination -->
+
+          </div><!-- End of the Left Column of the Bootstrap Grid: div with the entire List of the Blog Entries  -->
 
 
-          <!-- Blog Sidebar that shows the "Search" function, the tags, and the 5 most recent posts. -->
+
+          <!-- Right Column of the Grid: Blog Sidebar that shows the "Search" function, the tags, and the 5 most recent posts. -->
           <div class="col-lg-4">
 
             <div class="sidebar">
@@ -421,7 +455,7 @@
 
             </div><!-- End sidebar -->
 
-          </div><!-- End of the blog sidebar with the Search function, Tags, and the 5 most recent posts. -->
+          </div><!-- End of the Right Column: blog sidebar with the Search function, Tags, and the 5 most recent posts. -->
 
         </div>  <!-- End of the row -->
 

@@ -22,6 +22,9 @@ from wagtail.snippets.models import register_snippet
 # This will let me import all the blog pages in the blog_page.html for the side navbar.
 from django.shortcuts import render
 
+# This will let me use the Paginator class to paginate the blog entries in the Blog Index Page.
+from django.core.paginator import Paginator
+
 # ... Keep BlogIndexPage, BlogPage, BlogPageGalleryImage models, and then add the Author model:
 
 
@@ -99,6 +102,24 @@ In this code, tags = ClusterTaggableManager(through=BlogPageTag, blank=True) add
 model. The through=BlogPageTag argument specifies the model that will be used to store the tags. The blank=True 
 argument allows the tags field to be empty.  The FieldPanel('tags') line in content_panels allows the tags to be edited 
 in the Wagtail admin interface.
+
+Here's a general algorithm to add pagination to your Wagtail page:
+
+Import the Paginator class from Django's core paginator module at the top of your models.py file.
+
+In the get_context method of your BlogIndexPage class, after retrieving the blogpages queryset, create a Paginator object. 
+The Paginator object takes two arguments: the list or queryset to paginate, and the number of items per page.
+
+Get the page number from the request's GET parameters. If the page parameter is not present, default to the first page.
+
+Use the Paginator's get_page method to retrieve the Page object for the current page. This method will automatically handle 
+invalid page numbers and out of range errors by returning the first or last page respectively.
+
+Add the Page object to the context dictionary under the 'blogpages' key.
+
+In your template, you can now loop over the 'blogpages' context variable to display the blog entries for the current page. You 
+can also use the Page object's has_previous, has_next, previous_page_number, and next_page_number methods to display navigation 
+links.
 """
 
 
@@ -113,7 +134,21 @@ class BlogIndexPage(Page):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
         blogpages = self.get_children().live().order_by('-first_published_at')
+
+        # Create a Paginator object
+        paginator = Paginator(blogpages, 10)  # Show 10 blog entries per page
+
+        # Get the page number from the request
+        page = request.GET.get('page')
+
+        # Get the Page object for the current page
+        blogpages = paginator.get_page(page)
+
+        # Add the Page object to the context. "blogpages" is like the Jinja variable that contains all of the blog 
+        # entries from the Query Set.
         context['blogpages'] = blogpages
+
+        # This is like the "return render request" from he traditional Django views.
         return context
 
     content_panels = Page.content_panels + [
