@@ -1,16 +1,133 @@
-<!-- Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_contact_page.html -->
+<!-- Template for all pages that use a form.
 
-{% extends "base.html" %}
+This template is used for the "Contact" page, which is a form page.
+
+Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_contact_page.html
+
+-->
+
+{#{% extends "base.html" %}#}
+
+<!-- This is the layout file with the Styles for the Blog. -->
+{% extends "blog-layout.html" %}
+
+
 {% load wagtailcore_tags %}
 
 {% block body_class %}template-formpage{% endblock %}
 
 {% block content %}
+
+    <!-- ======= Contact Section =======
+
+    Here, I will put the Contect form, as well as some of my contect details.
+    -->
+    <section id="contact" class="contact">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          {#          <h2>Contact</h2>#}
+          <p>Contact Me</p>
+        </header>
+
+        <!-- Bootstrap Grid of 1 row and 2 columns (1x2 grid).
+
+        The left column will have 2 gray panels: one with my email, and one with my address.
+
+        Meanwhile, the right column will have a form to send me a message.
+        -->
+        <div class="row gy-4">
+
+          <!-- Left Column of the Grid: Panels with my Address and my Email. -->
+          <div class="col-lg-6">
+
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-geo-alt"></i>
+                  <h3>Address</h3>
+                  <p>A108 Adam Street,<br>New York, NY 535022</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-telephone"></i>
+                  <h3>Call Us</h3>
+                  <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-envelope"></i>
+                  <h3>Email Us</h3>
+                  <p>info@example.com<br>contact@example.com</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box">
+                  <i class="bi bi-clock"></i>
+                  <h3>Open Hours</h3>
+                  <p>Monday - Friday<br>9:00AM - 05:00PM</p>
+                </div>
+              </div>
+            </div>
+
+          </div>    <!-- End of the Left Column of the Grid. -->
+
+          <!-- Right Column of the Grid: Form to send me a message. -->
+          <div class="col-lg-6">
+            <form action="forms/contact.php" method="post" class="php-email-form">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  <button type="submit">Send Message</button>
+                </div>
+
+              </div>
+            </form>
+
+          </div>    <!-- End of the Right Column of the Grid. -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Contact Section -->
+
+    {#    <p>#}
+    {#    ¿Esta es la Pagina del Contact Me?#}
+    {#    </p>#}
+
+    <!-- This is the title of the page. -->
     <h1>{{ page.title }}</h1>
+
+    <!-- Short description of the form. -->
     <div>
         {{ page.intro|richtext }}
     </div>
 
+    <!-- This is the form itself. -->
     <form class="page-form" action="{% pageurl page %}" method="post">
         {% csrf_token %}
         {{ form.as_div }}
