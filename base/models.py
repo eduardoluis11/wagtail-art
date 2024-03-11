@@ -55,15 +55,37 @@ class FormField(AbstractFormField):
     )
 
 
+""" This is the FormPage model. It inherits from AbstractEmailForm, which is a Wagtail model that represents a page
+that has a form. The FormPage model has an intro field, which is a RichTextField. The intro field is a rich text field
+that I can use to add a description to the form. The thank_you_text field is also a RichTextField. It's the text that
+will be displayed to the user after they submit the form. The get_form method is a method that I can override to
+customize the form. In this case, I'm adding a class to each field in the form. The content_panels attribute is a list
+of panels that I can use to customize the form in the Wagtail Admin panel. The FormSubmissionsPanel is a panel that
+displays the form submissions in the Wagtail Admin panel. The FieldPanel is a panel that I can use to customize the
+fields in the form. The InlinePanel is a panel that I can use to customize the form fields. The MultiFieldPanel is a
+panel that I can use to group other panels. 
+
+This is the equivalent of a forms.py file in a traditional Django app. It's where I define the form that I want to
+display on the page.
+
+To add a class to each field in the form, you can override the get_form method in your form model. The get_form method 
+is called to get the form instance. You can add the classes to the form fields in this method. This code will render 
+each form field with the form-control class.
+
+"""
+
+
 class FormPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     # Add a class to each field in the form
-    #     for field in self.fields.values():
-    #         field.widget.attrs['class'] = 'form-control'
+    # This adds a class to each field in the form to render each form field with the "form-control" class.
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        # Add a class to each field in the form
+        for field in form.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+        return form
 
     content_panels = AbstractEmailForm.content_panels + [
         FormSubmissionsPanel(),
