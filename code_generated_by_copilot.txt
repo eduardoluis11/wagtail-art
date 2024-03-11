@@ -897,4 +897,68 @@ Sure, you can modify your HTML to dynamically generate the pagination links base
 
 This code will generate a "Previous" link if there is a previous page, a "Next" link if there is a next page, and a link for each page number. The current page number will be marked with the "active" class.
 
+==============================================================================================================
 
+/fix This snippet's looks perfect in the front-end. However, it isn't detecting my data from the database from my back-end. So, please, take the following Jinja notation from a Django view, and adapt it to the HTML code from the snippet that I have selected for this message: "
+{% csrf_token %} {{ form.as_div }}  Submit
+".
+
+**Problem 1: Form data not being detected**
+
+The form in the selected snippet is not detecting data from the database because it's not using Django's form handling. The form fields are manually defined in the HTML, which means they won't automatically bind to the data in your Django form.
+
+**Solution: Use Django's form handling**
+
+Django provides a way to handle forms that can automatically bind to your data models. You can use the `{{ form.as_p }}` or `{{ form.as_table }}` or `{{ form.as_ul }}` or `{{ form.as_div }}` notation to render the form fields automatically. This will ensure that the form fields are correctly linked to your data model.
+
+Here's how you can change the code:
+
+**Before:**
+```djangotemplate
+<form class="php-email-form" action="{% pageurl page %}" method="post">
+  {% csrf_token %}
+  <div class="row gy-4">
+    <div class="col-md-6">
+      <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+    </div>
+    <div class="col-md-6 ">
+      <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+    </div>
+    <div class="col-md-12 text-center">
+      <div class="loading">Loading</div>
+      <div class="error-message"></div>
+      <div class="sent-message">Your message has been sent. Thank you!</div>
+      <button type="submit">Submit</button>
+    </div>
+  </div>
+</form>
+```
+
+**After:**
+```djangotemplate
+<form class="page-form" action="{% pageurl page %}" method="post">
+  {% csrf_token %}
+  {{ form.as_div }}
+  <div class="col-md-12 text-center">
+    <div class="loading">Loading</div>
+    <div class="error-message"></div>
+    <div class="sent-message">Your message has been sent. Thank you!</div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+```
+
+**Completely fixed version of the code:**
+
+```djangotemplate
+<form class="page-form" action="{% pageurl page %}" method="post">
+  {% csrf_token %}
+  {{ form.as_div }}
+  <div class="col-md-12 text-center">
+    <div class="loading">Loading</div>
+    <div class="error-message"></div>
+    <div class="sent-message">Your message has been sent. Thank you!</div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+```

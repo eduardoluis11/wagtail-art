@@ -59,6 +59,12 @@ class FormPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     # Add a class to each field in the form
+    #     for field in self.fields.values():
+    #         field.widget.attrs['class'] = 'form-control'
+
     content_panels = AbstractEmailForm.content_panels + [
         FormSubmissionsPanel(),
         FieldPanel("intro"),

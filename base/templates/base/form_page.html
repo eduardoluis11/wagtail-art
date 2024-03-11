@@ -87,12 +87,23 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
           <div class="col-lg-6">
             {#          <form action="form.php" method="post" class="php-email-form">#}
             {#            <form method="post" class="php-email-form">#}
-            <!-- This is the form itself. -->
+            <!-- This is the form itself.
+
+             I want each form field to be rendered within a div with the class "col-md-6". This is to give a 1x2 grid to
+             the form fields, so that the Name and the Email fields are in the same row.
+             -->
             <form class="php-email-form" action="{% pageurl page %}" method="post">
               {% csrf_token %}
               <div class="row gy-4">    <!-- This is the Row for the Contact Form's Grid  -->
                 <!-- This renders each field of the form using Jinja -->
-                {{ form.as_div }}
+                {% for field in form %}
+                    <div class="col-md-6">
+                      {{ field.label_tag }}
+
+                      {{ field }}
+                    </div>
+                {% endfor %}
+                {#                {{ form.as_div }}#}
 
                 <div class="col-md-6">
                   <input type="text" name="name" class="form-control" placeholder="Your Name" required>
