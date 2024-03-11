@@ -28,7 +28,9 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
 
         <header class="section-header">
           {#          <h2>Contact</h2>#}
-          <p>Contact Me</p>
+          {#          <p>Contact Me</p>#}
+          <!-- This is the title of the page. -->
+        <p>{{ page.title }}</p>
         </header>
 
         <!-- Bootstrap Grid of 1 row and 2 columns (1x2 grid).
@@ -38,6 +40,12 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
         Meanwhile, the right column will have a form to send me a message.
         -->
         <div class="row gy-4">
+
+
+            <!-- Short description of the form. -->
+            <div class="col-lg-12">
+                <p>{{ page.intro|richtext }}</p>
+            </div>
 
           <!-- Left Column of the Giant Grid: Panels with my Address and my Email. -->
           <div class="col-lg-6">
@@ -85,6 +93,8 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
 
           <!-- Right Column of the Grid: Form to send me a message. -->
           <div class="col-lg-6">
+
+
             {#          <form action="form.php" method="post" class="php-email-form">#}
             {#            <form method="post" class="php-email-form">#}
             <!-- This is the form itself.
@@ -105,13 +115,13 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
                 {% endfor %}
                 {#                {{ form.as_div }}#}
 
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-                </div>
-
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
-                </div>
+                {#                <div class="col-md-6">#}
+                {#                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>#}
+                {#                </div>#}
+                {##}
+                {#                <div class="col-md-6 ">#}
+                {#                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>#}
+                {#                </div>#}
 
                 {#                <div class="col-md-12">#}
                 {#                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>#}
@@ -144,18 +154,15 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
     {#    ¿Esta es la Pagina del Contact Me?#}
     {#    </p>#}
 
-    <!-- This is the title of the page. -->
-    <h1>{{ page.title }}</h1>
+    {#    <!-- This is the title of the page. -->#}
+    {#    <h1>{{ page.title }}</h1>#}
 
-    <!-- Short description of the form. -->
-    <div>
-        {{ page.intro|richtext }}
-    </div>
 
-        <!-- This is the form itself. DELETE LATER. -->
-        <form class="page-form" action="{% pageurl page %}" method="post">
-            {% csrf_token %}
-            {{ form.as_div }}
-            <button type="submit">Submit</button>
-        </form>
+
+    {#        <!-- This is the form itself. DELETE LATER. -->#}
+    {#        <form class="page-form" action="{% pageurl page %}" method="post">#}
+    {#            {% csrf_token %}#}
+    {#            {{ form.as_div }}#}
+    {#            <button type="submit">Submit</button>#}
+    {#        </form>#}
 {% endblock content %}

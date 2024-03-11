@@ -72,6 +72,10 @@ To add a class to each field in the form, you can override the get_form method i
 is called to get the form instance. You can add the classes to the form fields in this method. This code will render 
 each form field with the form-control class.
 
+You can add placeholder text to each field in the form by modifying the get_form method in your form model. In this 
+method, you can add a placeholder attribute to each field's widget. The placeholder text is defined in the placeholders 
+dictionary. You can add more fields to this dictionary if you have more fields in your form. The "get_form" code will 
+render each form field with the form-control class and the appropriate placeholder text.
 """
 
 
@@ -82,9 +86,19 @@ class FormPage(AbstractEmailForm):
     # This adds a class to each field in the form to render each form field with the "form-control" class.
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        # Add a class to each field in the form
-        for field in form.fields.values():
+        # This will only add placeholder text to the name and email fields in the form.
+        placeholders = {
+            'name': 'Your name',
+            'email': 'Your email',
+        }
+        # Add a class and placeholder text to each field in the form
+        # for field in form.fields.values():
+        #     field.widget.attrs['class'] = 'form-control'
+        for field_name, field in form.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            # This adds a "placeholder" value to the field if the field name is in the placeholders dictionary.
+            if field_name in placeholders:
+                field.widget.attrs['placeholder'] = placeholders[field_name]
         return form
 
     content_panels = AbstractEmailForm.content_panels + [
