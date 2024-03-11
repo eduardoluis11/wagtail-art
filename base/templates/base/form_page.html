@@ -39,7 +39,7 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
         -->
         <div class="row gy-4">
 
-          <!-- Left Column of the Grid: Panels with my Address and my Email. -->
+          <!-- Left Column of the Giant Grid: Panels with my Address and my Email. -->
           <div class="col-lg-6">
 
             <div class="row gy-4">
@@ -47,38 +47,52 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
                 <div class="info-box">
                   <i class="bi bi-geo-alt"></i>
                   <h3>Address</h3>
-                  <p>A108 Adam Street,<br>New York, NY 535022</p>
+                  <p>Las Palmas de Gran Canaria, <br>Canarias, Spain</p>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-telephone"></i>
-                  <h3>Call Us</h3>
-                  <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
-                </div>
-              </div>
+
+                {#              <div class="col-md-6">#}
+                {#                <div class="info-box">#}
+                {#                  <i class="bi bi-telephone"></i>#}
+                {#                  <h3>Call Us</h3>#}
+                {#                  <p>+1 5589 55488 55<br>+1 6678 254445 41</p>#}
+                {#                </div>#}
+                {#              </div>#}
+
               <div class="col-md-6">
                 <div class="info-box">
                   <i class="bi bi-envelope"></i>
-                  <h3>Email Us</h3>
-                  <p>info@example.com<br>contact@example.com</p>
+                  <h3>Email</h3>
+                  <p>
+                      wistarrcompany@gmail.com
+                      {#                      <br>contact@example.com#}
+                  </p>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-clock"></i>
-                  <h3>Open Hours</h3>
-                  <p>Monday - Friday<br>9:00AM - 05:00PM</p>
-                </div>
-              </div>
-            </div>
 
-          </div>    <!-- End of the Left Column of the Grid. -->
+                {#              <div class="col-md-6">#}
+                {#                <div class="info-box">#}
+                {#                  <i class="bi bi-clock"></i>#}
+                {#                  <h3>Open Hours</h3>#}
+                {#                  <p>Monday - Friday<br>9:00AM - 05:00PM</p>#}
+                {#                </div>#}
+                {#              </div>#}
+
+
+            </div>  <!-- End of the Row of the 1x2 Grid with the Address and Email panels -->
+
+          </div>    <!-- End of the Left Column of the Giant Grid. -->
 
           <!-- Right Column of the Grid: Form to send me a message. -->
           <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" class="php-email-form">
-              <div class="row gy-4">
+            {#          <form action="form.php" method="post" class="php-email-form">#}
+            {#            <form method="post" class="php-email-form">#}
+            <!-- This is the form itself. -->
+            <form class="php-email-form" action="{% pageurl page %}" method="post">
+              {% csrf_token %}
+              <div class="row gy-4">    <!-- This is the Row for the Contact Form's Grid  -->
+                <!-- This renders each field of the form using Jinja -->
+                {{ form.as_div }}
 
                 <div class="col-md-6">
                   <input type="text" name="name" class="form-control" placeholder="Your Name" required>
@@ -88,26 +102,26 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
                   <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                 </div>
 
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-                </div>
+                {#                <div class="col-md-12">#}
+                {#                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>#}
+                {#                </div>#}
 
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
-                </div>
+                {#                <div class="col-md-12">#}
+                {#                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>#}
+                {#                </div>#}
 
                 <div class="col-md-12 text-center">
                   <div class="loading">Loading</div>
                   <div class="error-message"></div>
                   <div class="sent-message">Your message has been sent. Thank you!</div>
 
-                  <button type="submit">Send Message</button>
+                  <button type="submit">Submit</button>
                 </div>
 
-              </div>
+              </div>    <!-- End of the Row Contact Form's Grid (the small grid on the right)  -->
             </form>
 
-          </div>    <!-- End of the Right Column of the Grid. -->
+          </div>    <!-- End of the Right Column of the Giant Grid. -->
 
         </div>
 
@@ -127,10 +141,10 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
         {{ page.intro|richtext }}
     </div>
 
-    <!-- This is the form itself. -->
-    <form class="page-form" action="{% pageurl page %}" method="post">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button type="submit">Submit</button>
-    </form>
+        <!-- This is the form itself. DELETE LATER. -->
+        <form class="page-form" action="{% pageurl page %}" method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Submit</button>
+        </form>
 {% endblock content %}
