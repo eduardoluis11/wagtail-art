@@ -1047,4 +1047,12 @@ In the fixed code, the "No results found" message will only be displayed if a se
 
 ==============================================================================================================
 
+Thanks. Now, style this "input" tag so that it looks like a "btn btn-primary" button from Bootstrap (blue with white text).
 
+You can add Bootstrap's `btn` and `btn-primary` classes to your input tag to style it like a Bootstrap primary button. Here's how you can do it:
+
+```djangotemplate
+<input type="submit" value="Search" class="button btn btn-primary">
+```
+
+This will apply Bootstrap's primary button styles to your input tag, making it blue with white text.

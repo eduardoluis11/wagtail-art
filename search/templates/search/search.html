@@ -28,6 +28,7 @@ Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_sea
 
             All the text needs to be inserted inside the <article> tags, so that it can be styled by FlexStart's CSS.
 
+
             -->
             <article class="entry entry-single">
                 <h2 class="entry-title">
@@ -36,7 +37,9 @@ Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_sea
 
                 <form action="{% url 'search' %}" method="get">
                     <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-                    <input type="submit" value="Search" class="button">
+
+                    <!-- Submit button. I changed its styles so that it looks like a Blue Bootstrap Button. -->
+                    <input type="submit" value="Search" class="button btn btn-primary">
                 </form>
 
                 {% if search_results %}
