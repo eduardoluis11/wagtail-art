@@ -55,7 +55,12 @@ Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_sea
                 <ol>
                     {% for result in search_results %}
                     <li>
-                        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
+                        {#                        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>#}
+
+                        <!-- Link(s) to the Article(s) found from the Search Results -->
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                        <br>
+                        <br>
                         {% if result.search_description %}
                             {{ result.search_description }}
                         {% endif %}

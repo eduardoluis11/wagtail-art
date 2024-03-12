@@ -977,4 +977,74 @@ The `FormSubmissionsPanel()` in your `FormPage` model's `content_panels` list is
 
 ==============================================================================================================
 
+/fix This Jinja notation from Django or Wagtail displays the list of results for a search. However, this snippet is always printing "No results found" at the bottom of the page, even if the page displays some actual results. That is, even if 4 results from the query search are shown onscreen, you will always have the "No results found" text at the bottom of the screen. I don't want that to happen. I only want to display the message "No results found" if no actual results are found. So, fix this Jinja snippet so that I only get the "No results found" text if no actual results are found.
+
+**Problem 1: Incorrect placement of "No results found" message**
+
+The "No results found" message is being displayed because it is placed outside the condition that checks if there are multiple pages of results. This means that it will always be displayed, even if there are results.
+
+**Solution: Move the "No results found" message inside the condition**
+
+You should move the "No results found" message inside the condition that checks if there are multiple pages of results. This way, it will only be displayed if there are no results.
+
+**Before:**
+```djangotemplate
+{% if search_results.paginator.num_pages > 1 %}
+    <!-- Pagination code -->
+{% elif search_query %}
+    No results found
+{% endif %}
+```
+
+**After:**
+```djangotemplate
+{% if search_results.paginator.num_pages > 1 %}
+    <!-- Pagination code -->
+{% elif search_query and not search_results %}
+    No results found
+{% endif %}
+```
+
+In the fixed code, the "No results found" message will only be displayed if a search query was made and no results were found.
+
+**Completely fixed version of the code:**
+
+```djangotemplate
+<ol>
+    {% for result in search_results %}
+    <li>
+        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
+        {% if result.search_description %}
+            {{ result.search_description }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+
+{# Improve pagination by adding: #}
+{% if search_results.paginator.num_pages > 1 %}
+    <p>
+        Page {{ search_results.number }} of {{ search_results.paginator.num_pages }},
+        showing {{ search_results|length }} result{{ search_results|pluralize }} out of
+        {{ search_results.paginator.count }}
+    </p>
+
+    {% if search_results.has_previous %}
+        <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">
+            Previous
+        </a>
+    {% endif %}
+
+    {% if search_results.has_next %}
+        <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">
+            Next
+        </a>
+    {% endif %}
+{% elif search_query and not search_results %}
+    No results found
+{% endif %}
+```
+
+==============================================================================================================
+
 
