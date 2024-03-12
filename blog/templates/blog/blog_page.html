@@ -41,15 +41,16 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
 
                     <!-- The entire entry will be here.
 
-
+                    The title of the blog will be within <a> tags to give it the same style as the titles in the Blog
+                    Index Page by using the FlexStart CSS.
                      -->
                     <article class="entry entry-single">
 
                         <h2 class="entry-title">
-                            {{ page.title }}
-                            {#                            <a href="blog-single.html">#}
-                            {#                                {{ page.title }}#}
-                            {#                            </a>#}
+                            {#                            {{ page.title }}#}
+                            <a>
+                                {{ page.title }}
+                            </a>
                         </h2>
 
                         <br>
