@@ -962,3 +962,19 @@ Here's how you can change the code:
   </div>
 </form>
 ```
+
+==============================================================================================================
+
+Ok. Well, right now, I created a form in the "Contact" page that only stores the email and the name of the user. Where can I see the data typed by the user? If anyone types any data in there, I want to be able to visualize that data. Where is that data being stored? Can I see it in the Wagtail Admin Panel?
+
+Yes, the data submitted through the form on the "Contact" page is being stored in the database and can be viewed in the Wagtail Admin Panel. This is handled by the `AbstractEmailForm` class that your `FormPage` model is inheriting from.
+
+When a form is submitted, the `AbstractEmailForm` class saves the data as an instance of the `FormSubmission` model, which is part of Wagtail's form module. This model stores the form data as a JSON field in the database.
+
+To view the form submissions in the Wagtail Admin Panel, navigate to the "Form submissions" section. This is accessible from the "Forms" menu in the Wagtail Admin Panel. Here, you can see a list of all form submissions. You can click on a submission to view the data that was submitted.
+
+The `FormSubmissionsPanel()` in your `FormPage` model's `content_panels` list is what enables this functionality. It adds a "Form submissions" section to the editing interface for each `FormPage` in the Wagtail Admin Panel, where you can view the submissions for that specific page.
+
+==============================================================================================================
+
+

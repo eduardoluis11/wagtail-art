@@ -42,7 +42,9 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
         <div class="row gy-4">
 
 
-            <!-- Short description of the form. -->
+            <!-- Short description of the form. I want it to be on top of both the Contact Form, and the panels with
+            my address and email. That's why it needs to have a col-lg-12 class.
+             -->
             <div class="col-lg-12">
                 <p>{{ page.intro|richtext }}</p>
             </div>
@@ -102,7 +104,8 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
              I want each form field to be rendered within a div with the class "col-md-6". This is to give a 1x2 grid to
              the form fields, so that the Name and the Email fields are in the same row.
              -->
-            <form class="php-email-form" action="{% pageurl page %}" method="post">
+            {#            <form class="php-email-form" action="{% pageurl page %}" method="post">#}
+            <form action="{% pageurl page %}" method="post">
               {% csrf_token %}
               <div class="row gy-4">    <!-- This is the Row for the Contact Form's Grid  -->
                 <!-- This renders each field of the form using Jinja -->
@@ -132,9 +135,9 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
                 {#                </div>#}
 
                 <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                  {#                  <div class="loading">Loading</div>#}
+                  {#                  <div class="error-message"></div>#}
+                  {#                  <div class="sent-message">Your message has been sent. Thank you!</div>#}
 
                   <button type="submit">Submit</button>
                 </div>
@@ -159,10 +162,10 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
 
 
 
-    {#        <!-- This is the form itself. DELETE LATER. -->#}
-    {#        <form class="page-form" action="{% pageurl page %}" method="post">#}
-    {#            {% csrf_token %}#}
-    {#            {{ form.as_div }}#}
-    {#            <button type="submit">Submit</button>#}
-    {#        </form>#}
+    {#            <!-- This is the form itself. DELETE LATER. -->#}
+    {#            <form class="page-form" action="{% pageurl page %}" method="post">#}
+    {#                {% csrf_token %}#}
+    {#                {{ form.as_div }}#}
+    {#                <button type="submit">Submit</button>#}
+    {#            </form>#}
 {% endblock content %}
