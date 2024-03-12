@@ -82,7 +82,8 @@ Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_sea
                             Next
                         </a>
                     {% endif %}
-                {% elif search_query %}
+                {% elif search_query and not search_results %}
+                    <!-- If there are no results, display a message saying "No results found" -->
                     No results found
                 {% endif %}
             </article>  <!-- End of the Card Container with all the Text of the Search Function -->
