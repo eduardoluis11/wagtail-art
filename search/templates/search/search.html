@@ -1,6 +1,13 @@
-<!-- Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_search.html -->
+<!-- Search results template / page.
 
-{% extends "base.html" %}
+Source of part of this code: https://docs.wagtail.org/en/stable/tutorial/add_search.html
+
+-->
+
+{#{% extends "base.html" %}#}
+
+{% extends "blog-layout.html" %}
+
 {% load static wagtailcore_tags %}
 
 {% block body_class %}template-searchresults{% endblock %}
@@ -8,53 +15,79 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<h1>Search</h1>
 
-<form action="{% url 'search' %}" method="get">
-    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-    <input type="submit" value="Search" class="button">
-</form>
+    <!-- ======= Title Section pf the search function =======
+    -->
+    <section id="blog" class="blog">
 
-{% if search_results %}
+        <div class="container">  <!-- ======= Container with the same margins as the Navbar ======= -->
 
-{# Add this paragraph to display the details  of results found: #}
-<p>
-    You searched{% if search_query %} for "{{ search_query }}"{% endif %}, {{ search_results.paginator.count }}
-    result {{ search_results.paginator.count|pluralize }} found.
-</p>
+            {#            <h1>Search</h1>#}
 
-{% endif %}
+            <!-- ======= Card Container that contains all the Search function's text =======
 
-{# Add the following code to display the search results: #}
+            All the text needs to be inserted inside the <article> tags, so that it can be styled by FlexStart's CSS.
 
-{# Replace the <ul> HTML element with the <ol> HTML element:  #}
-<ol>
-    {% for result in search_results %}
-    <li>
-        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
-        {% if result.search_description %}
-        {{ result.search_description }}
-        {% endif %}
-    </li>
-    {% endfor %}
-</ol>
+            -->
+            <article class="entry entry-single">
+                <h2 class="entry-title">
+                    <a>Search</a>
+                </h2>
 
-{# Improve pagination by adding: #}
-{% if search_results.paginator.num_pages > 1 %}
-    <p>
-        Page {{ search_results.number }} of {{ search_results.paginator.num_pages }},
-        showing {{ search_results|length }} result{{ search_results|pluralize }} out of
-        {{ search_results.paginator.count }}
-    </p>
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+                    <input type="submit" value="Search" class="button">
+                </form>
 
-{% if search_results.has_previous %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-{% endif %}
+                {% if search_results %}
 
-{% if search_results.has_next %}
-<a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-{% endif %}
-{% elif search_query %}
-No results found
-{% endif %}
+                {# Add this paragraph to display the details  of results found: #}
+                <p>
+                    You searched{% if search_query %} for "{{ search_query }}"{% endif %}, {{ search_results.paginator.count }}
+                    result {{ search_results.paginator.count|pluralize }} found.
+                </p>
+
+                {% endif %}
+
+                {# Add the following code to display the search results: #}
+
+                {# Replace the <ul> HTML element with the <ol> HTML element:  #}
+                <ol>
+                    {% for result in search_results %}
+                    <li>
+                        <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
+                        {% if result.search_description %}
+                            {{ result.search_description }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+
+                {# Improve pagination by adding: #}
+                {% if search_results.paginator.num_pages > 1 %}
+                    <p>
+                        Page {{ search_results.number }} of {{ search_results.paginator.num_pages }},
+                        showing {{ search_results|length }} result{{ search_results|pluralize }} out of
+                        {{ search_results.paginator.count }}
+                    </p>
+
+                    {% if search_results.has_previous %}
+                        <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    {% if search_results.has_next %}
+                        <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">
+                            Next
+                        </a>
+                    {% endif %}
+                {% elif search_query %}
+                    No results found
+                {% endif %}
+            </article>  <!-- End of the Card Container with all the Text of the Search Function -->
+
+
+        </div>  <!-- End of the Container with the Navbar's margins -->
+    </section>  <!-- End of the Title Section of the Search function -->
 {% endblock %}
