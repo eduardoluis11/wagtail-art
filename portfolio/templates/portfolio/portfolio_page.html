@@ -1,14 +1,62 @@
-<!-- Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_portfolio_page.html -->
+<!-- Resume page / template.
 
-{% extends "base.html" %}
+Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_portfolio_page.html
+
+-->
+
+{#{% extends "base.html" %}#}
+
+<!-- This is the layout file with the Styles for the Blog. -->
+{% extends "blog-layout.html" %}
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-portfolio{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
 
-    {{ page.body }}
+
+
+
+
+   <!-- ======= Résumé Section =======
+
+    Here, I will all the text of my Résumé.
+    -->
+    <section id="contact" class="contact">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+
+            <!-- This is the title of the page. -->
+            <p>{{ page.title }}</p>
+
+        {#            <h1>{{ page.title }}</h1>#}
+
+        </header>
+
+        <!-- Bootstrap Grid of 1 row and 2 columns (1x2 grid).
+
+        The left column will have all the text.
+
+        I WON'T use any filters for the "page.body" text, since no filter can be applied to this particular
+        Wagtail block of text. To render a StreamField in a template, you should simply output the field without any
+        filter. Wagtail will automatically render the StreamField correctly.
+        -->
+        <div class="row gy-4">
+
+            <!-- All the text of my Résumé will be here.
+             -->
+            <div class="col-md-6">
+                {#                <p>{{ page.body|richtext  }}</p>#}
+                <p>{{ page.body  }}</p>
+            </div>
+        </div>  <!-- End of the Bootstrap Row -->
+      </div>    <!-- End of the "Container" -->
+
+    </section><!-- End Contact Section -->
+
+
 {% endblock %}
 

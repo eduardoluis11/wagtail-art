@@ -1056,3 +1056,95 @@ You can add Bootstrap's `btn` and `btn-primary` classes to your input tag to sty
 ```
 
 This will apply Bootstrap's primary button styles to your input tag, making it blue with white text.
+
+==============================================================================================================
+
+/explain Thanks. Now, for the search_results.paginator.num_pages snippet, which I think comes from Wagtail, is there a default number of results before the paginator starts inserting results into new pages? That is, by default, how many items can be created into page 1 until page 2 is created? 10 items?
+
+The selected code is a Django template that handles the display of search results and pagination in a Wagtail application.
+
+The `{% if search_results.paginator.num_pages > 1 %}` condition checks if there are multiple pages of results. If there are, it displays a paragraph with information about the current page, the total number of pages, and the number of results on the current page out of the total number of results.
+
+```djangotemplate
+<p>
+    Page {{ search_results.number }} of {{ search_results.paginator.num_pages }},
+    showing {{ search_results|length }} result{{ search_results|pluralize }} out of
+    {{ search_results.paginator.count }}
+</p>
+```
+
+It also provides "Previous" and "Next" links to navigate between pages of results.
+
+```djangotemplate
+{% if search_results.has_previous %}
+    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">
+        Previous
+    </a>
+{% endif %}
+
+{% if search_results.has_next %}
+    <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">
+        Next
+    </a>
+{% endif %}
+```
+
+If there are no search results, it displays a "No results found" message.
+
+```djangotemplate
+{% elif search_query and not search_results %}
+    <!-- If there are no results, display a message saying "No results found" -->
+    No results found
+{% endif %}
+```
+
+Regarding your question about the `search_results.paginator.num_pages` snippet, this is indeed part of Wagtail's search functionality. The `Paginator` object in Django, which is used by Wagtail, divides the total number of search results into pages. The number of results per page is determined by the `paginate_by` attribute of the view that handles the search. If this attribute is not set, Django's default is 10 items per page. So, by default, after 10 items, a new page would be created. However, this can be customized in your Wagtail application by setting the `paginate_by` attribute to a different value in your view.
+
+==============================================================================================================
+
+How can I customize the number of items per page in the search results pagination in my Wagtail application?
+
+To customize the number of items per page in the search results pagination in your Wagtail application, you need to set the `paginate_by` attribute in the view that handles the search.
+
+This attribute determines the number of items to display per page. By default, Django sets this to 10, but you can change it to any number you want.
+
+Here's an example of how you can do this:
+
+```python
+from wagtail.core.models import Page
+from wagtail.search.models import Query
+from django.core.paginator import Paginator
+
+class SearchResultsView(Page):
+    def get(self, request):
+        search_query = request.GET.get('query', None)
+        page = request.GET.get('page', 1)
+
+        # Search
+        if search_query:
+            search_results = Page.objects.live().search(search_query)
+            query = Query.get(search_query)
+
+            # Record hit
+            query.add_hit()
+        else:
+            search_results = Page.objects.none()
+
+        # Pagination
+        paginator = Paginator(search_results, 20)  # Change 20 to desired number of items per page
+        try:
+            search_results = paginator.page(page)
+        except PageNotAnInteger:
+            search_results = paginator.page(1)
+        except EmptyPage:
+            search_results = paginator.page(paginator.num_pages)
+
+        return render(request, 'search/search.html', {
+            'search_query': search_query,
+            'search_results': search_results,
+        })
+```
+
+In this example, the `Paginator` is initialized with `search_results` and `20` as arguments. The `20` is the number of items per page. You can change this to any number you want.
+
+
