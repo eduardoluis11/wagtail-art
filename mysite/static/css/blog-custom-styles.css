@@ -1,0 +1,90 @@
+/* Custom styles for the Blog app. */
+
+/* Styles for the "custom-email-form" class, a class that has the exact same styles as the php-validation-form class
+ from the FlexStart theme. I just took that code and modified the name of the class to not to trigger the JS code for
+ the API from the FlexStart theme.
+ */
+
+
+.contact .custom-email-form {
+  background: #fafbff;
+  padding: 30px;
+  height: 100%;
+}
+
+.contact .custom-email-form .error-message {
+  display: none;
+  color: #fff;
+  background: #ed3c0d;
+  text-align: left;
+  padding: 15px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.contact .custom-email-form .sent-message {
+  display: none;
+  color: #fff;
+  background: #18d26e;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.contact .custom-email-form .loading {
+  display: none;
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+}
+
+.contact .custom-email-form .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid #18d26e;
+  border-top-color: #eee;
+  animation: animate-loading 1s linear infinite;
+}
+
+.contact .custom-email-form input,
+.contact .custom-email-form textarea {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.contact .custom-email-form input:focus,
+.contact .custom-email-form textarea:focus {
+  border-color: #4154f1;
+}
+
+.contact .custom-email-form input[type=text],
+.contact .custom-email-form input[type=email] {
+  padding: 10px 15px;
+}
+
+.contact .custom-email-form textarea {
+  padding: 12px 15px;
+}
+
+.contact .custom-email-form button[type=submit] {
+  background: #4154f1;
+  border: 0;
+  padding: 10px 30px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+.contact .custom-email-form button[type=submit]:hover {
+  background: #5969f3;
+}
+/* End of the custom-email-form class, which was copied and pasted from the php-validation-form class
+ from the FlexStart theme, but with a different name for the class. */

@@ -105,7 +105,7 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
              the form fields, so that the Name and the Email fields are in the same row.
              -->
             {#            <form class="php-email-form" action="{% pageurl page %}" method="post">#}
-            <form action="{% pageurl page %}" method="post">
+            <form class="custom-email-form" action="{% pageurl page %}" method="post">
               {% csrf_token %}
               <div class="row gy-4">    <!-- This is the Row for the Contact Form's Grid  -->
                 <!-- This renders each field of the form using Jinja -->
