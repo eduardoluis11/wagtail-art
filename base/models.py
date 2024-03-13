@@ -86,10 +86,11 @@ class FormPage(AbstractEmailForm):
     # This adds a class to each field in the form to render each form field with the "form-control" class.
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
-        # This will only add placeholder text to the name and email fields in the form.
+        # This will only add placeholder text to the name, email, and message fields in the form.
         placeholders = {
             'name': 'Your name',
             'email': 'Your email',
+            'message': 'Your message',
         }
         # Add a class and placeholder text to each field in the form
         # for field in form.fields.values():

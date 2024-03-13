@@ -103,6 +103,11 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
 
              I want each form field to be rendered within a div with the class "col-md-6". This is to give a 1x2 grid to
              the form fields, so that the Name and the Email fields are in the same row.
+
+             The "if field.name == "message"" snippet checks if the name of the current field is "message". If it is,
+             the field is rendered inside a div with the class "col-md-12". If it's not, the field is rendered inside a
+             div with the class "col-md-6". This will make the "message" field take up the entire width of the form,
+             while the other fields will take up half of the width.
              -->
             {#            <form class="php-email-form" action="{% pageurl page %}" method="post">#}
             <form class="custom-email-form" action="{% pageurl page %}" method="post">
@@ -110,12 +115,21 @@ Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/create_
               <div class="row gy-4">    <!-- This is the Row for the Contact Form's Grid  -->
                 <!-- This renders each field of the form using Jinja -->
                 {% for field in form %}
-                    <div class="col-md-6">
-                      {{ field.label_tag }}
-
-                      {{ field }}
-                    </div>
+                    {% if field.name == "message" %}
+                        <!-- The "message" form field will take up the entire width of the form. -->
+                        <div class="col-md-12">
+                          {{ field.label_tag }}
+                          {{ field }}
+                        </div>
+                    {% else %}
+                        <!-- The other form fields will take up half of the width of the form. -->
+                        <div class="col-md-6">
+                          {{ field.label_tag }}
+                          {{ field }}
+                        </div>
+                    {% endif %}
                 {% endfor %}
+
                 {#                {{ form.as_div }}#}
 
                 {#                <div class="col-md-6">#}
