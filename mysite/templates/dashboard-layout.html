@@ -1,0 +1,95 @@
+
+<!-- Aquí meteré los estilos y el JS de Flexstart. Luego, desde los archivos de la app de “blog”, llamaré al archivo
+blog-layout.html con un “extends”.
+-->
+
+<!-- I add this to load all my JS and CSS from my "static" folder to prevent a bug that rendered the entire page as
+white, or a Django bug that said "there's no "static" tag. You're using an unresolved variable. "-->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Dashboard's Head -->
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'nice-admin/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'nice-admin/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    {#  <!-- Google Fonts.#}
+    {##}
+    {#   REPLACE WITH BUNNY FONTS LATER.#}
+    {#   -->#}
+    {#    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">#}
+
+  <!-- Fonts from Bunny Fonts.
+
+   These are fonts that respect GDPR laws, and work as a GDPR compliant alternative to Google Fonts.
+   -->
+    <!-- Open Sans, Nunito, and Poppins from Bunny Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=open-sans:300,300i,400,400i,600,600i,700,700i|poppins:300,300i,400,400i,500,500i,600,600i,700,700i|nunito:300,300i,400,400i,600,600i,700,700i"
+          rel="stylesheet" />   <!-- End of the Bunny Fonts snippet -->
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'nice-admin/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'nice-admin/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'nice-admin/assets/css/style.css' %}" rel="stylesheet">
+
+  <!-- CSS with the Cookie Consent Banner styles -->
+  <link href="{% static 'css/cookie-banner-styles.css' %}" rel="stylesheet">
+
+  <!-- Custom CSS for the Dashboard app -->
+  <link href="{% static 'css/dashboard-custom-styles.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jan 29 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+    {% include "includes/dashboard-header.html" %}
+
+        {# Wrap your block content within a <main> HTML5 tag: #}
+        {# Add a unique identifier: #}
+        <main id="main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Banner de consentimiento de cookies.
+
+        Parte del código fue tomado de: https://github.com/Godsont/Cookie-Consent-Banner/blob/master/index.html  -->
+        <div class="container-banner-cookies">  <!-- Texto del banner de consentimiento de cookies -->
+
+            <p>
+                Este sitio web usa cookies para poder funcionar, las cuales toman parte de su información privada.
+                Clique en "Acepto" si está de acuerdo con que tomemos sus datos personales. De lo contrario, abandone
+                el sitio web.
+            </p>
+
+            <button class="boton-aceptar-cookies">  <!-- Botón de "Acepto" -->
+                I Accept
+            </button>
+        </div>                      <!-- Fin del banner del consentimiento de cookies -->
+
+        {# Add this to the file: #}
+        {% include "includes/blog-footer.html" %}
