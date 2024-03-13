@@ -1,0 +1,24 @@
+<!-- Index page for the Dashboard app. This is the page that will be displayed when employees visit the Dashboard
+section of the site.  You will have to login as an employee to see this page.
+
+Source of most of this code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+ -->
+
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-dashboardindexpage{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <div class="intro">{{ page.intro|richtext }}</div>
+
+    {% for post in page.get_children %}
+        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+        {{ post.specific.intro }}
+        {{ post.specific.body|richtext }}
+    {% endfor %}
+
+{% endblock %}

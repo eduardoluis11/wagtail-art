@@ -32,6 +32,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     "blog",     # <- Our new blog app.
     "base",     # <- Our new base app.
+    "dashboard_app",     # <- Our new dashboard_app for employees app.
     "wagtail.contrib.settings",     # <- Add this to add models across all the web pages in the project
     "portfolio",     # <- Our new portfolio app.
     "wagtail_ai",    # <- Wagtail AI's app so that I can use ChatGPT.
