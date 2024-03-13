@@ -5,6 +5,9 @@ I also used code from this source: https://docs.wagtail.org/en/stable/tutorial/c
 
 {% extends "base.html" %}
 
+<!-- FlexStart styles -->
+{#{% extends "blog-layout.html" %}#}
+
 <!-- load wagtailcore_tags by adding this -->
 {% load wagtailcore_tags wagtailimages_tags %}
 
@@ -12,10 +15,13 @@ I also used code from this source: https://docs.wagtail.org/en/stable/tutorial/c
 
 {% block body_class %}template-homepage{% endblock %}
 
-<!-- Replace everything below with: -->
 {% block content %}
-    
-    <div>
+
+    <!-- Div with Title, Cover Image, and Link to Blog.
+
+     I will horizontally center it.
+     -->
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <h1>{{ page.title }}</h1>
         {% image page.image fill-480x320 %}
         <p>{{ page.hero_text }}</p>
@@ -25,8 +31,9 @@ I also used code from this source: https://docs.wagtail.org/en/stable/tutorial/c
             </a>
         {% endif %}
     </div>
+    <br>
     
-    {{ page.body|richtext }}
+{#    {{ page.body|richtext }}#}
 {% endblock content %}
 
 {#{% block extra_css %}#}

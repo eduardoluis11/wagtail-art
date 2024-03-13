@@ -6,6 +6,9 @@ Additionally, I used some snippets from: https://docs.wagtail.org/en/stable/tuto
 -->
 
 {# Remove wagtailuserbar: #}
+
+<!-- I add this to load all my JS and CSS from my "static" folder to prevent a bug that rendered the entire page as
+white, or a Django bug that said "there's no "static" tag. You're using an unresolved variable. "-->
 {% load static wagtailcore_tags %}
 
 <!DOCTYPE html>
@@ -39,8 +42,52 @@ Additionally, I used some snippets from: https://docs.wagtail.org/en/stable/tuto
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
         <text y=%22.9em%22 font-size=%2290%22>⭐</text></svg>"/>
 
-        {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
+        <!-- Favicons -->
+        <link href="{% static 'flexstart/assets/img/favicon.png' %}" rel="icon">
+        <link href="{% static 'flexstart/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+            {#  <!-- Google Fonts.#}
+            {##}
+            {#   REPLACE WITH BUNNY FONTS LATER.#}
+            {#   -->#}
+            {#  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">#}
+
+        <!-- Fonts from Bunny Fonts.
+
+        These are fonts that respect GDPR laws, and work as a GDPR compliant alternative to Google Fonts.
+        -->
+        <!-- Open Sans, Nunito, and Poppins from Bunny Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=open-sans:300,300i,400,400i,600,600i,700,700i|poppins:300,300i,400,400i,500,500i,600,600i,700,700i|nunito:300,300i,400,400i,600,600i,700,700i"
+            rel="stylesheet" />   <!-- End of the Bunny Fonts snippet -->
+
+        <!-- Vendor CSS Files -->
+        <link href="{% static 'flexstart/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+        <link href="{% static 'flexstart/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'flexstart/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'flexstart/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'flexstart/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+        <link href="{% static 'flexstart/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link href="{% static 'flexstart/assets/css/style.css' %}" rel="stylesheet">
+
+        <!-- CSS with the Cookie Consent Banner styles -->
+        <link href="{% static 'css/cookie-banner-styles.css' %}" rel="stylesheet">
+
+        <!-- Custom CSS for the Blog app -->
+        <link href="{% static 'css/blog-custom-styles.css' %}" rel="stylesheet">
+
+        <!-- =======================================================
+        * Template Name: FlexStart
+        * Updated: Jan 29 2024 with Bootstrap v5.3.2
+        * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+        * Author: BootstrapMade.com
+        * License: https://bootstrapmade.com/license/
+        ======================================================== -->
+
+        {# Global stylesheets. This CSS centers the Main Image of the Page #}
+        {#<link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">#}
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
@@ -50,8 +97,9 @@ Additionally, I used some snippets from: https://docs.wagtail.org/en/stable/tuto
     <body class="{% block body_class %}{% endblock %}">
         {# Remove wagtailuserbar: #}
 
-        {# Add your header template to your base template: #}
-        {% include "includes/header.html" %}
+        {# Add your header template (file with the <header> tag) to the "layout" template: #}
+        {#        {% include "includes/header.html" %}#}
+        {% include "includes/blog-header.html" %}
 
         {# Wrap your block content within a <main> HTML5 tag: #}
         {# Add a unique identifier: #}
@@ -59,8 +107,9 @@ Additionally, I used some snippets from: https://docs.wagtail.org/en/stable/tuto
             {% block content %}{% endblock %}
         </main>
 
-        {# Add this to the file: #}
-        {% include "includes/footer.html" %}
+        {# This adds the footer from the footer file / template to the layout #}
+        {#        {% include "includes/footer.html" %}#}
+        {% include "includes/blog-footer.html" %}
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
