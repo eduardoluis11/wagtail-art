@@ -1147,4 +1147,254 @@ class SearchResultsView(Page):
 
 In this example, the `Paginator` is initialized with `search_results` and `20` as arguments. The `20` is the number of items per page. You can change this to any number you want.
 
+==============================================================================================================
+
+Awesome. Now, transform this Django view into Wagtail code for the dashboard_app/models.py file. Also, translate it into English. This is a view that requires the user to be logged in, and alloes them to register productos via a form: "@login_required(login_url='iniciar_sesion') def registrar_productos(request):
+# Chequearé si el usuario tiene permiso de entrar aquí. De lo contrario, lo llevaré a una página de error
+if not request.user.is_superuser and not Capturista.objects.filter(usuario_capturista__id=request.user.id).exists():
+
+    # Esto envía al usuario a la URL a la página con el mensaje "Prohibido"
+    return redirect('prohibido')
+
+formulario_registrar_productos = FormularioRegistrarProductos()  # Formulario de Registrar Productos
+
+# Formset para registrar una o varias Imágenes Secundarias
+formset_imagenes_secundarias = FormsetImagenesSecundariasParaUnProducto()
+
+# Lista vacía para meter las imágenes secundarias validadas
+lista_de_imagenes_secundarias_validadas = []
+
+# Si el usuario envía el formulario de con el Email y la Contraseña
+if request.method == "POST":
+
+    # Esto sobreescribe el formulario para que detecte el POST request con todos los campos validados / sanitizados.
+    formulario_registrar_productos = FormularioRegistrarProductos(request.POST, request.FILES)
+    formset_imagenes_secundarias = FormsetImagenesSecundariasParaUnProducto(request.POST, request.FILES)
+
+    # Esto valida los formularios. Si alguno de los formularios no es valido, NO SE METERA NADA A LA BASE DE DATOS
+    if formulario_registrar_productos.is_valid() and formset_imagenes_secundarias.is_valid():
+
+        # Esto agarra todos los campos ya validados/sanitizados de los formularios
+        datos_validados_formulario_productos = formulario_registrar_productos.cleaned_data
+        datos_validados_formset_imagenes_secundarias = formset_imagenes_secundarias.cleaned_data
+
+        # Campos del formulario de Registrar Productos rellenados por el usuario que ya han sido validados
+        nombre_del_producto = datos_validados_formulario_productos["nombre_del_producto"]
+        clave_sku = datos_validados_formulario_productos["clave_sku"]
+        descripcion = datos_validados_formulario_productos["descripcion"]
+        unidad_de_medida = datos_validados_formulario_productos["unidad_de_medida"]
+        categoria = datos_validados_formulario_productos["categoria"]
+        precio_de_lista = datos_validados_formulario_productos["precio_de_lista"]
+        precio_de_venta = datos_validados_formulario_productos["precio_de_venta"]
+        proveedor = datos_validados_formulario_productos["proveedor"]
+        precio_de_compra = datos_validados_formulario_productos["precio_de_compra"]
+        imagen_principal = datos_validados_formulario_productos["imagen_principal"]
+        # imagen_secundaria = datos_validados["imagen_secundaria"]
+        ficha_tecnica = datos_validados_formulario_productos["ficha_tecnica"]
+
+        # BUG: esto me está generando un bug de Django
+        # # Campo del formset de Imagenes Secundarias de un producto.
+        # imagen_secundaria = datos_validados_formset_imagenes_secundarias["imagen_secundaria"]
+
+        # Voy a meter los datos del Producto en los modelos del Producto y de sus Imagenes Secundarias
+
+        # Fecha y hora actual (timestamp)
+        timestamp = datetime.datetime.now()
+
+        try:
+            # Check if a product with the same SKU already exists
+            Producto.objects.get(clave_sku=clave_sku)
+
+            # If the above line does not raise an ObjectDoesNotExist exception,
+            # it means a product with the same SKU already exists. And since clave_sku is a unique field,
+            # we can display a flash error message to the user in the front-end, without showing Django error
+            # messages.
+            messages.error(request, 'Ya existe in producto con esta clave SKU. Por favor, usa otra clave '
+                                    'SKU.')
+
+            # Esto renderiza el Formulario de Registrar un Producto
+            return render(request, 'productos/registrar-productos.html', {
+                "formulario_registrar_productos": formulario_registrar_productos,
+                "formset_imagenes_secundarias": formset_imagenes_secundarias,
+                # "usuario_es_capturista": usuario_es_capturista,
+            })
+
+        # Si la clave SKU escrita por el usuario no existe en la base de datos, se creará un nuevo producto
+        except ObjectDoesNotExist:
+
+            # Query Set que prepara los datos para meterlos en le modelo de Producto
+            nuevo_producto = Producto(nombre_del_producto=nombre_del_producto, clave_sku=clave_sku,
+                                      descripcion=descripcion, unidad_de_medida=unidad_de_medida, categoria=categoria,
+                                      precio_de_lista=precio_de_lista,
+                                      # precio_de_compra=precio_de_compra,
+                                      precio_de_venta=precio_de_venta,
+                                      imagen_principal=imagen_principal, ficha_tecnica=ficha_tecnica)
+
+            # Esto mete al nuevo producto en la base de datos. Debo hacerlo antes de asignarle las imágenes secundarias
+            nuevo_producto.save()
+
+            # Si el Proveedor y/o el Precio de Compra no están vacíos, los meteré en el modelo de Productos de
+            # Proveedores.
+            if proveedor is not None or precio_de_compra is not None:
+                # Query Set que prepara los datos para meterlos en el modelo de Producto
+                nuevo_precio_de_compra_del_proveedor = PrecioDeCompraDelProveedor(proveedor=proveedor,
+                                                                                  precio_de_compra=precio_de_compra,
+                                                                                  producto=nuevo_producto)
+
+                # Esto mete el nuevo Producto de este Proveedor en la base de datos
+                nuevo_precio_de_compra_del_proveedor.save()
+
+            # Imágenes Secundarias
+            # Esto mete las imágenes en la Lista de Python de imágenes secundarias
+            for imagen in formset_imagenes_secundarias:
+
+                # Esto agarra las Imagenes Secundarias subidas por el usuario del Formulario
+                # Uso get() para evitar un bug y así hacer opcional el campo "Imagen Secundaria"
+                if imagen.cleaned_data.get('imagen_secundaria') is not None:
+                    datos_validados_imagen_secundaria = imagen.cleaned_data['imagen_secundaria']
+
+                    # Agrega la imagen a la Lista de Python
+                    lista_de_imagenes_secundarias_validadas.append(datos_validados_imagen_secundaria)
+
+            # Ahora, si hay mínimo una imagen secundaria en la Lista de Python, las meteré en su respectivo modelo
+            if lista_de_imagenes_secundarias_validadas is not None:
+
+                # Esto mete cada imagen de la lista en el modelo de Imágenes Secundarias
+                for imagen in lista_de_imagenes_secundarias_validadas:
+
+                    # Debo meter la imagen con su respectivo Producto
+                    nueva_imagen = ImagenSecundariaDeUnProducto(
+                        imagen_secundaria=imagen, producto=nuevo_producto)
+
+                    # Esto termine de meter el nuevo documento al modelo de Otros Documentos
+                    nueva_imagen.save()
+
+                    # Fin de haber metido todas las imágenes secundarias en el modelo de Imagenes Secundarias
+
+            # Mensaje flash de confirmacion de que se metió el Producto y las Imagenes a la base de datos
+            messages.success(request, "Se ha registrado correctamente el producto.")
+
+            # Esto redirige al usuario a la lista de Productos
+            return HttpResponseRedirect(reverse("lista_de_productos"))
+
+            # return render(request, "iniciar-sesion.html", {
+            #     "formulario_registrar_productos": formulario_registrar_productos,
+            #     "formset_imagenes_secundarias": formset_imagenes_secundarias,
+            # })
+
+    # Si el formulario es inválido (porque alguien escribe codigo malicioso)
+    else:
+
+        # Mensaje flash de error para el front-end
+
+        # Mensaje de error si se rellena de manera incorrecta el Formulario Principal
+        messages.error(request, formulario_registrar_productos.errors)
+
+        # Esto renderiza el Formulario de Registrar un Producto
+        return render(request, 'productos/registrar-productos.html', {
+            "formulario_registrar_productos": formulario_registrar_productos,
+            "formset_imagenes_secundarias": formset_imagenes_secundarias,
+            # "usuario_es_capturista": usuario_es_capturista,
+        })
+
+# Esto renderiza el formulario si el usuario entró a la página sin enviar el formulario
+else:
+    # Esto renderiza el Formulario de Registrar un Producto
+    return render(request, 'productos/registrar-productos.html', {
+        "formulario_registrar_productos": formulario_registrar_productos,
+        "formset_imagenes_secundarias": formset_imagenes_secundarias,
+        # "usuario_es_capturista": usuario_es_capturista,
+    })"
+
+To transform this Django view into Wagtail code, you would need to create a new `Page` model in your `dashboard_app/models.py` file. This new `Page` model will represent the product registration page.
+
+In Wagtail, the logic that would normally be in a Django view is often moved into the `Page` model itself. For example, the form handling logic can be moved into the `serve` method of the `Page` model.
+
+Here's how you can transform the Django view into a Wagtail `Page` model:
+
+```python
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from wagtail.core.models import Page
+from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.views import process_form_submission
+from .forms import FormularioRegistrarProductos, FormsetImagenesSecundariasParaUnProducto
+from .models import Producto, PrecioDeCompraDelProveedor, ImagenSecundariaDeUnProducto
+from django.core.exceptions import ObjectDoesNotExist
+import datetime
+
+class FormField(AbstractFormField):
+    page = models.ForeignKey('ProductRegistrationPage', on_delete=models.CASCADE)
+
+class ProductRegistrationPage(AbstractEmailForm):
+    intro = models.CharField(max_length=255, blank=True)
+    thank_you_text = models.CharField(max_length=255, blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('thank_you_text'),
+    ]
+
+    def serve(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            form = FormularioRegistrarProductos(request.POST, request.FILES)
+            formset = FormsetImagenesSecundariasParaUnProducto(request.POST, request.FILES)
+
+            if form.is_valid() and formset.is_valid():
+                # Handle the form/formset submission
+                # This is where you put the logic that was in your Django view
+                # ...
+
+                # Redirect to the same page after form submission:
+                return HttpResponseRedirect(reverse('product_registration_page'))
+            else:
+                # If the form is invalid, render the form with error messages
+                return self.render_landing_page(request, form, *args, **kwargs)
+        else:
+            form = FormularioRegistrarProductos()
+            formset = FormsetImagenesSecundariasParaUnProducto()
+
+        context = self.get_context(request)
+        context['form'] = form
+        context['formset'] = formset
+        return render(request, 'dashboard_app/product_registration_page.html', context)
+```
+
+In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is rendered.
+
+Please note that you need to create a new template `product_registration_page.html` for this page. The form and formset are passed to the template context, so you can render them in the template.
+
+Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy settings to restrict access to the page. You can set the page to be viewable by logged in users only in the Wagtail admin interface.
+
+==============================================================================================================
+
+Ok. Now, could you tell me how to use Wagtail's privacy settings to restrict access to the page?
+
+
+Sure, you can restrict access to a page in Wagtail using its privacy settings. Here's how you can do it:
+
+1. Log in to the Wagtail admin interface.
+
+2. Navigate to the page you want to restrict access to.
+
+3. Click on the "Settings" tab.
+
+4. In the "Privacy" section, you will see a "View restrictions" option. Click on the "Add a restriction" button.
+
+5. You will see three options: "Password required", "Login required", and "Restrict by group".
+
+   - "Password required" will ask the user to enter a password to view the page.
+
+   - "Login required" will only allow logged in users to view the page.
+
+   - "Restrict by group" will only allow users who are members of certain groups to view the page.
+
+6. Choose the "Login required" option to restrict the page to logged in users.
+
+7. Click on the "Save" button to apply the changes.
+
+Now, only logged in users will be able to view the page. Users who are not logged in will be redirected to the login page when they try to access the page.
 
