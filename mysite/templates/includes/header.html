@@ -1,31 +1,143 @@
-<!-- Source of some of this code: https://docs.wagtail.org/en/stable/tutorial/set_up_site_menu.html
+<!-- Header for the Home page.
 
-Additionally, I used some of the code from: https://docs.wagtail.org/en/stable/tutorial/style_your_site.html
+ This page will contain the Navbar and the Breadcrumbs. The Navbar will be the same for all pages, but the Breadcrumbs
+ will be different than that of the blog page.
+ -->
 
-I also used some code from: https://docs.wagtail.org/en/stable/tutorial/add_search.html
--->
-
+<!-- This loads the Wagtail tags that I will use in this template -->
 {% load wagtailcore_tags navigation_tags wagtailuserbar %}
 
-<header>
-    <a href="#main" class="skip-link">Skip to content</a>
+<!-- This loads my CSS and JS -->
+{% load static %}
 
-    <!-- I need this Wagtail tag to get my Navbar -->
-    {% get_site_root as site_root %}
-    <nav>   <!-- Navbar -->
-        <p>
-            <a href="{% pageurl site_root %}">{{ site_root.title }}</a> |
-            {% for menuitem in site_root.get_children.live.in_menu %}
+<!-- I need this Wagtail tag to get my Navbar and my URL "views" from Wagtail -->
+{% get_site_root as site_root %}
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top">
+    {#    <!-- This is for screen readers -->#}
+    {#    <a href="#main" class="skip-link">Skip to content</a>#}
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <!-- Navbar's logo. This will redirect you to the home page. -->
+      <a href="{% pageurl site_root %}" class="logo d-flex align-items-center">
+        <img src="{% static 'flexstart/assets/img/logo.png' %}" alt="">
+        <span>Art Gallery</span>
+      </a>
+
+
+
+      <nav id="navbar" class="navbar">  <!-- Navbar -->
+        <ul>
+          <!-- This renders the "Home" link from the Wagtail tags. The "pageurl site_root" is the link to the index
+          page, that is, to the home page. -->
+          <li><a class="nav-link scrollto" href="{% pageurl site_root %}">{{ site_root.title }}</a></li>
+            {#            |#}
+
+          <!-- This renders the rest of the navbar links (including links such as "Our Blog" and "Contact Us") from
+           the Wagtail tags -->
+          {% for menuitem in site_root.get_children.live.in_menu %}
 
                 {# Add the child pages of your HomePage that have their `Show in menu` checked #}
-                <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>{% if not forloop.last %} | {% endif %}
+                <li>
+                    <a class="nav-link scrollto" href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                </li>
+                {#              {% if not forloop.last %} | {% endif %}#}
 
 
-            {% endfor %}
-            {# Display your search by adding this: #}
-            | <a href="/search/">Search</a>
-        </p>
-    </nav>  <!-- End of the Navbar -->
+          {% endfor %}
+          {# Display your search by adding this. I need to get the "Search" link out of the "for" loop. Otherwise,  #}
+          {# it will be repeated 3 times in the menu. #}
+            {#          | #}
+          <li><a class="nav-link scrollto" href="/search/">Search</a></li>
 
-    {% wagtailuserbar "top-right" %}
-</header>
+
+
+          {#          <li><a class="nav-link scrollto " href="#hero">Home</a></li>#}
+            {#          <li><a class="nav-link scrollto" href="#about">About</a></li>#}
+            {#          <li><a class="nav-link scrollto" href="#services">Services</a></li>#}
+            {#          <li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>#}
+            {#          <li><a class="nav-link scrollto" href="#team">Team</a></li>#}
+            {#          <li><a class="active" href="blog.html">Blog</a></li>#}
+            {#          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>#}
+            {#            <ul>#}
+            {#              <li><a href="#">Drop Down 1</a></li>#}
+            {#              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>#}
+            {#                <ul>#}
+            {#                  <li><a href="#">Deep Drop Down 1</a></li>#}
+            {#                  <li><a href="#">Deep Drop Down 2</a></li>#}
+            {#                  <li><a href="#">Deep Drop Down 3</a></li>#}
+            {#                  <li><a href="#">Deep Drop Down 4</a></li>#}
+            {#                  <li><a href="#">Deep Drop Down 5</a></li>#}
+            {#                </ul>#}
+            {#              </li>#}
+            {#              <li><a href="#">Drop Down 2</a></li>#}
+            {#              <li><a href="#">Drop Down 3</a></li>#}
+            {#              <li><a href="#">Drop Down 4</a></li>#}
+            {#            </ul>#}
+            {#          </li>#}
+            {##}
+            {#          <li class="dropdown megamenu"><a href="#"><span>Mega Menu</span> <i class="bi bi-chevron-down"></i></a>#}
+            {#            <ul>#}
+            {#              <li>#}
+            {#                <a href="#">Column 1 link 1</a>#}
+            {#                <a href="#">Column 1 link 2</a>#}
+            {#                <a href="#">Column 1 link 3</a>#}
+            {#              </li>#}
+            {#              <li>#}
+            {#                <a href="#">Column 2 link 1</a>#}
+            {#                <a href="#">Column 2 link 2</a>#}
+            {#                <a href="#">Column 3 link 3</a>#}
+            {#              </li>#}
+            {#              <li>#}
+            {#                <a href="#">Column 3 link 1</a>#}
+            {#                <a href="#">Column 3 link 2</a>#}
+            {#                <a href="#">Column 3 link 3</a>#}
+            {#              </li>#}
+            {#              <li>#}
+            {#                <a href="#">Column 4 link 1</a>#}
+            {#                <a href="#">Column 4 link 2</a>#}
+            {#                <a href="#">Column 4 link 3</a>#}
+            {#              </li>#}
+            {#            </ul>#}
+            {#          </li>#}
+            {##}
+            {#          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>#}
+            {#          <li><a class="getstarted scrollto" href="#about">Get Started</a></li>#}
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <!-- Blue section right below the Navbar, which will contain the title of the current page and the Breadcrumbs.
+
+         Ideally, This should be different for each page. For example, the Breadcrumbs for the Blog page will be
+         different
+         than the Breadcrumbs for the Home page.
+
+         The title of the current page will be taken from using Wagtail notation (page.title).
+        -->
+        <ol>
+          <!-- This is the Breadcrumb for the Home page. -->
+          <li><a href="{% pageurl site_root %}">Home</a></li>
+          {#          <li>Blog</li>#}
+        </ol>
+
+        <!-- This is the title of the current page. -->
+        <h2>{{ page.title }}</h2>
+
+{#        <h2>My Blog</h2>#}
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
