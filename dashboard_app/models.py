@@ -38,7 +38,11 @@ supplier is already applied to it.
 The SKU field must be unique for each product. There cannot be 2 products with the same SKU. Therefore, I put a restriction 
 on it with the "unique" keyword.
 
+To prevent any confusions, I will call "Product From the Supplier" to the "Supllier Purchase Prices" model. In reality, 
+that's what that model is: it stores the products offered by that supplier.
 """
+
+
 class Product(models.Model):
     product_name = models.CharField(max_length=200)  # Product Name
 
@@ -48,8 +52,8 @@ class Product(models.Model):
     category = models.CharField(max_length=100)    # Category
     list_price = models.DecimalField(max_digits=14, decimal_places=2)  # List Price
 
-    # # Purchase Price (defined by supplier but modifiable). CREATE MODEL LATER.
-    # purchase_price = models.ForeignKey('SupplierPurchasePrice', on_delete=models.CASCADE)
+    # Purchase Price (defined by supplier but modifiable)
+    purchase_price = models.ForeignKey('ProductFromTheSupplier', on_delete=models.CASCADE)
 
     # Sale Price (same as list price, initially)
     sale_price = models.DecimalField(max_digits=14, decimal_places=2)  # Sale Price
@@ -62,6 +66,150 @@ class Product(models.Model):
     # This displays the Product's name and SKU code
     def __str__(self):
         return f"{self.product_name} - SKU: {self.sku_code}"
+
+
+
+""" Modelo con los Precios de Compra de los Proveedores.
+
+Dado a que un producto del modelo de Productos puede tener uno o varios precios de compra, tengo que crear este modelo.
+Así aquí puedo almacenar todos los precios de compra como registros en este modelo, y se le pueden asignar varios
+precios de compra a un solo producto usando una FK de este model en el modelo de Productos.
+
+Dado a que cada proveedor define su propio precio de compra, creo que pondré otro campo llamado "proveedor". Ese campo
+debería ser una FK del modelo de Proveedores.
+
+*Campos:
+- Precio de Compra (14 dígitos con 2 decimales).
+- Proveedor (FK).
+- Producto (FK)
+
+El "locale" y el "format_string" va a imprimirme el precio en pesos mexicanos, en donde se mostraran los decimales con 
+comas en el panel de admin de Django y cuando se imprima el precio de compra como Foreign Key. Así se debe hacer en
+español.
+
+Por motivos de user experience, le cambiare el Meta del modelo “Precios de Compra de los Proveedores” a “Productos de 
+los Proveedores”. Eso es para evitar confusiones.
+
+Solo haré que el producto sea obligatorio. TANTO EL PRECIO DE COMPRA COMO EL PROVEEDOR DEBEN SER OPCIONALES.
+"""
+
+
+class ProductFromTheSupplier(models.Model):
+
+    # Proveedor que ofrece este precio
+    proveedor = models.ForeignKey("Supplier", on_delete=models.CASCADE, related_name="proveedor_de_este_precio",
+                                  null=True, blank=True)
+
+    # Producto (FK)
+    producto = models.ForeignKey("Product", on_delete=models.CASCADE,
+                                 related_name="producto_que_tiene_este_precio_de_compra")
+
+    # Precio de Compra
+    precio_de_compra = models.DecimalField(max_digits=14, decimal_places=2, verbose_name="Precio de compra ($)",
+                                           null=True, blank=True, default=0)
+
+    # Nombre en plural arreglado en el Panel de Admin de Django
+    class Meta:
+        verbose_name_plural = "Productos de los Proveedores"
+
+    # Esto muestra el precio de compra, junto con el nombre del proveedor.
+    def __str__(self):
+        return (f"{self.producto.product_name} - {self.proveedor} - "
+                f"${self.precio_de_compra}")
+
+
+""" Modelo de Proveedores.
+
+* Campos:
+- Nombre del Proveedor (Alias) (ej: Umbrella).  X
+- Razón social (ej: Umbrella Corp). X
+- RFC (y Datos Fiscales (PREGUNTAR QUE ES ESTO DE DATOS FISCALES)) (ej: XAXX010101000) (13 caracteres). X
+- Domicilio (dirección).    X
+- Cuenta bancaria (puede ser una o varias) (11 dígitos). ESTO NO SE PONDRA AQUI: se pondrá en un nuevo modelo, y se 
+meterá al Proveedor como una FK.)    X
+- CLABE (18 dígitos). ESTO NO SE PONDRA AQUI: se pondrá en un nuevo modelo, y se meterá al Proveedor como una FK.   X  
+- Descuento (en porcentaje) (3 digitos enteros, 2 decimales maximo).   X
+- Calle, número exterior, número interior, colonia, código postal, ciudad, estado. (Le llamé "Dirección Fiscal"). X
+- Correo (uno o varios). NO SE DEBE AGREGAR AQUI. SE DEBE CREAR NUEVO MODELO.   X
+- Nombre del contacto. (100 caracteres) X
+- Telefono del contacto. (Varchar, 15 caracteres)  X
+
+* Datos fiscales de los proveedores:
+- RFC.  X
+- Razón social o nombre. (Lo puedo poner distinto al "Nombre del Contacto").    X
+- Calle, número ext., número int, colonia, código postal*, estado, ciudad.  X
+- Régimen fiscal* (es un catálogo te lo comparto).(FK)  X
+- Uso de CFDI* (es un catálogo). (FK)    X
+- Forma de pago* (es un catálogo).  (FK)    X
+- Método de pago* (catálogo).   (FK)    X
+
+
+Dado a que un descuento puede tener decimales (por ejemplo, con 10,5% de descuento), puedo poner máximo 5 dígitos: 3 
+enteros con 2 decimales. Sería un DecimalField.
+
+Meteré todos los campos de la dirección fiscal dentro de un solo campo en el modelo de Proveedores.
+
+Dado que los teléfonos llevarán el prefijo “+”, les pondré un Varchar en lugar de integer. Pero aún así les pondré 15 
+caracteres máximo.
+
+Respecto a Uso de CFDI con que pongas G01, G03 y S01 es suficiente.
+
+NO DEBO REPETIR LA RAZON SOCIAL 2 veces.
+"""
+
+
+class Supplier(models.Model):
+
+    nombre_del_proveedor = models.CharField(blank=True, null=True, max_length=50)  # Nombre (Alias)
+    razon_social = models.CharField(max_length=100)     # Razon social
+
+    domicilio = models.TextField(max_length=350)  # Domicilio
+    descuento = models.DecimalField(max_digits=14, decimal_places=2)    # Descuento
+
+    # Datos Fiscales
+    rfc = models.CharField(max_length=13)  # Número RFC
+    direccion_fiscal = models.TextField(max_length=500)  # Dirección Fiscal
+
+    # # Razon Social o Nombre para Datos Fiscales
+    # razon_social_o_nombre_para_datos_fiscales = models.CharField(max_length=100)
+
+    # uso_cfdi = models.CharField(max_length=3)   # Uso de CFDI
+
+    # # Uso CFDI (FK)
+    # uso_cfdi = models.ForeignKey("UsoDeCFDI", on_delete=models.CASCADE,
+    #                              related_name="codigo_uso_cfdi_para_este_proveedor")
+
+    # # Forma De Pago (FK)
+    # forma_de_pago = models.ForeignKey("FormaDePago", on_delete=models.CASCADE,
+    #                              related_name="forma_de_pago_para_este_proveedor")
+    #
+    # # Método De Pago (FK)
+    # metodo_de_pago = models.ForeignKey("MetodoDePago", on_delete=models.CASCADE,
+    #                              related_name="metodo_de_pago_para_este_proveedor")
+    #
+    # # Régimen Fiscal (FK)
+    # regimen_fiscal = models.ForeignKey("RegimenFiscal", on_delete=models.CASCADE,
+    #                              related_name="regimen_fiscal_para_este_proveedor")
+    # Fin de los Datos Fiscales
+
+    nombre_del_contacto = models.CharField(max_length=100)  # Nombre del Contacto
+
+    # Teléfono del contacto
+    telefono_del_contacto = models.CharField(max_length=15)
+
+    # telefono_del_contacto = models.IntegerField(validators=[MaxValueValidator(999999999999999)])
+
+    # cuenta_bancaria = models.IntegerField(max_length=11)  # Número de Cuenta Bancaria. NO PUEDO USAR ESTO
+    #
+    # clabe = models.IntegerField(max_length=18)   # CLABE. NO PUEDO USAR ESTO
+
+    # Nombre en plural arreglado en el Panel de Admin de Django
+    class Meta:
+        verbose_name_plural = "Proveedores"
+
+    # Esto muestra el nombre del Proveedor junto con su RFC:
+    def __str__(self):
+        return f"{self.rfc} - {self.nombre_del_proveedor}"
 
 
 
