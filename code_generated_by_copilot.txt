@@ -1404,3 +1404,83 @@ Sure, you can restrict access to a page in Wagtail using its privacy settings. H
 
 Now, only logged in users will be able to view the page. Users who are not logged in will be redirected to the login page when they try to access the page.
 
+==============================================================================================================
+
+Is there a way to create formsets in Wagtail?
+
+Wagtail does not natively support formsets like Django does. However, you can still use Django formsets in your Wagtail project. You would need to handle the formset in the `serve` method of your `Page` model, similar to how you would handle a form.
+
+Here's a basic example of how you can use a Django formset in a Wagtail page:
+
+```python
+from django.forms import formset_factory
+from wagtail.core.models import Page
+from .forms import YourForm
+
+class YourPage(Page):
+    def serve(self, request):
+        YourFormSet = formset_factory(YourForm, extra=1)
+        if request.method == 'POST':
+            formset = YourFormSet(request.POST)
+            if formset.is_valid():
+                # Process the formset data
+                # ...
+                return redirect('success_page')
+        else:
+            formset = YourFormSet()
+
+        return render(request, 'your_template.html', {'formset': formset})
+```
+
+In this code, `YourForm` is the form that you want to use in the formset. The `formset_factory` function is used to create a formset class for this form. The formset is then instantiated and processed in the `serve` method of the `Page` model.
+
+Please note that you need to create a template (`your_template.html`) to render the formset. You can iterate over the formset in the template to render each form.
+
+==============================================================================================================
+
+Ok. Well, how are FKs handled in Wagtail? Like, if I have a Wagtail form, and that form should insert data into 2 tables in the database, how is that handled in Wagtail?
+
+In Wagtail, Foreign Keys (FKs) are handled similarly to how they are handled in Django, as Wagtail is built on top of Django. You can define a ForeignKey field in your Wagtail model to create a relationship between two models.
+
+If you have a Wagtail form that should insert data into two tables in the database, you would typically handle this in the `save` method of your form or in the `serve` method of your `Page` model.
+
+Here's a basic example of how you can handle this:
+
+```python
+from django.db import models
+from wagtail.core.models import Page
+from wagtail.admin.edit_handlers import FieldPanel
+from .forms import YourForm
+
+class YourOtherModel(models.Model):
+    name = models.CharField(max_length=255)
+
+class YourPage(Page):
+    your_field = models.ForeignKey(YourOtherModel, on_delete=models.CASCADE)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('your_field'),
+    ]
+
+    def serve(self, request):
+        if request.method == 'POST':
+            form = YourForm(request.POST)
+            if form.is_valid():
+                # Save the data to the first table
+                self.your_field = form.cleaned_data['your_field']
+                self.save()
+
+                # Save the data to the second table
+                other_model = YourOtherModel(name=form.cleaned_data['name'])
+                other_model.save()
+
+                return redirect('success_page')
+        else:
+            form = YourForm()
+
+        return render(request, 'your_template.html', {'form': form})
+```
+
+In this code, `YourPage` is a Wagtail `Page` model that has a ForeignKey field `your_field` linking to another model `YourOtherModel`. The `serve` method is overridden to handle the form submission. If the form is valid, it saves the data to both `YourPage` and `YourOtherModel`.
+
+Please note that you need to replace `YourForm`, `YourOtherModel`, `your_field`, `name`, `success_page`, and `your_template.html` with your actual form class, model classes, field names, success page URL, and template name.
