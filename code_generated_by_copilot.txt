@@ -1306,6 +1306,10 @@ else:
         # "usuario_es_capturista": usuario_es_capturista,
     })"
 
+
+
+
+
 To transform this Django view into Wagtail code, you would need to create a new `Page` model in your `dashboard_app/models.py` file. This new `Page` model will represent the product registration page.
 
 In Wagtail, the logic that would normally be in a Django view is often moved into the `Page` model itself. For example, the form handling logic can be moved into the `serve` method of the `Page` model.
@@ -1363,11 +1367,13 @@ class ProductRegistrationPage(AbstractEmailForm):
         return render(request, 'dashboard_app/product_registration_page.html', context)
 ```
 
-In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is rendered.
+In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic 
+is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is rendered.
 
 Please note that you need to create a new template `product_registration_page.html` for this page. The form and formset are passed to the template context, so you can render them in the template.
 
-Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy settings to restrict access to the page. You can set the page to be viewable by logged in users only in the Wagtail admin interface.
+Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy settings to restrict access to the page. You can set the page to be viewable by logged in users only 
+in the Wagtail admin interface.
 
 ==============================================================================================================
 
