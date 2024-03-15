@@ -5,7 +5,8 @@
 <!-- Layout for the Dasboard app (Nice Admin).  -->
 {% extends "dashboard-layout.html" %}
 
-{% load wagtailcore_tags %}
+<!-- Load the wagtailimages_tags: -->
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -15,14 +16,57 @@
 
     <div class="intro">{{ page.intro }}</div>
 
+    <!-- The image itself -->
     <img src="{{ page.image.url }}" alt="{{ page.title }}">
 
     <br>
     <br>
 
+    <!-- This renders the images, if the Blog Entry has any.
+
+     I added a ton of line breaks (<br>) so that the images always look inside the "card"
+     that contains the text.
+
+     I changed the resizing rule. To avoid cropping, you can use the width or height rule
+     instead of fill. The width rule resizes the image to the specified width while maintaining
+     the original aspect ratio. The height rule does the same but with the specified height.
+     Please note that using width or height might result in images that are smaller or larger
+     than expected if their aspect ratio is significantly different from the 320x240 ratio. If
+     maintaining the exact dimensions is crucial, you might need to consider other solutions,
+     such as modifying the images themselves to fit the desired aspect ratio.
+     -->
+    {% for item in page.gallery_images.all %}
+            {#                            <div style="float: inline-start; margin: 10px;">#}
+
+            <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
+             should appear to the left side of the screen.
+             -->
+        <div style="float: left; margin: 10px;">
+            {#                                    {% image item.image fill-320x240 %}#}
+            {% image item.image width-320 %}
+            <p>{{ item.caption }}</p>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+
     <!-- Prompts used for creating the image -->
     <h4>Prompt used:</h4>
-    {{ page.body|richtext }}
+    {{ page.prompt|richtext }}
 
     <p><a href="{{ page.get_parent.url }}">Return to the Gallery</a></p>
 

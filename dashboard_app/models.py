@@ -259,6 +259,8 @@ from django.shortcuts import render
 # This will let me use the Paginator class to paginate the blog entries in the Blog Index Page.
 from django.core.paginator import Paginator
 
+from wagtail.images.models import Image
+
 
 
 
@@ -358,28 +360,76 @@ class ArtworkIndexPage(Page):
 
 """ Artwork Page. This is the "view" that renders the detailed page that displays the Image. 
 
-Here's where you'll be able to see the promts used for creating the image, the date it was created, the image itself, the 
-AI use for creating it, etc.
+Here's where you'll be able to see the prompts used for creating the image, the date it was created, the image itself, 
+the AI use for creating it, etc.
+
+To add image upload functionality to the ArtworkPage model, you can create a new model similar to BlogPageGalleryImage. 
+This new model, which we can call ArtworkPageGalleryImage, will represent an image in a gallery of images for an artwork 
+page.
+
+Below the ArtworkPage model, I will create a new model called ArtworkPageGalleryImage. This new model will have a 
+Foreign Key to Wagtail's own Image model, a caption field, and will take the ArtworkPage model (this page) as an FK
+(or Parental Key, as it's called in Wagtail).
 """
 
 
 class ArtworkPage(Page):
-    date = models.DateField("Post date")
+    date = models.DateField("Image date")
     intro = models.CharField(max_length=250)
-    body = RichTextField(blank=True)
+
+    # This will store the prompts
+    prompt = RichTextField(blank=True)
 
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
-        index.SearchField('body'),
+        index.SearchField('prompt'),
     ]
 
     content_panels = Page.content_panels + [
         FieldPanel('date'),
         FieldPanel('intro'),
-        FieldPanel('body'),
+        FieldPanel('prompt'),
+        # This will allow me to upload images. I think this comes from ArtworkPageGalleryImage().
+        InlinePanel('gallery_images', label="Gallery images"),
     ]
 
 
+""" Artwork Page Gallery Image model.
+
+This is a new model that represents an image in a gallery of images for an artwork page. It has a 
+ParentalKey to the ArtworkPage model, which means each ArtworkPage can have multiple ArtworkPageGalleryImage instances 
+associated with it. The image field is a ForeignKey to the Image model provided by Wagtail, which means each 
+ArtworkPageGalleryImage instance can be associated with an image uploaded via the Wagtail admin interface. The caption 
+field can store a caption for the image.  The InlinePanel('gallery_images', label="Gallery images") line in the 
+ArtworkPage model's content_panels list allows you to add, edit, and remove gallery images from the Wagtail admin 
+interface when editing an ArtworkPage. 
+
+The "wagtailimages.Image" model is a pre-installed Wagtail model that allows me to store images in the Wagtail admin 
+interface.
+
+The Orderable class, which is a special Django model provided by Wagtail that allows the instances of the model to be 
+ordered in a specific sequence. 
+"""
+
+
+class ArtworkPageGalleryImage(Orderable):
+
+    # A Parental Key is pretty similar to the Wagtail version of an FK. This is taking the Artwork Page as an FK.
+    page = ParentalKey(ArtworkPage, on_delete=models.CASCADE, related_name='gallery_images')
+
+    # This is the actual image. This is a ForeignKey to the Image model provided by Wagtail.
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    # This is the panel that will appear in the Wagtail admin interface when editing an Artwork Page.
+    panels = [
+
+        # This will let me select an image to upload.
+        FieldPanel('image'),
+        FieldPanel('caption'),
+    ]
 
 
 

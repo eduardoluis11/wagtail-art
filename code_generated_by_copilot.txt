@@ -1484,3 +1484,52 @@ class YourPage(Page):
 In this code, `YourPage` is a Wagtail `Page` model that has a ForeignKey field `your_field` linking to another model `YourOtherModel`. The `serve` method is overridden to handle the form submission. If the form is valid, it saves the data to both `YourPage` and `YourOtherModel`.
 
 Please note that you need to replace `YourForm`, `YourOtherModel`, `your_field`, `name`, `success_page`, and `your_template.html` with your actual form class, model classes, field names, success page URL, and template name.
+
+==============================================================================================================
+
+Cool. Well, could you add a functionality to upload images for my ArtWorkPage model in a similar way in which images are being uploaded for the BlogPage model by using something similar to the BlogPageGalleryImage model?
+
+Sure, to add image upload functionality to the `ArtworkPage` model, you can create a new model similar to `BlogPageGalleryImage`. This new model, which we can call `ArtworkPageGalleryImage`, will represent an image in a gallery of images for an artwork page.
+
+Here's how you can modify the `ArtworkPage` model and create the `ArtworkPageGalleryImage` model:
+
+```python
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.models import Image
+
+class ArtworkPage(Page):
+    date = models.DateField("Image date")
+    intro = models.CharField(max_length=250)
+    prompt = RichTextField(blank=True)
+
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+        index.SearchField('prompt'),
+    ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel('date'),
+        FieldPanel('intro'),
+        FieldPanel('prompt'),
+        InlinePanel('gallery_images', label="Gallery images"),
+    ]
+
+class ArtworkPageGalleryImage(Orderable):
+    page = ParentalKey(ArtworkPage, on_delete=models.CASCADE, related_name='gallery_images')
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    panels = [
+        ImageChooserPanel('image'),
+        FieldPanel('caption'),
+    ]
+```
+
+In this code, `ArtworkPageGalleryImage` is a new model that represents an image in a gallery of images for an artwork page. It has a `ParentalKey` to the `ArtworkPage` model, which means each `ArtworkPage` can have multiple `ArtworkPageGalleryImage` instances associated with it. The `image` field is a `ForeignKey` to the `Image` model provided by Wagtail, which means each `ArtworkPageGalleryImage` instance can be associated with an image uploaded via the Wagtail admin interface. The `caption` field can store a caption for the image.
+
+The `InlinePanel('gallery_images', label="Gallery images")` line in the `ArtworkPage` model's `content_panels` list allows you to add, edit, and remove gallery images from the Wagtail admin interface when editing an `ArtworkPage`.
+
+==============================================================================================================
+
