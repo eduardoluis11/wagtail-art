@@ -283,6 +283,8 @@ class DashboardIndexPage(Page):
     ]
 
 
+""" Test page to insert as a Child Element of the Dashboard Index Page. DELETE LATER.
+"""
 class DashboardPage(Page):
     date = models.DateField("Post date")
     intro = models.CharField(max_length=250)
@@ -298,6 +300,100 @@ class DashboardPage(Page):
         FieldPanel('intro'),
         FieldPanel('body'),
     ]
+
+
+""" Artwork Index Page. This is the "view" that renders the page that displays the List of all my Images 
+generated using Stable Diffusion.
+
+Here's a general algorithm to add pagination to your Wagtail page:
+
+Import the Paginator class from Django's core paginator module at the top of your models.py file.
+
+In the get_context method of your ArtworkIndexPage class, after retrieving the artworkpages queryset, create a Paginator 
+object. The Paginator object takes two arguments: the list or queryset to paginate, and the number of items per page.
+
+Get the page number from the request's GET parameters. If the page parameter is not present, default to the first page.
+
+Use the Paginator's get_page method to retrieve the Page object for the current page. This method will automatically 
+handle invalid page numbers and out of range errors by returning the first or last page respectively.
+
+Add the Page object to the context dictionary under the 'artworkpages' key.
+
+In your template, you can now loop over the 'artworkpages' context variable to display the artworks / images for the current 
+page. You can also use the Page object's has_previous, has_next, previous_page_number, and next_page_number methods to 
+display navigation links.
+"""
+
+
+class ArtworkIndexPage(Page):
+    intro = RichTextField(blank=True)
+
+    # # Add the get_context method
+    # def get_context(self, request):
+    #     # Update context to include only published posts, ordered by reverse-chron
+    #     context = super().get_context(request)
+    #     productpages = self.get_children().live().order_by('-first_published_at')
+    #
+    #     # Create a Paginator object to add Pagination. This way, if there are more than 10 products, the page will
+    #     # display only 10 products at a time, and the user can navigate to the next page to see the rest of the entries.
+    #     paginator = Paginator(productpages, 10)  # Show 10 blog entries per page
+    #
+    #     # Get the page number from the request
+    #     page = request.GET.get('page')
+    #
+    #     # Get the Page object for the current page
+    #     productpages = paginator.get_page(page)
+    #
+    #     # Add the Page object to the context. "productpages" is like the Jinja variable that contains all of the blog
+    #     # entries from the Query Set.
+    #     context['productpages'] = productpages
+    #
+    #     # This is like the "return render request" from he traditional Django views.
+    #     return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+    ]
+
+
+""" Artwork Page. This is the "view" that renders the detailed page that displays the Image. 
+
+Here's where you'll be able to see the promts used for creating the image, the date it was created, the image itself, the 
+AI use for creating it, etc.
+"""
+
+
+class ArtworkPage(Page):
+    date = models.DateField("Post date")
+    intro = models.CharField(max_length=250)
+    body = RichTextField(blank=True)
+
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+        index.SearchField('body'),
+    ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel('date'),
+        FieldPanel('intro'),
+        FieldPanel('body'),
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
