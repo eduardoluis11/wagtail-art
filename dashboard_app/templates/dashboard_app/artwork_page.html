@@ -1,4 +1,9 @@
-{% extends "base.html" %}
+<!-- Artwork / Image Page. This is the detailed "view" for a single artwork.
+
+-->
+
+<!-- Layout for the Dasboard app (Nice Admin).  -->
+{% extends "dashboard-layout.html" %}
 
 {% load wagtailcore_tags %}
 
@@ -12,9 +17,14 @@
 
     <img src="{{ page.image.url }}" alt="{{ page.title }}">
 
+    <br>
+    <br>
+
+    <!-- Prompts used for creating the image -->
+    <h4>Prompt used:</h4>
     {{ page.body|richtext }}
 
-    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    <p><a href="{{ page.get_parent.url }}">Return to the Gallery</a></p>
 
 {% endblock %}
 

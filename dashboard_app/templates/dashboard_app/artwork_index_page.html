@@ -1,4 +1,11 @@
-{% extends "base.html" %}
+<!-- Artwork Index Page. This is the List of Images that I created with Stable Diffusion.
+
+-->
+
+<!-- Layout for the Dashboard app (Nice Admin).  -->
+{% extends "dashboard-layout.html" %}
+
+{#{% extends "base.html" %}#}
 
 {% load wagtailcore_tags %}
 
@@ -9,6 +16,6 @@
     {% for post in page.get_children %}
         <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
         {{ post.specific.intro }}
-        {{ post.specific.body|richtext }}
+        {#        {{ post.specific.body|richtext }}#}
     {% endfor %}
 {% endblock %}
