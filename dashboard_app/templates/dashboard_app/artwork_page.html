@@ -22,7 +22,7 @@
     <br>
     <br>
 
-    <!-- This renders the images, if the Blog Entry has any.
+    <!-- This renders the Image(s).
 
      I added a ton of line breaks (<br>) so that the images always look inside the "card"
      that contains the text.
@@ -68,6 +68,40 @@
     <h4>Prompt used:</h4>
     {{ page.prompt|richtext }}
 
+    <br>
+    <br>
+
+    <!-- Does the image have copyright content?  -->
+    <p>
+        <b>Does the image have copyright content?</b>
+    </p>
+    <p>{{ page.copyright }}</p>
+
+
+    <!-- Please, elaborate why the image has copyright content. It will only be printed if it's "Yes".  -->
+    {% if page.copyright == "Yes" %}
+        <p><b>Please, elaborate</b></p>
+        <p>
+            {{ page.explanation }}
+        </p>
+    {% endif %}
+
+    <!-- AI used for creating the image  -->
+    <p>
+        <b>AI used for creating the image</b>
+    </p>
+    <p>{{ page.ai_used }}</p>
+
+    <!-- If the selected AI was "Other", please specify the name of the AI that you used.  -->
+    {% if page.ai_used == "Other" %}
+        <p><b>Specify the name of the AI that you used if "Other"</b></p>
+        <p>
+            {{ page.specify_ai_if_other }}
+        </p>
+    {% endif %}
+
+
+    <!-- Link to return to the Gallery -->
     <p><a href="{{ page.get_parent.url }}">Return to the Gallery</a></p>
 
 {% endblock %}

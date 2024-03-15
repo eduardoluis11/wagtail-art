@@ -370,15 +370,50 @@ page.
 Below the ArtworkPage model, I will create a new model called ArtworkPageGalleryImage. This new model will have a 
 Foreign Key to Wagtail's own Image model, a caption field, and will take the ArtworkPage model (this page) as an FK
 (or Parental Key, as it's called in Wagtail).
+
+COPYRIGHT_CHOICES is a list of tuples that define the choices available in the dropdown menu. The copyright field is a 
+CharField with choices=COPYRIGHT_CHOICES, which creates a dropdown menu with the options defined in COPYRIGHT_CHOICES. 
+The default='No' argument sets the default value of the dropdown menu to 'No'. The FieldPanel('copyright') line adds a 
+panel to the Wagtail admin interface for the copyright field, allowing it to be edited.
 """
 
 
 class ArtworkPage(Page):
+
+    # This is for the dropdown menu that will ask the user if the image has copyright content
+    COPYRIGHT_CHOICES = [
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    ]
+
+    # These are the choices for the dropdown menu to select the AI used for creating the image
+    AI_CHOICES = [
+        ('Midjourney', 'Midjourney'),
+        ('Bing / Copilot Designer', 'Bing / Copilot Designer'),
+        ('DALL-E', 'DALL-E'),
+        ('Ideogram', 'Ideogram'),
+        ('Other', 'Other'),
+    ]
+
+    # Date of the image. The text "Image date" is like the verbose name / label from traditional Django models.
     date = models.DateField("Image date")
     intro = models.CharField(max_length=250)
 
     # This will store the prompts
     prompt = RichTextField(blank=True)
+
+    # Does the image have any form of copyright content?
+    copyright = models.CharField(max_length=3, choices=COPYRIGHT_CHOICES, default='No',
+                                 verbose_name="Does it have copyright content?")
+
+    # Please, explain why this image has copyright content. OPTIONAL
+    explanation = models.TextField(blank=True, null=True, verbose_name="Please, elaborate")
+
+    # AI used to create the image. It needs to be a Dropdown Menu.
+    ai_used = models.CharField(max_length=100, choices=AI_CHOICES, default='Midjourney', verbose_name="AI used")
+
+    # Specify the name of the AI if the AI selected is "Other" (OPTIONAL)
+    specify_ai_if_other = models.CharField(max_length=100, blank=True, null=True, verbose_name="Specify AI if 'Other'")
 
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
@@ -389,6 +424,10 @@ class ArtworkPage(Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         FieldPanel('prompt'),
+        FieldPanel('copyright'),    # Dropdown Menu that asks if the image has copyright content.
+        FieldPanel('explanation'),  # Optional field to explain why the image has copyright content.
+        FieldPanel('ai_used'),      # Dropdown Menu that asks which AI was used to create the image.
+        FieldPanel('specify_ai_if_other'),  # Field to specify the name of the AI if the AI selected is "Other".
         # This will allow me to upload images. I think this comes from ArtworkPageGalleryImage().
         InlinePanel('gallery_images', label="Gallery images"),
     ]
