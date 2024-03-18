@@ -1,0 +1,50 @@
+{% extends "dashboard-layout.html" %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+{#    <!-- Title of the Page -->#}
+{#    <h1>Add Artwork</h1>#}
+
+    <!-- This will render confirmation messages, both of success or error messages -->
+    {% if messages %}
+
+        <!-- Flash messages.
+
+        If the message is a success message, it will be displayed in green; meanwhile, if it is an error message,
+        it will be displayed in red.
+        -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <li class="{{ message.tags }}" style="color: green">
+                        {{ message }}
+                    </li>
+                {% elif message.tags == 'error' %}
+                    <li class="{{ message.tags }}" style="color: red">
+                        {{ message }}
+                    </li>
+                {% else %}
+                    <li class="{{ message.tags }}">
+                        {{ message }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        {#        {% if formulario_registrar_productos %}#}
+        {#            {{ formulario_registrar_productos }}#}
+        {#        {% if main_form %}#}
+        {#            {{ main_form }}#}
+        {#        {% else %}#}
+        {#            <p>ERROR: No form</p>#}
+        {#        {% endif %}#}
+        {{ main_form }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
