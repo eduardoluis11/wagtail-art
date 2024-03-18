@@ -1,0 +1,17 @@
+{% extends "dashboard-layout.html" %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {#        {{ page.form }}#}
+
+        {% if page.form %}
+            {{ page.form.as_p }}
+        {% else %}
+            <p>ERROR: No form</p>
+        {% endif %}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

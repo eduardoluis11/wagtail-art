@@ -46,8 +46,8 @@ urlpatterns = urlpatterns + [
     # This renders my traditional Django views from my blog "app" folder. IT NEEDS TO SAY "blog/" IN THE URL.
     path('blog/', include('blog.urls')),
 
-    # # This renders my traditional Django views from my dashboard_app app folder. IT NEEDS TO SAY "dashboard_app/" IN THE URL.
-    # path('dashboard_app/', include('dashboard_app.urls')),
+    # This renders my traditional Django views from my dashboard_app app folder. IT NEEDS TO SAY "dashboard_app/" IN THE URL.
+    path('dashboard_app/', include('dashboard_app.urls')),
 
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
