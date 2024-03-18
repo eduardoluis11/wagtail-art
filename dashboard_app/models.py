@@ -266,12 +266,25 @@ from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
 from modelcluster.fields import ParentalKey
 
 # I will use Django forms to create the form for creating instances of Artwork Pages.
-from django import forms
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+# from wagtail.core.models import Page
+# from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from modelcluster.fields import ParentalKey
-# from .models import ArtworkPage
+# from wagtail.contrib.forms.views import process_form_submission
+from .forms import AddArtworkForm
+from django.core.exceptions import ObjectDoesNotExist
+import datetime
 
-from django.apps import apps
+
+# from django import forms
+# from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+# from modelcluster.fields import ParentalKey
+# # from .models import ArtworkPage
+#
+# from django.apps import apps
 
 
 
@@ -481,6 +494,86 @@ class ArtworkPageGalleryImage(Orderable):
         FieldPanel('image'),
         FieldPanel('caption'),
     ]
+
+
+""" Form fields. 
+
+I will add the Page with the Form for creating Artwork Pages model as its FK, since this form field is going to be used 
+to render the fields for the front-end Form for creating Artwork Pages.
+"""
+
+
+class FormField(AbstractFormField):
+    page = models.ForeignKey('ArtworkRegistrationPage', on_delete=models.CASCADE)
+
+
+""" In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The
+`serve` method is overridden to handle the form submission. If the form is valid, the form handling logic
+is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is 
+rendered.
+
+Please note that you need to create a new template `product_registration_page.html` for this page. The form and formset
+are passed to the template context, so you can render them in the template.
+
+Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy
+settings to restrict access to the page. You can set the page to be viewable by logged in users only
+in the Wagtail admin interface.
+"""
+
+
+class ArtworkRegistrationPage(AbstractEmailForm):
+    intro = models.CharField(max_length=255, blank=True)
+    thank_you_text = models.CharField(max_length=255, blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        FieldPanel('thank_you_text'),
+    ]
+
+    # Serve() function. This will execute traditional Django code. This will send the form and detect if the user
+    # made a POST request (sent the form).
+    def serve(self, request, *args, **kwargs):
+
+        # If the user submits the form via a POST request
+        if request.method == 'POST':
+
+            # This declares the form, which is imported from forms.py
+            form = AddArtworkForm(request.POST, request.FILES)
+
+            # formset = FormsetImagenesSecundariasParaUnProducto(request.POST, request.FILES)
+
+            # if form.is_valid() and formset.is_valid():
+
+            # If the form is sanitized and valid
+            if form.is_valid():
+
+                # Handle the form/formset submission
+                # This is where you put the logic that was in your Django view
+                # ...
+
+                # Redirect to the same page after form submission:
+                return HttpResponseRedirect(reverse('product_registration_page'))
+            else:
+                # If the form is invalid, render the form with error messages
+                return self.render_landing_page(request, form, *args, **kwargs)
+        else:
+
+            # If the user first enters the page, this will render the Form
+
+            # Form for creating a new Artwork Page
+            form = AddArtworkForm()
+
+            # formset = FormsetImagenesSecundariasParaUnProducto()
+
+        context = self.get_context(request)
+
+        # This should send the Form via a Jinja variable to the template
+        context['form'] = form
+
+        # context['formset'] = formset
+
+        # This renders the page with the form
+        return render(request, 'dashboard_app/artwork_registration_page.html', context)
 
 
 
