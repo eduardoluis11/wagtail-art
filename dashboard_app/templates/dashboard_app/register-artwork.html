@@ -5,10 +5,12 @@
 
     <form method="post">
         {% csrf_token %}
-        {#        {{ page.form }}#}
 
+
+{#        {% if formulario_registrar_productos %}#}
+{#            {{ formulario_registrar_productos }}#}
         {% if main_form %}
-            {{ main_form.as_p }}
+            {{ main_form }}
         {% else %}
             <p>ERROR: No form</p>
         {% endif %}
