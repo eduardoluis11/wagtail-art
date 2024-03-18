@@ -1310,9 +1310,11 @@ else:
 
 
 
-To transform this Django view into Wagtail code, you would need to create a new `Page` model in your `dashboard_app/models.py` file. This new `Page` model will represent the product registration page.
+To transform this Django view into Wagtail code, you would need to create a new `Page` model in your
+`dashboard_app/models.py` file. This new `Page` model will represent the product registration page.
 
-In Wagtail, the logic that would normally be in a Django view is often moved into the `Page` model itself. For example, the form handling logic can be moved into the `serve` method of the `Page` model.
+In Wagtail, the logic that would normally be in a Django view is often moved into the `Page` model itself. For example,
+the form handling logic can be moved into the `serve` method of the `Page` model.
 
 Here's how you can transform the Django view into a Wagtail `Page` model:
 
@@ -1367,12 +1369,15 @@ class ProductRegistrationPage(AbstractEmailForm):
         return render(request, 'dashboard_app/product_registration_page.html', context)
 ```
 
-In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic 
+In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The
+`serve` method is overridden to handle the form submission. If the form is valid, the form handling logic
 is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is rendered.
 
-Please note that you need to create a new template `product_registration_page.html` for this page. The form and formset are passed to the template context, so you can render them in the template.
+Please note that you need to create a new template `product_registration_page.html` for this page. The form and formset
+are passed to the template context, so you can render them in the template.
 
-Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy settings to restrict access to the page. You can set the page to be viewable by logged in users only 
+Also, please note that the `login_required` decorator is not used in Wagtail. Instead, you can use Wagtail's privacy
+settings to restrict access to the page. You can set the page to be viewable by logged in users only
 in the Wagtail admin interface.
 
 ==============================================================================================================
@@ -1532,4 +1537,151 @@ In this code, `ArtworkPageGalleryImage` is a new model that represents an image 
 The `InlinePanel('gallery_images', label="Gallery images")` line in the `ArtworkPage` model's `content_panels` list allows you to add, edit, and remove gallery images from the Wagtail admin interface when editing an `ArtworkPage`.
 
 ==============================================================================================================
+
+Awesome. Now, create me a new Wagtail Page for creating Artwork Pages. That is, create a Wagtail Page in which users will fill out a form and, once they submit them, they will be able to create a new Artwork Page. The fields that the forms should have are the same ones as in the ArtWorkPage model. Would you recommend me using the AbstractEmailForm from Wagtail to create this form, or would you recommend me some other way for creating the form? I ask because I want to let the user to upload multiple images, so I guess that using a formset would be appropriate.
+
+To create a form for creating `ArtworkPage` instances, you can use Wagtail's `AbstractForm` class. This class allows you to create a form with fields that correspond to the fields of the `ArtworkPage` model. However, it does not support formsets out of the box, so you would need to handle the creation of multiple `ArtworkPageGalleryImage` instances manually in the `process_form_submission` method.
+
+Here's how you can create a new `ArtworkPageFormPage` model that represents a form for creating `ArtworkPage` instances:
+
+```python
+from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.images.edit_handlers import ImageChooserPanel
+from modelcluster.fields import ParentalKey
+
+class ArtworkFormField(AbstractFormField):
+    page = ParentalKey('ArtworkPageFormPage', on_delete=models.CASCADE, related_name='form_fields')
+
+class ArtworkPageFormPage(AbstractForm):
+    template = 'dashboard_app/artwork_form_page.html'
+
+    content_panels = AbstractForm.content_panels + [
+        InlinePanel('form_fields', label="Form fields"),
+    ]
+
+    def process_form_submission(self, form):
+        # This method is called when form is submitted
+
+        # Create a new ArtworkPage instance for each form submission
+        artwork_page = ArtworkPage(
+            title=form.cleaned_data['title'],
+            date=form.cleaned_data['date'],
+            intro=form.cleaned_data['intro'],
+            prompt=form.cleaned_data['prompt'],
+            copyright=form.cleaned_data['copyright'],
+            explanation=form.cleaned_data['explanation'],
+            ai_used=form.cleaned_data['ai_used'],
+            specify_ai_if_other=form.cleaned_data['specify_ai_if_other'],
+        )
+
+        # Add the new ArtworkPage instance to the site root
+        self.get_parent().add_child(instance=artwork_page)
+
+        # Create a new ArtworkPageGalleryImage instance for each image in the 'images' form field
+        for image in form.cleaned_data['images']:
+            ArtworkPageGalleryImage.objects.create(
+                page=artwork_page,
+                image=image,
+            )
+
+        # Call the superclass's process_form_submission method to handle any additional form processing
+        return super().process_form_submission(form)
+```
+
+In this code, `ArtworkFormField` is a new model that represents a form field. It has a `ParentalKey` to the `ArtworkPageFormPage` model, which means each `ArtworkPageFormPage` can have multiple `ArtworkFormField` instances associated with it.
+
+`ArtworkPageFormPage` is a new model that represents a form for creating `ArtworkPage` instances. It has a `process_form_submission` method that is called when the form is submitted. This method creates a new `ArtworkPage` instance and a new `ArtworkPageGalleryImage` instance for each image in the 'images' form field.
+
+The `template` attribute specifies the template that should be used to render the form. You would need to create this template in your templates directory.
+
+Please note that this is a basic implementation and you might need to adjust it according to your needs, especially the handling of the image uploads.
+
+==============================================================================================================
+
+What does the AbstractForm class do?
+
+
+The `AbstractForm` class in Wagtail is a base class for creating form pages. It provides a foundation for creating form pages in Wagtail, including form field definitions, form handling methods, and admin interface configurations.
+
+The `AbstractForm` class inherits from the `Page` class, which means form pages are also pages and can be created and managed in the Wagtail admin interface like any other page.
+
+The `AbstractForm` class includes methods for handling form submissions, such as `process_form_submission`, which is called when a form is submitted. This method can be overridden in subclasses to provide custom form handling logic.
+
+It also includes a `form_fields` attribute, which is a reverse relation to the `AbstractFormField` model. This allows you to define the fields of your form in the Wagtail admin interface.
+
+Here's a simplified version of the `AbstractForm` class:
+
+```python
+class AbstractForm(Page):
+    form_fields = ParentalKey('AbstractFormField', on_delete=models.CASCADE, related_name='form_fields')
+
+    def process_form_submission(self, form):
+        # This method is called when form is submitted
+        pass
+```
+
+In this code, `form_fields` is a `ParentalKey` to the `AbstractFormField` model, which allows you to define the fields of your form. The `process_form_submission` method is a placeholder that you can override in your subclasses to provide custom form handling logic.
+
+==============================================================================================================
+
+So, from the snippet that you gave me to create the ArtworkPageFormPage() Abstract Form, how would I render that into my HTML template?
+
+To render the `ArtworkPageFormPage` form in your HTML template, you would use Django's form rendering syntax. Here's a basic example of how you might do this in your template:
+
+```djangotemplate
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ page.form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+```
+
+In this code:
+
+- `{% extends "base.html" %}` specifies that this template extends your base template.
+- `{% block content %}` and `{% endblock %}` define a block where the content of this template will be inserted into the base template.
+- `<h1>{{ page.title }}</h1>` displays the title of the page.
+- `<form method="post">` and `</form>` define a form that submits data via POST.
+- `{% csrf_token %}` adds a CSRF token to the form for security.
+- `{{ page.form.as_p }}` renders the form as a series of paragraphs, with each form field enclosed in a `<p>` element.
+- `<button type="submit">Submit</button>` adds a submit button to the form.
+
+This is a very basic example. You might want to customize the form rendering to match the style of your site, add error handling, etc. You can do this by manually rendering each form field, adding CSS classes, and so on.
+
+==============================================================================================================
+
+Nevermind, let's start from scratch. Create a very simple form for creating instances of the ArtworkPage model. In the highlighted code, I selected the ArtworkPage model. So, look at its fields, and tell me how to create the simplest form possible to be able to create instances of the ArtworkPage model.
+
+To create a simple form for creating instances of the `ArtworkPage` model, you can use Django's built-in `ModelForm`. This form will automatically generate form fields that correspond to the fields of the `ArtworkPage` model.
+
+Here's a step-by-step plan:
+
+1. Import the necessary modules from Django.
+2. Define a new form class that inherits from `forms.ModelForm`.
+3. In this new form class, set the `model` attribute to `ArtworkPage`.
+4. Set the `fields` attribute to a list of the names of the fields you want to include in the form. In this case, we'll include all fields of the `ArtworkPage` model.
+
+Here's the code:
+
+```python
+from django import forms
+from dashboard_app.models import ArtworkPage
+
+class ArtworkPageForm(forms.ModelForm):
+    class Meta:
+        model = ArtworkPage
+        fields = ['date', 'intro', 'prompt', 'copyright', 'explanation', 'ai_used', 'specify_ai_if_other']
+```
+
+This form can be used in a Django view to handle the creation of `ArtworkPage` instances. The form will automatically validate the input data and create a new `ArtworkPage` instance when the form is valid.
+
+==============================================================================================================
+
 

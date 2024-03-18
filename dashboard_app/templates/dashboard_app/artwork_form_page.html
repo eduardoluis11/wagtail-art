@@ -1,0 +1,13 @@
+<!-- Form that lets you create a new Artwork Page, that is, that lets you register a new Stable Diffusion Image.  -->
+
+{% extends "dashboard-layout.html" %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ page.form }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
