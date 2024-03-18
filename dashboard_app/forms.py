@@ -16,6 +16,70 @@ from django.db import models
 # This will import the specific models that I'll need to use in my forms
 # from .models import ArtworkPage
 
+""" Form for Adding a New Product.
+
+All the basic data for each product will be stored in this model.
+
+Then, in the model called "Products of an Order," I will call the FK with the product selected by the user and add as
+additional fields the selected quantity (for example, "3" if they want to buy 3 containers) and the order to which
+that quantity of products belongs (as a FK). I could also include the subtotal. But for now, the only thing I need
+in the Product Model of a Purchase Order is the quantity of products ordered in a purchase order.
+
+#### Fields:
+- Product Name*
+- Unit Price. (THIS DOES NOT GO HERE, and it is REDUNDANT. I already have about 3 prices here).
+- SKU (Stock Keeping Unit)* (40 characters).
+- Description* (text) (500 characters).
+- Unit of Measurement* (Piece, service, box) -> I'll send you the catalog.
+- Category* -> CRUD. Apparently, the user can write whatever they want here. I'll put it as Varchar, 100 characters.
+- List Price* (100 EUR) (I think "EUR" stands for "euros") (14 digits with 2 decimals).
+- Purchase Price* (percentage defined by supplier but modifiable) (one to many) (FK).
+- Sale Price* (same as list) 100 EUR. There is no difference between this and the "List Price." They must be exactly
+the same price. In the future, this field will be modified to make them different.
+- Main Image* PNG. (ImageField).
+- Technical Sheet (File). (FileField).
+
+* Secondary Images: I will create a new model to assign multiple secondary images to each product, as a product can
+have several secondary images.
+
+There is only one supplier that offers a volume discount. The rest have a price per product. Normally it's 28% - 10% (35.2%).
+
+I think of creating a model called "Supplier Purchase Prices," and I will take the records from that model as FK in the
+"Purchase Price" field in the Product model. That model I will create will have only and exclusively the purchase prices from
+the suppliers. I don't think it will be a percentage, but rather a normal price, only that the discount from that specific
+supplier is already applied to it.
+
+The SKU field must be unique for each product. There cannot be 2 products with the same SKU. Therefore, I put a restriction
+on it with the "unique" keyword.
+
+To prevent any confusions, I will call "Product From the Supplier" to the "Supllier Purchase Prices" model. In reality,
+that's what that model is: it stores the products offered by that supplier.
+"""
+
+
+class AddProductForm(forms.Form):
+    product_name = forms.CharField(max_length=200)  # Product Name
+
+    sku_code = forms.CharField(max_length=40)  # SKU (Stock Keeping Unit) Code
+    description = forms.CharField(max_length=500)  # Description
+    unit_of_measurement = forms.CharField(max_length=20)  # Unit of Measurement
+    category = forms.CharField(max_length=100)    # Category
+    list_price = forms.DecimalField(max_digits=14, decimal_places=2)  # List Price
+
+    # # Purchase Price (defined by supplier but modifiable)
+    # purchase_price = forms.ForeignKey('ProductFromTheSupplier', on_delete=models.CASCADE)
+
+    # # Sale Price (same as list price, initially)
+    # sale_price = forms.DecimalField(max_digits=14, decimal_places=2)  # Sale Price
+
+    # main_image = forms.ImageField(upload_to='products/main-images')    # Main Image
+    #
+    # # Technical Sheet (Optional)
+    # technical_sheet = forms.FileField(upload_to='products/technical-sheets', required=False)
+
+
+
+
 
 """ Form for adding a new Artwork made with stable diffusion to the Artwork Page model.
 
