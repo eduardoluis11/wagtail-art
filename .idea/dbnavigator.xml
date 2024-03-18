@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DBNavigator.Project.DDLFileAttachmentManager">
+    <mappings />
+    <preferences />
+  </component>
+  <component name="DBNavigator.Project.DataEditorManager">
+    <record-view-column-sorting-type value="BY_INDEX" />
+    <value-preview-text-wrapping value="true" />
+    <value-preview-pinned value="false" />
+  </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
@@ -11,8 +20,19 @@
       <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="ca15e921-4190-4789-9a82-b660b71c2fa9" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_artworkpage" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailimages_image" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_artworkpagegalleryimage" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

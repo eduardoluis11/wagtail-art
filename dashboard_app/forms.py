@@ -59,6 +59,9 @@ class AddArtworkForm(forms.Form):
     # This adds a short description for the Artwork
     intro = forms.CharField(max_length=250)
 
+    # This is the image itself. I WON'T USE A FORMSET YET.
+    image = forms.ImageField()
+
     # This will store the prompts used for creating the Artwork
     prompt = forms.CharField()
 
@@ -69,8 +72,8 @@ class AddArtworkForm(forms.Form):
     # Please, explain why this image has copyright content. OPTIONAL
     explanation = forms.CharField(required=False, label="Please, elaborate")
 
-    # # AI used to create the image. It needs to be a Dropdown Menu.
-    # ai_used = forms.CharField(max_length=100, choices=AI_CHOICES, default='Midjourney', label="AI used")
+    # AI used to create the image. It needs to be a Dropdown Menu.
+    ai_used = forms.ChoiceField(choices=AI_CHOICES, initial='Midjourney', label="AI used")
 
     # Specify the name of the AI if the AI selected is "Other" (OPTIONAL)
     specify_ai_if_other = forms.CharField(max_length=100, required=False, label="Specify AI if 'Other'")

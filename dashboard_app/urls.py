@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     # path('', views.index, name='index'),    # Página de inicio
 
-    # Page for Registering a New Artwork Page
+    # Page for Registering a New Artwork Page. DO NOT PUT A TRAILING SLASH.
     path('register-artwork', views.register_artwork, name='register_artwork'),
 
 ]
