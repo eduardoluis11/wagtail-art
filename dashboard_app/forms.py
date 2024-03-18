@@ -61,10 +61,10 @@ class AddArtworkForm(forms.Form):
 
     # This will store the prompts used for creating the Artwork
     prompt = forms.CharField()
-    #
-    # # Does the image have any form of copyright content?
-    # copyright = forms.CharField(max_length=3, choices=COPYRIGHT_CHOICES, default='No',
-    #                              verbose_name="Does it have copyright content?")
+
+    # Does the image have any form of copyright content?
+    copyright = forms.ChoiceField(choices=COPYRIGHT_CHOICES, initial='No',
+                                  label="Does it have copyright content?")
 
     # Please, explain why this image has copyright content. OPTIONAL
     explanation = forms.CharField(required=False, label="Please, elaborate")

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 # This imports my forms from forms.py
-from .forms import AddArtworkForm, FormularioRegistrarProductos
+from .forms import AddArtworkForm
 
 # Create your views here.
 
@@ -19,7 +19,7 @@ def register_artwork(request):
 
     main_form = AddArtworkForm()  # Form for Registering Artwork Pages
 
-    formulario_registrar_productos = FormularioRegistrarProductos()
+    # formulario_registrar_productos = FormularioRegistrarProductos()
 
     # # Formset para registrar una o varias Imágenes Secundarias
     # formset_imagenes_secundarias = FormsetImagenesSecundariasParaUnProducto()
@@ -169,6 +169,6 @@ def register_artwork(request):
         # Esto renderiza el Formulario de Registrar un Producto
         return render(request, 'dashboard_app/register-artwork.html', {
             "main_form": main_form,
-            "formulario_registrar_productos": formulario_registrar_productos,
+            # "formulario_registrar_productos": formulario_registrar_productos,
         })
 
