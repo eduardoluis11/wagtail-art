@@ -908,6 +908,54 @@ class ProductIndexPage(Page):
     ]
 
 
+""" Product Page. This is the "view" that renders the detailed page that displays the Product.
+
+To include the fields from AddProductForm, you need to replace the intro and body fields with the fields from 
+AddProductForm. 
+
+In this code, the intro and body fields are replaced with the fields from AddProductForm. The main_image field is a 
+ForeignKey to Wagtail's Image model, which allows you to select an image from the images uploaded via the Wagtail admin 
+interface. The content_panels list is updated to include panels for the new fields, which allows you to edit these 
+fields in the Wagtail admin interface. The ImageChooserPanel is used for the main_image field, which provides a 
+user-friendly interface for selecting an image.
+
+#### Fields:
+- Product Name*
+- Unit Price. (THIS DOES NOT GO HERE, and it is REDUNDANT. I already have about 3 prices here).
+- SKU (Stock Keeping Unit)* (40 characters).
+- Description* (text) (500 characters).
+- Unit of Measurement* (Piece, service, box) -> I'll send you the catalog.
+- Category* -> CRUD. Apparently, the user can write whatever they want here. I'll put it as Varchar, 100 characters.
+- List Price* (100 EUR) (I think "EUR" stands for "euros") (14 digits with 2 decimals).
+- Purchase Price* (percentage defined by supplier but modifiable) (one to many) (FK).
+- Sale Price* (same as list) 100 EUR. There is no difference between this and the "List Price." They must be exactly
+the same price. In the future, this field will be modified to make them different.
+- Main Image* PNG. (ImageField).
+- Technical Sheet (File). (FileField).
+"""
+
+
+class ProductPage(Page):
+    product_name = models.CharField(max_length=200)  # Product Name
+    sku_code = models.CharField(max_length=40)  # SKU (Stock Keeping Unit) Code
+    description = models.CharField(max_length=500)  # Description
+    unit_of_measurement = models.CharField(max_length=20)  # Unit of Measurement
+    category = models.CharField(max_length=100)    # Category
+    list_price = models.DecimalField(max_digits=14, decimal_places=2)  # List Price
+    # main_image = models.ForeignKey(
+    #     'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
+    # )  # Main Image
+
+    content_panels = Page.content_panels + [
+        FieldPanel('product_name'),
+        FieldPanel('sku_code'),
+        FieldPanel('description'),
+        FieldPanel('unit_of_measurement'),
+        FieldPanel('category'),
+        FieldPanel('list_price'),
+        # ImageChooserPanel('main_image'),
+    ]
+
 # """ Artwork Form Field from the Artowrk Form Page. This uses an Abstract Form.
 #
 # To create a form for creating ArtworkPage instances, you can use Wagtail's AbstractForm class. This class allows you to
