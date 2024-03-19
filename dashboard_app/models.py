@@ -596,6 +596,11 @@ Problem 1: Unresolved reference 'form' The error "Unresolved reference 'form'" i
 scope of the serve method. You are trying to call is_valid() on 'form', but 'form' is not defined or initialized 
 anywhere in the serve method. self.get_form(request.POST, page=self, user=request.user) is used to get the form instance 
 from the Wagtail admin panel. Then form.is_valid() is used to check if the form is valid.
+
+To redirect the user to the ProductIndexPage after creating a new ProductPage, you can use Django's HttpResponseRedirect 
+function with the URL of the ProductIndexPage. You can get the URL of the ProductIndexPage using the get_url method.  
+To display a confirmation message, you can use Django's messages framework. You can add a success message to the 
+messages framework using the messages.success function right before the redirect.
 """
 
 
@@ -690,16 +695,26 @@ class ProductRegistrationPage(AbstractEmailForm):
                 # You might need to fetch the parent page instance from the database
                 parent_page.add_child(instance=product_page)
 
+                # Add a success confirmation message to the messages framework
+                messages.success(request, "A new product was successfully created.")
+
+                # Redirect to the ProductIndexPage after form submission
+                return HttpResponseRedirect(parent_page.get_url())
+
                 # Redirect to the same page after form submission:
                 # return HttpResponseRedirect(reverse('product_registration_page'))
 
-                # This renders the page with the form
-                context = self.get_context(request)
-
-                # This should send the Form via a Jinja variable to the template AFTER submitting the form
-                context['main_form'] = main_form
-                return render(request, 'dashboard_app/products/product_registration_page.html', context)
+                # # This renders the page with the form
+                # context = self.get_context(request)
+                #
+                # # This should send the Form via a Jinja variable to the template AFTER submitting the form
+                # context['main_form'] = main_form
+                # return render(request, 'dashboard_app/products/product_registration_page.html', context)
             else:
+
+                # Add error messages to the messages library
+                messages.error(request, form.errors)
+
                 # If the form is invalid, render the form with error messages
                 return self.render_landing_page(request, main_form, *args, **kwargs)
         else:
