@@ -54,6 +54,9 @@ on it with the "unique" keyword.
 
 To prevent any confusions, I will call "Product From the Supplier" to the "Supllier Purchase Prices" model. In reality,
 that's what that model is: it stores the products offered by that supplier.
+
+Remember that these are form fields, NOT MODELS. I won't specify the folder on my "media" folder where I'll upload
+these images nor files in here. I'll do that in the models.py file.
 """
 
 
@@ -73,8 +76,10 @@ class AddProductForm(forms.Form):
     # sale_price = forms.DecimalField(max_digits=14, decimal_places=2)  # Sale Price
 
     # main_image = forms.ImageField(upload_to='products/main-images')    # Main Image
-    #
-    # # Technical Sheet (Optional)
+    main_image = forms.ImageField()    # Main Image
+
+    # Technical Sheet (Optional)
+    technical_sheet = forms.FileField(required=False)
     # technical_sheet = forms.FileField(upload_to='products/technical-sheets', required=False)
 
 
