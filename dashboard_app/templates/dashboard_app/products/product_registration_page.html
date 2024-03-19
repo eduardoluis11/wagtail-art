@@ -51,7 +51,7 @@
           The "form.as_p" works, but it doesn't render the form as I want it to be.
           -->
         {% if form %}
-            {{ form }}
+            {{ form.as_p }}
         {% else %}
             <p>ERROR: No form</p>
         {% endif %}

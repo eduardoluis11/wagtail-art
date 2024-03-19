@@ -575,6 +575,27 @@ was causing my form fields to not render was that "context" had to have this not
 In the ProductRegistrationPage model, InlinePanel is used to add the custom image and file fields to the Wagtail admin 
 interface. The get_form_fields method is overridden to include these custom fields in the form. The 
 process_form_submission method is also overridden to handle the file upload when the form is submitted.
+
+To create a new instance of ProductPage when the form in ProductRegistrationPage is submitted, you can modify the 
+serve() function in the ProductRegistrationPage model. You need to import the ProductPage model at the top of your 
+models.py file and then create a new instance of ProductPage inside the if main_form.is_valid(): block in the serve() 
+function.
+
+Once a new instance of ProductPage is created, it will be visible in the Wagtail Admin Panel. You will be able to see 
+the new page under the parent page in the page tree, and you can click on it to edit its fields.
+
+ProductIndexPage.objects.get(slug='product-index-page') fetches the ProductIndexPage instance with the slug 
+'product-index-page'. You should replace 'product-index-page' with the actual slug of your parent page. If you don't 
+know the slug, you can use another unique field to fetch the parent page. If there's only one ProductIndexPage, you can 
+use ProductIndexPage.objects.first() to fetch it.
+
+To validate the form created in the Wagtail admin panel, you need to use the get_form method provided by the 
+AbstractEmailForm class, which ProductRegistrationPage inherits from. This method returns a Django form instance 
+populated with POST data. You can then call is_valid() on this instance to check if the form is valid.  
+Problem 1: Unresolved reference 'form' The error "Unresolved reference 'form'" is because 'form' is not defined in the 
+scope of the serve method. You are trying to call is_valid() on 'form', but 'form' is not defined or initialized 
+anywhere in the serve method. self.get_form(request.POST, page=self, user=request.user) is used to get the form instance 
+from the Wagtail admin panel. Then form.is_valid() is used to check if the form is valid.
 """
 
 
@@ -638,19 +659,44 @@ class ProductRegistrationPage(AbstractEmailForm):
 
             # if form.is_valid() and formset.is_valid():
 
+
+            # Get the Form that was created from the Wagtail admin panel
+            form = self.get_form(request.POST, page=self, user=request.user)
+
             # If the form is sanitized and valid
-            if main_form.is_valid():
+            # if main_form.is_valid():
+            if form.is_valid():
 
                 # Handle the form/formset submission
                 # This is where you put the logic that was in your Django view
-                # ...
+
+                # Create a new instance of a ProductPage with a Query Set
+                product_page = ProductPage(
+                    title=form.cleaned_data['product_name'],
+                    product_name=form.cleaned_data['product_name'],
+                    sku_code=form.cleaned_data['sku_code'],
+                    description=form.cleaned_data['description'],
+                    unit_of_measurement=form.cleaned_data['unit_of_measurement'],
+                    category=form.cleaned_data['category'],
+                    list_price=form.cleaned_data['list_price'],
+
+                )
+
+                # Fetch the parent page instance from the database
+                parent_page = ProductIndexPage.objects.get(
+                    slug='list-of-products')  # replace 'product-index-page' with the actual slug of the parent page
+
+                # Add the parent page here, replace `parent_page` with the actual parent page instance
+                # You might need to fetch the parent page instance from the database
+                parent_page.add_child(instance=product_page)
 
                 # Redirect to the same page after form submission:
                 # return HttpResponseRedirect(reverse('product_registration_page'))
+
                 # This renders the page with the form
                 context = self.get_context(request)
 
-                # This should send the Form via a Jinja variable to the template
+                # This should send the Form via a Jinja variable to the template AFTER submitting the form
                 context['main_form'] = main_form
                 return render(request, 'dashboard_app/products/product_registration_page.html', context)
             else:
