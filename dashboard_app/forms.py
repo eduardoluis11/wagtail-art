@@ -61,13 +61,13 @@ these images nor files in here. I'll do that in the models.py file.
 
 
 class AddProductForm(forms.Form):
-    product_name = forms.CharField(max_length=200)  # Product Name
-
-    sku_code = forms.CharField(max_length=40)  # SKU (Stock Keeping Unit) Code
-    description = forms.CharField(max_length=500)  # Description
-    unit_of_measurement = forms.CharField(max_length=20)  # Unit of Measurement
-    category = forms.CharField(max_length=100)    # Category
-    list_price = forms.DecimalField(max_digits=14, decimal_places=2)  # List Price
+    # product_name = forms.CharField(max_length=200)  # Product Name
+    #
+    # sku_code = forms.CharField(max_length=40)  # SKU (Stock Keeping Unit) Code
+    # description = forms.CharField(max_length=500)  # Description
+    # unit_of_measurement = forms.CharField(max_length=20)  # Unit of Measurement
+    # category = forms.CharField(max_length=100)    # Category
+    # list_price = forms.DecimalField(max_digits=14, decimal_places=2)  # List Price
 
     # # Purchase Price (defined by supplier but modifiable)
     # purchase_price = forms.ForeignKey('ProductFromTheSupplier', on_delete=models.CASCADE)
