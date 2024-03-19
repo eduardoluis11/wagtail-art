@@ -43,11 +43,20 @@
 
         {#        {% if formulario_registrar_productos %}#}
         {#            {{ formulario_registrar_productos }}#}
-                {% if form %}
-                    {{ form }}
-                {% else %}
-                    <p>ERROR: No form</p>
-                {% endif %}
+
+        <!-- This renders the Form that I created from the Wagtail Admin Panel.
+
+          If the form doesn't exist, it will display an error message.
+
+          The "form.as_p" works, but it doesn't render the form as I want it to be.
+          -->
+        {% if form %}
+            {{ form }}
+        {% else %}
+            <p>ERROR: No form</p>
+        {% endif %}
+
+        <!-- This renders the forms from my forms.py file. DELETE LATER. -->
         {{ main_form }}
         <button type="submit">Submit</button>
     </form>

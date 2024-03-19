@@ -1,5 +1,10 @@
+from django import forms
 from django.db import models
 from wagtail.contrib.forms.panels import FormSubmissionsPanel
+
+# This should let me modify the form fields in the Wagtail admin panel in the "Field Type" menu.
+from wagtail.contrib.forms.models import FORM_FIELD_CHOICES
+
 
 # Create your models here.
 
@@ -497,6 +502,59 @@ class ArtworkPageGalleryImage(Orderable):
     ]
 
 
+""" Generic ImageField Form Field for Wagtail forms.
+
+Wagtail's built-in form builder (AbstractEmailForm) does not support file uploads out of the box. However, you can 
+extend it to add this functionality. Here's a step-by-step guide on how to do this:  
+
+1) Create a new model for the file upload field. This model should inherit from AbstractFormField and have a ForeignKey 
+to the ProductRegistrationPage model. It should also have a FileField or ImageField for the file upload.  
+
+2) Override the get_form method in the ProductRegistrationPage model to add the file upload field to the form.  
+
+3) Override the process_form_submission method in the ProductRegistrationPage model to handle the file upload when the 
+form is submitted. 
+
+CustomImageField and CustomFileField are new models that represent an image upload field and a file upload field 
+respectively. They have a ForeignKey to the ProductRegistrationPage model, which means each ProductRegistrationPage can 
+have multiple CustomImageField and CustomFileField instances associated with it. The image and file fields are 
+ImageField and FileField respectively, which allow for file upload.
+"""
+
+
+class CustomImageField(AbstractFormField):
+    page = ParentalKey('ProductRegistrationPage', on_delete=models.CASCADE, related_name='custom_image_field')
+    image = models.ImageField(upload_to='uploads/', blank=True)
+
+    # panels = AbstractFormField.panels + [
+    #     FieldPanel('image'),
+    # ]
+
+    @property
+    def field(self):
+        return forms.ImageField(required=self.required)
+
+    @classmethod
+    def get_field_choices(cls):
+        return super().get_field_choices() + [('image', 'Image')]
+
+
+""" Generic FileField Form Field for Wagtail forms.
+
+This class is almost the exact same as the CustomImageField class, but with a FileField instead of an ImageField. Read
+the documentation for the CustomImageField class for more information.
+"""
+
+
+class CustomFileField(AbstractFormField):
+    page = ParentalKey('ProductRegistrationPage', on_delete=models.CASCADE, related_name='custom_file_field')
+    file = models.FileField(upload_to='uploads/', blank=True)
+
+    panels = AbstractFormField.panels + [
+        FieldPanel('file'),
+    ]
+
+
 """ In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The
 `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic
 is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is
@@ -511,7 +569,12 @@ in the Wagtail admin interface.
 
 Besides the fact that I was putting "models.field_type" instead of "forms.field_type" in forms.py, the other error that 
 was causing my form fields to not render was that "context" had to have this notation:
+
     context['jinja_variable_with_form'] = jinja_variable_with_form
+    
+In the ProductRegistrationPage model, InlinePanel is used to add the custom image and file fields to the Wagtail admin 
+interface. The get_form_fields method is overridden to include these custom fields in the form. The 
+process_form_submission method is also overridden to handle the file upload when the form is submitted.
 """
 
 
@@ -522,7 +585,12 @@ class ProductRegistrationPage(AbstractEmailForm):
     content_panels = AbstractEmailForm.content_panels + [
         FormSubmissionsPanel(),
         FieldPanel("intro"),
+        # This adds most of the form fields to the Form that will be created from the Wagtail admin panel
         InlinePanel("form_fields", label="Form fields"),
+        # This adds the ImageField field to the Forms on the Wagtail Admin Panel
+        InlinePanel('custom_image_field', label="Custom Image Field"),
+        # This adds the FileField field to the Forms on the Wagtail Admin Panel
+        InlinePanel('custom_file_field', label="Custom File Field"),
         FieldPanel("thank_you_text"),
         MultiFieldPanel([
             FieldRowPanel([
@@ -532,6 +600,23 @@ class ProductRegistrationPage(AbstractEmailForm):
             FieldPanel("subject"),
         ], "Email"),
     ]
+
+    # This will let me render the ImageField and FileField in the Wagtail admin panel
+    def get_form_fields(self):
+        return list(self.form_fields.all()) + list(self.custom_image_field.all()) + list(self.custom_file_field.all())
+
+    # This will let me process the files uploaded via the ImageField and FileField fields when submitting the form
+    def process_form_submission(self, form):
+        for field in self.custom_image_field.all():
+            field.image = form.cleaned_data.get(field.clean_name)
+            field.save()
+
+        for field in self.custom_file_field.all():
+            field.file = form.cleaned_data.get(field.clean_name)
+            field.save()
+
+        super().process_form_submission(form)
+
 
     # Form for creating a new Artwork Page
     main_form = AddProductForm()
