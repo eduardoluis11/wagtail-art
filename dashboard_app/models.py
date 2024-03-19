@@ -1,4 +1,5 @@
 from django.db import models
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
 
 # Create your models here.
 
@@ -224,7 +225,7 @@ from django.db import models
 # pattern to my URLS file.
 from wagtail.models import Page
 from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, FieldRowPanel
 
 # This will let me add a search index to my page type. I will need to add a search_fields attribute to my page type
 # class, and then run a migration to create the search index.
@@ -519,12 +520,24 @@ class ProductRegistrationPage(AbstractEmailForm):
     thank_you_text = models.CharField(max_length=255, blank=True)
 
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro'),
-        FieldPanel('thank_you_text'),
+        FormSubmissionsPanel(),
+        FieldPanel("intro"),
+        InlinePanel("form_fields", label="Form fields"),
+        FieldPanel("thank_you_text"),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel("from_address"),
+                FieldPanel("to_address"),
+            ]),
+            FieldPanel("subject"),
+        ], "Email"),
     ]
 
     # Form for creating a new Artwork Page
     main_form = AddProductForm()
+
+    # Form made from the Wagtail admin panel
+    # form = get_form()
 
     # Serve() function. This will execute traditional Django code. This will send the form and detect if the user
     # made a POST request (sent the form).
@@ -553,11 +566,11 @@ class ProductRegistrationPage(AbstractEmailForm):
                 context = self.get_context(request)
 
                 # This should send the Form via a Jinja variable to the template
-                context['form'] = form
+                context['main_form'] = main_form
                 return render(request, 'dashboard_app/products/product_registration_page.html', context)
             else:
                 # If the form is invalid, render the form with error messages
-                return self.render_landing_page(request, form, *args, **kwargs)
+                return self.render_landing_page(request, main_form, *args, **kwargs)
         else:
 
             # If the user first enters the page, this will render the Form
@@ -572,23 +585,36 @@ class ProductRegistrationPage(AbstractEmailForm):
         # This should send the Form via a Jinja variable to the template. The "main_form" is the Jinja variable that
         # contains the form. Both the word inside the brackets and the word after the equal sign must be the same.
         context['main_form'] = main_form
-
+        context['form'] = self.get_form()  # Pass the form to the template context
         # context['formset'] = formset
 
         # This renders the page with the form
         return render(request, 'dashboard_app/products/product_registration_page.html', context)
 
-# """ Form fields.
-#
-# I will add the Page with the Form for creating Artwork Pages model as its FK, since this form field is going to be used
-# to render the fields for the front-end Form for creating Artwork Pages.
-# """
-#
-#
-# class FormField(AbstractFormField):
-#     page = models.ForeignKey('ArtworkRegistrationPage', on_delete=models.CASCADE)
-#
-#
+
+""" Form fields.
+
+I need this in order to import the "form_fields" keyword for any Page model that I want to use the form fields in.
+
+A Paarental Key is pretty much the same as an FK, but for Wagtail.
+
+I need this in order to render in the Wagtail admin panel the different fields to create from  the admin panel my 
+form. I'm currently using this for the Product Registration Page model.
+
+I will add the Page with the Form for creating Artwork Pages model as its FK, since this form field is going to be used
+to render the fields for the front-end Form for creating Artwork Pages.
+"""
+
+
+class FormField(AbstractFormField):
+    # page = models.ForeignKey('ArtworkRegistrationPage', on_delete=models.CASCADE)
+    page = ParentalKey(
+        "ProductRegistrationPage",
+        on_delete=models.CASCADE,
+        related_name="form_fields",
+    )
+
+
 # """ In this code, `ProductRegistrationPage` is a new `Page` model that represents the product registration page. The
 # `serve` method is overridden to handle the form submission. If the form is valid, the form handling logic
 # is executed and the user is redirected to the same page. If the form is invalid, the form with error messages is

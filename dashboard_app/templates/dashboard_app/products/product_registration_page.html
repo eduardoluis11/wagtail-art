@@ -1,5 +1,9 @@
 {% extends "dashboard-layout.html" %}
 
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-formpage{% endblock %}
+
 {% block content %}
     <h1>{{ page.title }}</h1>
 
@@ -39,11 +43,11 @@
 
         {#        {% if formulario_registrar_productos %}#}
         {#            {{ formulario_registrar_productos }}#}
-        {#        {% if main_form %}#}
-        {#            {{ main_form }}#}
-        {#        {% else %}#}
-        {#            <p>ERROR: No form</p>#}
-        {#        {% endif %}#}
+                {% if form %}
+                    {{ form }}
+                {% else %}
+                    <p>ERROR: No form</p>
+                {% endif %}
         {{ main_form }}
         <button type="submit">Submit</button>
     </form>
