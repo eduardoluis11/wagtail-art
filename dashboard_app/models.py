@@ -880,28 +880,28 @@ display navigation links.
 class ProductIndexPage(Page):
     intro = RichTextField(blank=True)
 
-    # # Add the get_context method
-    # def get_context(self, request):
-    #     # Update context to include only published posts, ordered by reverse-chron
-    #     context = super().get_context(request)
-    #     productpages = self.get_children().live().order_by('-first_published_at')
-    #
-    #     # Create a Paginator object to add Pagination. This way, if there are more than 10 products, the page will
-    #     # display only 10 products at a time, and the user can navigate to the next page to see the rest of the entries.
-    #     paginator = Paginator(productpages, 10)  # Show 10 blog entries per page
-    #
-    #     # Get the page number from the request
-    #     page = request.GET.get('page')
-    #
-    #     # Get the Page object for the current page
-    #     productpages = paginator.get_page(page)
-    #
-    #     # Add the Page object to the context. "productpages" is like the Jinja variable that contains all of the blog
-    #     # entries from the Query Set.
-    #     context['productpages'] = productpages
-    #
-    #     # This is like the "return render request" from he traditional Django views.
-    #     return context
+    # Add the get_context method
+    def get_context(self, request):
+        # Update context to include only published posts, ordered by reverse-chron
+        context = super().get_context(request)
+        productpages = self.get_children().live().order_by('-first_published_at')
+
+        # Create a Paginator object to add Pagination. This way, if there are more than 10 products, the page will
+        # display only 10 products at a time, and the user can navigate to the next page to see the rest of the entries.
+        paginator = Paginator(productpages, 10)  # Show 10 blog entries per page
+
+        # Get the page number from the request
+        page = request.GET.get('page')
+
+        # Get the Page object for the current page
+        productpages = paginator.get_page(page)
+
+        # Add the Page object to the context. "productpages" is like the Jinja variable that contains all of the blog
+        # entries from the Query Set.
+        context['productpages'] = productpages
+
+        # This is like the "return render request" from he traditional Django views.
+        return context
 
     content_panels = Page.content_panels + [
         FieldPanel('intro'),
