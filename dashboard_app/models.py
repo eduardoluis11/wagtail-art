@@ -717,25 +717,25 @@ class ProductRegistrationPage(AbstractEmailForm):
 
                 # If the form is invalid, render the form with error messages
                 return self.render_landing_page(request, main_form, *args, **kwargs)
-        else:
 
-            # If the user first enters the page, this will render the Form
+        # If the user first enters the page, this will render the Form
+        else:
 
             # Form for creating a new Artwork Page
             main_form = AddProductForm()
 
             # formset = FormsetImagenesSecundariasParaUnProducto()
 
-        context = self.get_context(request)
+            context = self.get_context(request)
 
-        # This should send the Form via a Jinja variable to the template. The "main_form" is the Jinja variable that
-        # contains the form. Both the word inside the brackets and the word after the equal sign must be the same.
-        context['main_form'] = main_form
-        context['form'] = self.get_form()  # Pass the form to the template context
-        # context['formset'] = formset
+            # This should send the Form via a Jinja variable to the template. The "main_form" is the Jinja variable that
+            # contains the form. Both the word inside the brackets and the word after the equal sign must be the same.
+            context['main_form'] = main_form
+            context['form'] = self.get_form()  # Pass the form to the template context
+            # context['formset'] = formset
 
-        # This renders the page with the form
-        return render(request, 'dashboard_app/products/product_registration_page.html', context)
+            # This renders the page with the form
+            return render(request, 'dashboard_app/products/product_registration_page.html', context)
 
 
 """ Form fields.

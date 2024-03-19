@@ -1,17 +1,30 @@
-{% extends "base.html" %}
+{% extends "dashboard-layout.html" %}
 
 {% load wagtailcore_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
+
+    <!-- Display the Product's Title -->
     <h1>{{ page.title }}</h1>
+
+    <!-- SKU Code -->
+    <p><b>SKU:</b></p>
+    <p>{{ page.sku_code }}</p>
+
+    <!-- Product Price -->
+    <p><b>Price:</b></p>
+    <p>${{ page.list_price }}</p>
+
+
     <p class="meta">{{ page.date }}</p>
 
     <div class="intro">{{ page.intro }}</div>
 
     {{ page.body|richtext }}
 
-    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    <!-- Add a link to the parent page (to go back to the previous page) -->
+    <p><a href="{{ page.get_parent.url }}">Return to Dashboard</a></p>
 
 {% endblock %}
