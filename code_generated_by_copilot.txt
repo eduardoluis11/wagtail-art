@@ -2029,4 +2029,31 @@ This code saves the `ProductPage` instance before creating the `ProductPageGalle
 
 ==============================================================================================================
 
+Modify the selected Wagtail page so that it can get the "list-of-artworks" page from this snippet: " artwork_index_page = ArtworkIndexPage.objects.get(slug='list-of-artworks')
+# Pass it to the template context
+return render(request, 'mysite/templates/includes/dashboard-header.html', {'artwork_index_page': artwork_index_page})".
+
+To modify the `DashboardIndexPage` to get the `ArtworkIndexPage` with the slug 'list-of-artworks', you need to override the `get_context` method. This method is used to pass additional context variables to the template. Here's how you can do it:
+
+```python
+from dashboard_app.models import ArtworkIndexPage
+
+class DashboardIndexPage(Page):
+    intro = RichTextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro')
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['artwork_index_page'] = ArtworkIndexPage.objects.get(slug='list-of-artworks')
+        return context
+```
+
+In this code, the `get_context` method fetches the `ArtworkIndexPage` instance with the slug 'list-of-artworks' and adds it to the context dictionary under the key 'artwork_index_page'. This allows you to access this page instance in your template using the variable `{{ artwork_index_page }}`.
+
+==============================================================================================================
+
+
 

@@ -317,9 +317,19 @@ class DashboardIndexPage(Page):
         FieldPanel('intro')
     ]
 
+    # This correctly sends the URL from that selected slug / URL to the template as a Jinja variable. However, this
+    # would only work if I copied and pasted the Side Navbar in every single Dashboard page. So, instead of using this,
+    # I will hard-code the URLs in the Side Navbar in the template, and I won't use this snippet.
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['artwork_index_page'] = ArtworkIndexPage.objects.get(slug='list-of-artworks')
+        return context
+
 
 """ Test page to insert as a Child Element of the Dashboard Index Page. DELETE LATER.
 """
+
+
 class DashboardPage(Page):
     date = models.DateField("Post date")
     intro = models.CharField(max_length=250)
