@@ -1,6 +1,7 @@
 {% extends "dashboard-layout.html" %}
 
-{% load wagtailcore_tags %}
+<!-- Load the wagtailimages_tags. This should load the Images from Wagtail to render the Product Images -->
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
@@ -8,6 +9,49 @@
 
     <!-- Display the Product's Title -->
     <h1>{{ page.title }}</h1>
+
+    <!-- This renders the images, if the Product has any.
+
+     I added a ton of line breaks (<br>) so that the images always look inside the "card"
+     that contains the text.
+
+     I changed the resizing rule. To avoid cropping, you can use the width or height rule
+     instead of fill. The width rule resizes the image to the specified width while maintaining
+     the original aspect ratio. The height rule does the same but with the specified height.
+     Please note that using width or height might result in images that are smaller or larger
+     than expected if their aspect ratio is significantly different from the 320x240 ratio. If
+     maintaining the exact dimensions is crucial, you might need to consider other solutions,
+     such as modifying the images themselves to fit the desired aspect ratio.
+
+     I need to use the variable "gallery_images_for_products" to access the images from the datatabase
+     for the selected Product.
+     -->
+    {% for item in page.gallery_images_for_products.all %}
+
+        <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
+         should appear to the left side of the screen.
+         -->
+        <div style="float: left; margin: 10px;">
+            {% image item.image width-320 %}
+            <p>{{ item.caption }}</p>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    {% endfor %}
 
     <!-- Product Name -->
     <p><b>Product Name:</b></p>
