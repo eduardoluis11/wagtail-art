@@ -607,6 +607,15 @@ messages framework using the messages.success function right before the redirect
 You need to create a new Image instance with the uploaded file and then assign this Image instance to the 
 ProductPageGalleryImage.image field. I will create a new Image instance from the Image Wagtail model with the uploaded 
 file and assigns this Image instance to the ProductPageGalleryImage.image field. 
+
+To be able to properly store the uploaded image in the database, you need to save the Query Set with the new Product 
+Page instance before saving the new record for the ProductPageGalleryImage model. Otherwise, no new records will be 
+added to the ProductPageGalleryImage model. So, the image wouldn't be saved for that specific Product.
+
+To upload an image for a Product, I first need to tke the image from the submitted form, and save it into Wagtail's
+Image model. Then, I need to create a new instance of ProductPageGalleryImage with the instance of the image from
+Wagtail's Image model. Finally, I need to save the ProductPage instance, and then save the ProductPageGalleryImage
+instance.
 """
 
 
@@ -692,20 +701,17 @@ class ProductRegistrationPage(AbstractEmailForm):
 
                 )
 
+                # # Save the product_page instance
+                # product_page.save()
+
                 # Create a new Wagtail Image instance with the uploaded file
                 uploaded_image = Image.objects.create(
                     title=main_form.cleaned_data['main_image'].name,
                     file=main_form.cleaned_data['main_image']
                 )
 
-                # Create a new instance of ProductPageGalleryImage by using an instance of an image from Wagtail's Image
-                # model.
-                # THIS ISN'T WORKING. I NEED TO FIX THIS.
-                gallery_image = ProductPageGalleryImage(
-                    page=product_page,
-                    image=uploaded_image,
-                    # ...
-                )
+
+
                 # gallery_image = ProductPageGalleryImage(
                 #     page=product_page,
                 #     image=main_form.cleaned_data['main_image'],
@@ -722,6 +728,21 @@ class ProductRegistrationPage(AbstractEmailForm):
                 # Add the parent page here, replace `parent_page` with the actual parent page instance
                 # You might need to fetch the parent page instance from the database
                 parent_page.add_child(instance=product_page)
+
+                # Create a new instance of ProductPageGalleryImage by using an instance of an image from Wagtail's Image
+                # model.
+                gallery_image = ProductPageGalleryImage(
+                    page=product_page,
+                    image=uploaded_image,
+                    # ...
+                )
+
+                # Save the product_page instance. THIS SHOULD BE DONE BEFORE SAVING THE GALLERY IMAGE INSTANCE.
+                # OTHERWISE, NO NEW RECORDS WILL BE ADDED TO THE ProductPageGalleryImage Model!
+                product_page.save()
+
+                # Save the gallery image instance. THIS SHOULD BE DONE AFTER SAVING THE INSTANCE OF THE PRODUCT PAGE.
+                gallery_image.save()
 
                 # Add a success confirmation message to the messages framework
                 messages.success(request, "A new product was successfully created.")

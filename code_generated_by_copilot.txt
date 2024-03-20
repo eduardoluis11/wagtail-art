@@ -1967,3 +1967,66 @@ This code creates a new `Image` instance with the uploaded file and assigns this
 
 ==============================================================================================================
 
+/fix Awesome, the uploaded image is correctly being uploaded into Wagtail's Image model. However, the image is still not being uploaded into the ProductPageGalleryImage model. That is, there's something wrong with the snippet that I'm currently selecting. What's wrong? Why aren't any new records being created when I submit my front-end form for creating Product Pages?
+
+**Problem 1: Saving the `ProductPageGalleryImage` instance before `ProductPage` instance**
+
+The error is occurring because you're trying to create a `ProductPageGalleryImage` instance before the `ProductPage` instance is saved. In your code, you're assigning `product_page` to the `page` attribute of `ProductPageGalleryImage`. However, at this point, `product_page` is not yet saved in the database, so it doesn't have a primary key.
+
+To fix this, you need to save the `ProductPage` instance before creating the `ProductPageGalleryImage` instance.
+
+Here's how you can modify the code:
+
+Before:
+```python
+# Create a new instance of a ProductPage with a Query Set
+product_page = ProductPage(
+    # ...
+)
+
+# Create a new Wagtail Image instance with the uploaded file
+uploaded_image = Image.objects.create(
+    title=main_form.cleaned_data['main_image'].name,
+    file=main_form.cleaned_data['main_image']
+)
+
+# Create a new instance of ProductPageGalleryImage
+gallery_image = ProductPageGalleryImage(
+    page=product_page,
+    image=uploaded_image,
+    # ...
+)
+```
+
+After:
+```python
+# Create a new instance of a ProductPage with a Query Set
+product_page = ProductPage(
+    # ...
+)
+
+# Save the product_page instance
+product_page.save()
+
+# Create a new Wagtail Image instance with the uploaded file
+uploaded_image = Image.objects.create(
+    title=main_form.cleaned_data['main_image'].name,
+    file=main_form.cleaned_data['main_image']
+)
+
+# Create a new instance of ProductPageGalleryImage
+gallery_image = ProductPageGalleryImage(
+    page=product_page,
+    image=uploaded_image,
+    # ...
+)
+
+# Save the gallery image instance
+gallery_image.save()
+```
+
+This code saves the `ProductPage` instance before creating the `ProductPageGalleryImage` instance, ensuring that the `ProductPage` instance has a primary key that can be assigned to the `page` attribute of the `ProductPageGalleryImage` instance.
+
+==============================================================================================================
+
+
