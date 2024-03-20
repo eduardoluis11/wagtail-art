@@ -1923,3 +1923,47 @@ This `InlinePanel` allows `BlogPageGalleryImage` instances to be created and edi
 
 ==============================================================================================================
 
+/fix I tried using that code that you gave me, but, when I tried to submit the form, I got this Django error message: " File "C:\Users\Eduar\Envs\wagtail-art\Lib\site-packages\django\db\models\base.py", line 543, in init _setattr(self, field.name, rel_obj) File "C:\Users\Eduar\Envs\wagtail-art\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 284, in set raise ValueError( ValueError: Cannot assign "<InMemoryUploadedFile: Anime Anthropomorphic Fox FAVORITO.jpg (image/jpeg)>": "ProductPageGalleryImage.image" must be a "Image" instance. [20/Mar/2024 13:35:31] "POST /dashboard/product-registration-page/ HTTP/1.1" 500 103001". The error message was highlighting the line of code that I'm currently highlighting. It seems that the serve() function of my ProductRegistrationPage isn't accepting the format of the image as it's being uploaded. Could you help me solve this bug?
+
+**Problem 1: Incorrect assignment of uploaded file to ImageField**
+
+The error message "Cannot assign "<InMemoryUploadedFile: Anime Anthropomorphic Fox FAVORITO.jpg (image/jpeg)>": "ProductPageGalleryImage.image" must be a "Image" instance." is indicating that the uploaded file is being directly assigned to the `ProductPageGalleryImage.image` field, which expects an instance of Wagtail's `Image` model, not an `InMemoryUploadedFile` instance.
+
+To fix this, you need to create a new `Image` instance with the uploaded file and then assign this `Image` instance to the `ProductPageGalleryImage.image` field.
+
+Here is how you can modify the code:
+
+```python
+from wagtail.images.models import Image
+
+# Inside the serve() function
+if request.method == 'POST':
+    # ...
+    if form.is_valid() and main_form.is_valid():
+        # ...
+
+        # Create a new instance of a ProductPage with a Query Set
+        product_page = ProductPage(
+            # ...
+        )
+
+        # Create a new Wagtail Image instance with the uploaded file
+        uploaded_image = Image.objects.create(
+            title=main_form.cleaned_data['main_image'].name,
+            file=main_form.cleaned_data['main_image']
+        )
+
+        # Create a new instance of ProductPageGalleryImage
+        gallery_image = ProductPageGalleryImage(
+            page=product_page,
+            image=uploaded_image,
+            # ...
+        )
+
+        # ...
+```
+
+This code creates a new `Image` instance with the uploaded file and assigns this `Image` instance to the `ProductPageGalleryImage.image` field. This should resolve the error you're encountering.
+
+==============================================================================================================
+

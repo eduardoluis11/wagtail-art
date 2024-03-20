@@ -603,6 +603,10 @@ To redirect the user to the ProductIndexPage after creating a new ProductPage, y
 function with the URL of the ProductIndexPage. You can get the URL of the ProductIndexPage using the get_url method.  
 To display a confirmation message, you can use Django's messages framework. You can add a success message to the 
 messages framework using the messages.success function right before the redirect.
+
+You need to create a new Image instance with the uploaded file and then assign this Image instance to the 
+ProductPageGalleryImage.image field. I will create a new Image instance from the Image Wagtail model with the uploaded 
+file and assigns this Image instance to the ProductPageGalleryImage.image field. 
 """
 
 
@@ -666,12 +670,12 @@ class ProductRegistrationPage(AbstractEmailForm):
 
             # if form.is_valid() and formset.is_valid():
 
-            # Get the Form that was created from the Wagtail admin panel
+            # Get the Form that was created from the Wagtail Admin pPanel
             form = self.get_form(request.POST, page=self, user=request.user)
 
-            # If the form is sanitized and valid
+            # If the forms are sanitized and valid
             # if main_form.is_valid():
-            if form.is_valid():
+            if form.is_valid() and main_form.is_valid():
 
                 # Handle the form/formset submission
                 # This is where you put the logic that was in your Django view
@@ -687,6 +691,29 @@ class ProductRegistrationPage(AbstractEmailForm):
                     list_price=form.cleaned_data['list_price'],
 
                 )
+
+                # Create a new Wagtail Image instance with the uploaded file
+                uploaded_image = Image.objects.create(
+                    title=main_form.cleaned_data['main_image'].name,
+                    file=main_form.cleaned_data['main_image']
+                )
+
+                # Create a new instance of ProductPageGalleryImage by using an instance of an image from Wagtail's Image
+                # model.
+                # THIS ISN'T WORKING. I NEED TO FIX THIS.
+                gallery_image = ProductPageGalleryImage(
+                    page=product_page,
+                    image=uploaded_image,
+                    # ...
+                )
+                # gallery_image = ProductPageGalleryImage(
+                #     page=product_page,
+                #     image=main_form.cleaned_data['main_image'],
+                #     caption=''  # Add a caption if needed
+                # )
+
+                # # Save the gallery image instance
+                # gallery_image.save()
 
                 # Fetch the parent page instance from the database
                 parent_page = ProductIndexPage.objects.get(
@@ -743,7 +770,7 @@ class ProductRegistrationPage(AbstractEmailForm):
 
 I need this in order to import the "form_fields" keyword for any Page model that I want to use the form fields in.
 
-A Paarental Key is pretty much the same as an FK, but for Wagtail.
+A Parental Key is pretty much the same as an FK, but for Wagtail.
 
 I need this in order to render in the Wagtail admin panel the different fields to create from  the admin panel my 
 form. I'm currently using this for the Product Registration Page model.
@@ -840,8 +867,6 @@ class FormField(AbstractFormField):
 #         return render(request, 'dashboard_app/artwork_registration_page.html', context)
 
 
-
-
 # class ArtworkPageFormField(AbstractFormField):
 #     page = ParentalKey('ArtworkPageFormPage', on_delete=models.CASCADE, related_name='form_fields')
 #
@@ -903,18 +928,6 @@ class FormField(AbstractFormField):
 #     class Meta:
 #         model = apps.get_model('dashboard_app', 'ArtworkPage')
 #         fields = ['date', 'intro', 'prompt', 'copyright', 'explanation', 'ai_used', 'specify_ai_if_other']
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 """ Product Index Page. This is the "view" that renders the page that displays the List of Products.

@@ -26,23 +26,33 @@ that quantity of products belongs (as a FK). I could also include the subtotal. 
 in the Product Model of a Purchase Order is the quantity of products ordered in a purchase order.
 
 #### Fields:
-- Product Name*
-- Unit Price. (THIS DOES NOT GO HERE, and it is REDUNDANT. I already have about 3 prices here).
-- SKU (Stock Keeping Unit)* (40 characters).
-- Description* (text) (500 characters).
-- Unit of Measurement* (Piece, service, box) -> I'll send you the catalog.
-- Category* -> CRUD. Apparently, the user can write whatever they want here. I'll put it as Varchar, 100 characters.
-- List Price* (100 EUR) (I think "EUR" stands for "euros") (14 digits with 2 decimals).
-- Purchase Price* (percentage defined by supplier but modifiable) (one to many) (FK).
-- Sale Price* (same as list) 100 EUR. There is no difference between this and the "List Price." They must be exactly
-the same price. In the future, this field will be modified to make them different.
 - Main Image* PNG. (ImageField).
-- Technical Sheet (File). (FileField).
+** Secondary Images: I will create a new model to assign multiple secondary images to each product, as a product can
+have several secondary images. This will be a Formset. However, they would still be uploaded in Wagtail's Image
+model, the same model where the Main Image would be uploaded.
 
-* Secondary Images: I will create a new model to assign multiple secondary images to each product, as a product can
-have several secondary images.
+* Technical Sheet (File). (FileField).
+* Product Name*
+* Unit Price. (THIS DOES NOT GO HERE, and it is REDUNDANT. I already have about 3 prices here).
+* SKU (Stock Keeping Unit)* (40 characters).
+* Description* (text) (500 characters).
+* Unit of Measurement* (Piece, service, box) -> I'll send you the catalog.
+* Category* -> CRUD. Apparently, the user can write whatever they want here. I'll put it as Varchar, 100 characters.
+* List Price* (100 EUR) (I think "EUR" stands for "euros") (14 digits with 2 decimals).
+* Purchase Price* (percentage defined by supplier but modifiable) (one to many) (FK).
+* Sale Price* (same as list) 100 EUR. There is no difference between this and the "List Price." They must be exactly
+the same price. In the future, this field will be modified to make them different.
 
-There is only one supplier that offers a volume discount. The rest have a price per product. Normally it's 28% - 10% (35.2%).
+
+Only the very first two fields will actually be done in here. The rest of the fields will be directly created on 
+Wagtail's Admin Panel. That is because, out of all the fields, Wagtail's forms aren't very good at handling file 
+uploads.
+
+As for the Technical Sheets: do T-shirt suppliers even give you technical sheets? I'm going to sell T-shirts, so I don't
+think I'll need that field.
+
+There is only one supplier that offers a volume discount. The rest have a price per product. Normally it's 28% - 10% 
+(35.2%).
 
 I think of creating a model called "Supplier Purchase Prices," and I will take the records from that model as FK in the
 "Purchase Price" field in the Product model. That model I will create will have only and exclusively the purchase prices from
@@ -52,11 +62,12 @@ supplier is already applied to it.
 The SKU field must be unique for each product. There cannot be 2 products with the same SKU. Therefore, I put a restriction
 on it with the "unique" keyword.
 
-To prevent any confusions, I will call "Product From the Supplier" to the "Supllier Purchase Prices" model. In reality,
+To prevent any confusions, I will call "Product From the Supplier" to the "Suplier Purchase Prices" model. In reality,
 that's what that model is: it stores the products offered by that supplier.
 
 Remember that these are form fields, NOT MODELS. I won't specify the folder on my "media" folder where I'll upload
 these images nor files in here. I'll do that in the models.py file.
+
 """
 
 
@@ -78,12 +89,11 @@ class AddProductForm(forms.Form):
     # main_image = forms.ImageField(upload_to='products/main-images')    # Main Image
     main_image = forms.ImageField()    # Main Image
 
-    # Technical Sheet (Optional)
-    technical_sheet = forms.FileField(required=False)
+    # # Technical Sheet (Optional)
+    # technical_sheet = forms.FileField(required=False)
     # technical_sheet = forms.FileField(upload_to='products/technical-sheets', required=False)
 
-
-
+    # I will later create a field for the Secondary Images.
 
 
 """ Form for adding a new Artwork made with stable diffusion to the Artwork Page model.
