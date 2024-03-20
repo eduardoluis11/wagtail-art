@@ -16,21 +16,26 @@ Source of most of this code: https://docs.wagtail.org/en/stable/getting_started/
 
     <div class="intro">{{ page.intro|richtext }}</div>
 
-    <!-- This will get all the children of the current page. That is, this will print all the functionalities of the
-    dashboard.
-
-    I added the "richtext" filter to the short description of the functionalities because, otherwise, a bug
-    would occur in which the text would be printed with <p> tags. The <p> tags would even be printed with a weird
-    "data" attribute.
+    <!-- I hid all the links to all the functionalities since the links should be rendered from the Side Navbar, NOT
+    from the center of the Dashboard's Home Page .
 
     -->
-    {% for functionality in page.get_children %}
-        <h2><a href="{% pageurl functionality %}">{{ functionality.title }}</a></h2>
-        {{ functionality.specific.intro|richtext }}
 
-        <!-- This isn't printing anything. -->
-        {#        {{ post.specific.body|richtext }}#}
-    {% endfor %}
+    {#    <!-- This will get all the children of the current page. That is, this will print all the functionalities of the#}
+    {#    dashboard.#}
+    {##}
+    {#    I added the "richtext" filter to the short description of the functionalities because, otherwise, a bug#}
+    {#    would occur in which the text would be printed with <p> tags. The <p> tags would even be printed with a weird#}
+    {#    "data" attribute.#}
+    {##}
+    {#    -->#}
+    {#    {% for functionality in page.get_children %}#}
+    {#        <h2><a href="{% pageurl functionality %}">{{ functionality.title }}</a></h2>#}
+    {#        {{ functionality.specific.intro|richtext }}#}
+    {##}
+    {#        <!-- This isn't printing anything. -->#}
+            {#        {{ post.specific.body|richtext }}#}
+    {#    {% endfor %}#}
 
     {#    <!-- Link to the Form for Registering a new Product. -->#}
     {#    <h2><a href="/dashboard_app/register-product">Add Product</a></h2>#}
@@ -39,22 +44,3 @@ Source of most of this code: https://docs.wagtail.org/en/stable/getting_started/
     {#    <h2><a href="/dashboard_app/register-artwork">Add Artwork</a></h2>#}
 
 {% endblock %}
-
-{#{% extends "base.html" %}#}
-{##}
-{#{% load wagtailcore_tags %}#}
-{##}
-{#{% block body_class %}template-blogindexpage{% endblock %}#}
-{##}
-{#{% block content %}#}
-{#    <h1>{{ page.title }}</h1>#}
-{##}
-{#    <div class="intro">{{ page.intro|richtext }}</div>#}
-{##}
-{#    {% for post in page.get_children %}#}
-{#        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>#}
-{#        {{ post.specific.intro }}#}
-{#        {{ post.specific.body|richtext }}#}
-{#    {% endfor %}#}
-{##}
-{#{% endblock %}#}
