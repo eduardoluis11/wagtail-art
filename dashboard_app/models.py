@@ -2,6 +2,9 @@ from django import forms
 from django.db import models
 from wagtail.contrib.forms.panels import FormSubmissionsPanel
 
+# This will let me log out
+from django.contrib.auth import logout
+
 # This should let me modify the form fields in the Wagtail admin panel in the "Field Type" menu.
 from wagtail.contrib.forms.models import FORM_FIELD_CHOICES
 
@@ -1111,6 +1114,20 @@ class ProductPageGalleryImage(Orderable):
         FieldPanel('image'),
         FieldPanel('caption'),
     ]
+
+
+""" Logout Page.
+
+If the user enters into thsi link, they will be logged out. This is a simple way to log out a user from the Wagtail
+admin interface and from their accounts. This way, they shouldn't be able to enter into the Dashboard, since they
+would be required to log in.
+"""
+
+
+class LogoutPage(Page):
+    def serve(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect('/')
 
 # """ Artwork Form Field from the Artowrk Form Page. This uses an Abstract Form.
 #
