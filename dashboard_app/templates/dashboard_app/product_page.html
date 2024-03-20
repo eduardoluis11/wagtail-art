@@ -13,14 +13,30 @@
     <p><b>SKU:</b></p>
     <p>{{ page.sku_code }}</p>
 
+    <!-- Description -->
+    <p><b>Description:</b></p>
+    <p>{{ page.description }}</p>
+
+    <!-- Unit of measurement -->
+    <p><b>Unit of measurement:</b></p>
+    <p>{{ page.unit_of_measurement }}</p>
+
+    <!-- Product Category -->
+    <p><b>Category:</b></p>
+    <p>{{ page.category }}</p>
+
     <!-- Product Price -->
     <p><b>Price:</b></p>
     <p>${{ page.list_price }}</p>
 
 
-    <p class="meta">{{ page.date }}</p>
 
-    <div class="intro">{{ page.intro }}</div>
+
+
+
+    <!-- <p class="meta">{{ page.date }}</p>
+
+    <div class="intro">{{ page.intro }}</div> -->
 
     {{ page.body|richtext }}
 
