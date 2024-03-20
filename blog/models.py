@@ -220,6 +220,22 @@ class BlogPage(Page):
         })  # End of the snippet that sends the blogpages variable to the blog_page.html template.
 
 
+""" Model that stores the Images for a Blog Page. 
+
+This method is used to get the main image of the blog post. It does this by accessing the gallery_images related name, 
+which is a reverse relation to the BlogPageGalleryImage model. The first() method is called on this queryset to get the 
+first BlogPageGalleryImage instance associated with the blog post. If such an instance exists, the method returns the 
+image field of this instance, which is a reference to an image stored in Wagtail's Image model. If no such instance 
+exists, the method returns None.  The content_panels attribute of the BlogPage model is a list of panels that define the 
+layout of the Wagtail admin interface for blog pages. It includes panels for all the fields of the BlogPage model, as 
+well as an InlinePanel for the gallery_images related name.
+
+This InlinePanel allows BlogPageGalleryImage instances to be created and edited inline on the blog page editing 
+interface. Each BlogPageGalleryImage instance represents an image in the gallery of the blog post. The gallery_images 
+string is the related name that links the BlogPage model to the BlogPageGalleryImage model.
+"""
+
+
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(BlogPage, on_delete=models.CASCADE, related_name='gallery_images')
     image = models.ForeignKey(

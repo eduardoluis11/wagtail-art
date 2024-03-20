@@ -1845,5 +1845,81 @@ In the `ProductRegistrationPage` model, `InlinePanel` is used to add the custom 
 
 ==============================================================================================================
 
+Ok. Well, modify this snippet to detect an additional field called "main_image". Then, that image should be stored in Wagtail's Image model, but it should be linked to the new record for the ProductPage model that's being created in this Query Set. That is, I need to be able to retrieve that image if I have the PK of the ProductPage that is associated with that image.
 
+To achieve this, you need to modify the `serve` method in the `ProductRegistrationPage` model. After creating a new `ProductPage` instance, you should create a new `Image` instance with the uploaded image file, then assign this `Image` instance to the `main_image` field of the `ProductPage` instance. Here's how you can do it:
+
+```python
+from wagtail.images.models import Image
+from django.core.files.images import ImageFile
+
+if form.is_valid():
+    # Create a new instance of a ProductPage with a Query Set
+    product_page = ProductPage(
+        title=form.cleaned_data['product_name'],
+        product_name=form.cleaned_data['product_name'],
+        sku_code=form.cleaned_data['sku_code'],
+        description=form.cleaned_data['description'],
+        unit_of_measurement=form.cleaned_data['unit_of_measurement'],
+        category=form.cleaned_data['category'],
+        list_price=form.cleaned_data['list_price'],
+    )
+
+    # Create a new Image instance and assign it to the main_image field of the ProductPage
+    image_file = request.FILES['main_image']
+    wagtail_image = Image(title=image_file.name, file=ImageFile(image_file))
+    wagtail_image.save()
+    product_page.main_image = wagtail_image
+
+    # Fetch the parent page instance from the database
+    parent_page = ProductIndexPage.objects.get(slug='list-of-products')
+
+    # Add the parent page here, replace `parent_page` with the actual parent page instance
+    parent_page.add_child(instance=product_page)
+
+    # Add a success confirmation message to the messages framework
+    messages.success(request, "A new product was successfully created.")
+
+    # Redirect to the ProductIndexPage after form submission
+    return HttpResponseRedirect(parent_page.get_url())
+```
+
+In this code, `request.FILES['main_image']` is used to get the uploaded image file from the request. A new `Image` instance is created with this file, and this `Image` instance is assigned to the `main_image` field of the `ProductPage` instance. The `Image` instance is saved to the database before assigning it to the `ProductPage` to ensure it has a primary key.
+
+==============================================================================================================
+
+/explain Explain what the "gallery_images" snippet does on this Wagtail page.
+
+The selected code defines a `BlogPage` model in Django, which is a subclass of Wagtail's `Page` model. This model represents a blog page in a Wagtail application.
+
+The `BlogPage` model has several fields:
+
+- `date`: A `DateField` that stores the date of the blog post.
+- `intro`: A `CharField` that stores a short introduction to the blog post.
+- `body`: A `RichTextField` that stores the main content of the blog post.
+- `authors`: A `ParentalManyToManyField` that creates a many-to-many relationship between the `BlogPage` and `Author` models. This means a blog post can have multiple authors, and an author can write multiple blog posts.
+- `tags`: A `ClusterTaggableManager` field that allows tags to be added to each blog post. The `through=BlogPageTag` argument specifies the model that will be used to store the tags.
+
+The `BlogPage` model also has a method called `main_image`:
+
+```python
+def main_image(self):
+    gallery_item = self.gallery_images.first()
+    if gallery_item:
+        return gallery_item.image
+    else:
+        return None
+```
+
+This method is used to get the main image of the blog post. It does this by accessing the `gallery_images` related name, which is a reverse relation to the `BlogPageGalleryImage` model. The `first()` method is called on this queryset to get the first `BlogPageGalleryImage` instance associated with the blog post. If such an instance exists, the method returns the `image` field of this instance, which is a reference to an image stored in Wagtail's `Image` model. If no such instance exists, the method returns `None`.
+
+The `content_panels` attribute of the `BlogPage` model is a list of panels that define the layout of the Wagtail admin interface for blog pages. It includes panels for all the fields of the `BlogPage` model, as well as an `InlinePanel` for the `gallery_images` related name:
+
+```python
+InlinePanel('gallery_images', label="Gallery images"),
+```
+
+This `InlinePanel` allows `BlogPageGalleryImage` instances to be created and edited inline on the blog page editing interface. Each `BlogPageGalleryImage` instance represents an image in the gallery of the blog post. The `gallery_images` string is the related name that links the `BlogPage` model to the `BlogPageGalleryImage` model.
+
+==============================================================================================================
 

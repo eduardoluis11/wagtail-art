@@ -37,6 +37,7 @@
     <!-- Brief description of the page -->
     <div class="intro">{{ page.intro|richtext }}</div>
 
+    <!-- This will show the links to all the Products. -->
     {% for post in page.get_children %}
         <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
         {{ post.specific.intro }}
