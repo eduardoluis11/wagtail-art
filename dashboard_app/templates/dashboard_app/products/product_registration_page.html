@@ -5,106 +5,119 @@
 {% block body_class %}template-formpage{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
+
 
 {#    <!-- Title of the Page -->#}
 {#    <h1>Add Artwork</h1>#}
 
+    <!-- This adds the White "Card" container to the form -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
 
+          <div class="card">
+            <div class="card-body">
 
-    <!-- This will render confirmation messages, both of success or error messages -->
-    {% if messages %}
+                <!-- Title of the Page -->
+                <h1>{{ page.title }}</h1>
+                <!-- This will render confirmation messages, both of success or error messages -->
+                {% if messages %}
 
-        <!-- Flash messages.
+                    <!-- Flash messages.
 
-        If the message is a success message, it will be displayed in green; meanwhile, if it is an error message,
-        it will be displayed in red.
-        -->
-        <ul class="messages" style="list-style-type:none">
-            {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    <li class="{{ message.tags }}" style="color: green">
-                        {{ message }}
-                    </li>
-                {% elif message.tags == 'error' %}
-                    <li class="{{ message.tags }}" style="color: red">
-                        {{ message }}
-                    </li>
-                {% else %}
-                    <li class="{{ message.tags }}">
-                        {{ message }}
-                    </li>
+                    If the message is a success message, it will be displayed in green; meanwhile, if it is an error message,
+                    it will be displayed in red.
+                    -->
+                    <ul class="messages" style="list-style-type:none">
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <li class="{{ message.tags }}" style="color: green">
+                                    {{ message }}
+                                </li>
+                            {% elif message.tags == 'error' %}
+                                <li class="{{ message.tags }}" style="color: red">
+                                    {{ message }}
+                                </li>
+                            {% else %}
+                                <li class="{{ message.tags }}">
+                                    {{ message }}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-            {% endfor %}
-        </ul>
-    {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
 
 
-        {#        {% if formulario_registrar_productos %}#}
-        {#            {{ formulario_registrar_productos }}#}
+                    {#        {% if formulario_registrar_productos %}#}
+                    {#            {{ formulario_registrar_productos }}#}
 
-        <!-- This renders the Form that I created from the Wagtail Admin Panel.
+                    <!-- This renders the Form that I created from the Wagtail Admin Panel.
 
-          If the form doesn't exist, it will display an error message.
+                      If the form doesn't exist, it will display an error message.
 
-          The "form.as_p" works, but it doesn't render the form as I want it to be.
-          -->
-        {% if form %}
+                      The "form.as_p" works, but it doesn't render the form as I want it to be.
+                      -->
+                    {% if form %}
 
-            {#            {{ form.as_p }}#}
+                        {#            {{ form.as_p }}#}
 
-            <div class="row">   <!-- Fila de Bootstrap -->
-                <!-- Div que imprimirá la Lista de Productos de la Cotización seleccionada al principio del
-                formulario.
+                        <div class="row">   <!-- Fila de Bootstrap -->
+                            <!-- Div que imprimirá la Lista de Productos de la Cotización seleccionada al principio del
+                            formulario.
 
-                MEJORAR LOS ESTILOS.
-                -->
-                {#                <div id="productos-list" class="col-md-12">#}
-                {#                    <br>#}
-                {#                    <br>#}
-                {#                </div>#}
-                {#                    <div class="col-md-4"></div> #}
-                {# Columna Vacía #}
-                <!-- Fin de la Lista de Productos de la Cotización seleccionada al principio del formulario. -->
+                            MEJORAR LOS ESTILOS.
+                            -->
+                            {#                <div id="productos-list" class="col-md-12">#}
+                            {#                    <br>#}
+                            {#                    <br>#}
+                            {#                </div>#}
+                            {#                    <div class="col-md-4"></div> #}
+                            {# Columna Vacía #}
+                            <!-- Fin de la Lista de Productos de la Cotización seleccionada al principio del formulario. -->
 
-                {# Wagtail Form, which has most of the fields #}
-                {% for field in form %}
-                    <div class="col-md-7">
-                        <label class="form-label" for="{{ field.auto_id }}" style="width: 100%">{{ field.label }}
-                        </label>
-                        {{ field }}
-                        <br>
-                        <br>
-                    </div>
-                    <div class="col-md-5"></div>  {# Columna Vacía #}
+                            {# Wagtail Form, which has most of the fields #}
+                            {% for field in form %}
+                                <div class="col-md-7">
+                                    <label class="form-label" for="{{ field.auto_id }}" style="width: 100%">{{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                    <br>
+                                    <br>
+                                </div>
+                                <div class="col-md-5"></div>  {# Columna Vacía #}
 
-                {% endfor %}
-                {# Formulario para Enviar un Email con el Pedido #}
+                            {% endfor %}
+                            {# Formulario para Enviar un Email con el Pedido #}
 
-            </div> <!-- End of the Row for the Bootstrap Grid -->
+                        </div> <!-- End of the Row for the Bootstrap Grid -->
 
 
 
 
 
 
-        {% else %}
-            <p>ERROR: No form</p>
-        {% endif %}
+                    {% else %}
+                        <p>ERROR: No form</p>
+                    {% endif %}
 
-        <!-- This renders the forms from my forms.py file.
+                    <!-- This renders the forms from my forms.py file.
 
-         For the time being, this only includes the ImageField that lets you upload the Main Image of the Product.
-         -->
-        {{ main_form }}
-        <br>
+                     For the time being, this only includes the ImageField that lets you upload the Main Image of the Product.
+                     -->
+                    {{ main_form }}
+                    <br>
 
-        <!-- "Submit" button. I added some Bootstrap classes to it to make it look liek the typical Bootstrap blue
-        button.
-        -->
-        <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
+                    <!-- "Submit" button. I added some Bootstrap classes to it to make it look liek the typical Bootstrap blue
+                    button.
+                    -->
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form> <!-- End of the Form -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>  <!-- End of the White "Card" container to the form -->
 {% endblock %}
