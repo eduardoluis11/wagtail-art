@@ -7,6 +7,7 @@
 
 {#{% extends "base.html" %}#}
 
+<!-- This will load all the Wagtail code, including the images stored in the Wagtail Image model -->
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
@@ -41,8 +42,6 @@
             {% for post in page.get_children %}
                 <tr>
                     <!-- Artwork's main image -->
-                    {# Tengo que poner ".url" para agarrar la URL donde está subida la imagen, y así #}
-                    {# imprimir la imagen. #}
 
                         <td>
                             {% with post.specific.gallery_images.all|first as item %}
