@@ -86,8 +86,13 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
 
     {% include "includes/dashboard-header.html" %}
 
-        {# Wrap your block content within a <main> HTML5 tag: #}
-        {# Add a unique identifier: #}
+
+        <!-- Main content.
+
+        Wrap your block content within a <main> HTML tag and add a unique identifier.
+        Make sure your main content is wrapped in a <main> tag with the id main. This will add some styles that will
+        always push the footer at the bottom of the page, even if the page has little content.
+        -->
         <main id="main">
             {% block content %}{% endblock %}
         </main>
