@@ -8,15 +8,15 @@ Most of the code in this web app was taken from Wagtail's official documentation
 
 ## Legal Information
 
-### Uso de ChatGPT (TRANSLATE INTO ENGLISH. I'll use this to translate everything into English)
+### Use of ChatGPT
 
-Parte del código de este proyecto fue generado en parte utilizando una inteligencia artificial llamada ChatGPT, el modelo de generación de lenguaje a gran escala de OpenAI. Al generar el lenguaje inicial, se revisó, se editó y se modificó el texto a nuestro gusto, y asumimos la responsabilidad final del contenido de este código. No utilizamos una aplicación para generar esta cita aparte de la aplicación web de ChatGPT. Copiamos el texto del chat de ChatGPT, lo pegamos en un editor de texto y luego lo editamos. ChatGPT se encuentra en el siguiente enlace: https://chat.openai.com
+Part of the code in this project was generated in part using an artificial intelligence called ChatGPT, OpenAI's large-scale language generation model. When generating the initial language, the text was reviewed, edited, and modified to our liking, and we assume final responsibility for the content of this code. We did not use an application to generate this citation other than the ChatGPT web application. We copied the text from the ChatGPT chat, pasted it into a text editor, and then edited it. ChatGPT can be found at the following link: https://chat.openai.com
 
 ### Bing AI's Chat Disclaimer
 
 Part of the code in this project was generated using Microsoft Bing's artificial intelligence, a search and cloud services platform developed by Microsoft. By conducting searches and accessing relevant information, we utilized the services provided by Microsoft Bing to obtain necessary results and data for the development of this project. While we have carefully reviewed and selected the obtained information, we are responsible for the interpretation and final use of the data in this project. We did not use any other external application or tool to generate this reference besides the services provided by Microsoft Bing. Bing can be found at this link: https://www.bing.com/
 
-### Uso del tema de FlexStart de Boostrapmade (TRANSLATE INTO ENGLISH AND CHANGE INTO "FlexStart")
+### Use of Boostrapmade's FlexStart Theme
 
 I used the free version of the 'FlexStart' template from Bootstrapmade. I am using it on a single domain, and for personal use only. I am not using it for a client. Below you can see all the template data:
 
@@ -26,7 +26,7 @@ I used the free version of the 'FlexStart' template from Bootstrapmade. I am usi
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
 
-### Uso de tema Nice Admin de Boostrapmade (TRANSLATE INTO ENGLISH AND CHANGE INTO "Nice Admin")
+### Use of Boostrapmade's Nice Admin Theme
 
 I used the free version of the 'Nice Admin' template from Bootstrapmade. I am using it on a single domain, and for personal use only. I am not using it for a client. Below you can see all the template data:
 

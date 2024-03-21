@@ -97,24 +97,22 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
             {% block content %}{% endblock %}
         </main>
 
-        <!-- Cookie Consent Banner. TRANSLATE LATER.
+        <!-- Cookie Consent Banner.
 
-        Banner de consentimiento de cookies.
-
-        Parte del código fue tomado de Godson Thomas de este Repo:
+        Part of this code was either taken from or inspired by this Repo from Godson Thomas:
         https://github.com/Godsont/Cookie-Consent-Banner/blob/master/index.html  -->
         <div class="container-banner-cookies">  <!-- Texto del banner de consentimiento de cookies -->
 
             <p>
-                Este sitio web usa cookies para poder funcionar, las cuales toman parte de su información privada.
-                Clique en "Acepto" si está de acuerdo con que tomemos sus datos personales. De lo contrario, abandone
-                el sitio web.
+                This website uses cookies to function, which collect some of your private information.
+                Click 'I Accept' if you agree to us collecting your personal data. Otherwise, please leave
+                the website.
             </p>
 
-            <button class="boton-aceptar-cookies">  <!-- Botón de "Acepto" -->
+            <button class="boton-aceptar-cookies">  <!-- "I Accept" Button -->
                 I Accept
             </button>
-        </div>                      <!-- Fin del banner del consentimiento de cookies -->
+        </div>                      <!-- End of the Cookie Consent Banner -->
 
         {# Add this to the file: #}
         {% include "includes/dashboard-footer.html" %}
