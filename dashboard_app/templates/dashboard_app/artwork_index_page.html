@@ -13,9 +13,53 @@
     <h1>{{ page.title }}</h1>
     <div class="intro">{{ page.intro|richtext }}</div>
 
-    {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.intro }}
-        {#        {{ post.specific.body|richtext }}#}
-    {% endfor %}
+    <!-- This will show the links to all the Artworks in a table.
+
+    In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
+    header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
+    the rows and cells of the table. The "for" loop is used to iterate over each artwork and create a new row for
+    each one. The DataTables library is used to enhance the table with features like scrolling.
+    -->
+    <table id="artwork-table" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Intro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in page.get_children %}
+                <tr>
+                    <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
+                    <td>{{ post.specific.intro }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    {#    {% for post in page.get_children %}#}
+    {#        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>#}
+    {#        {{ post.specific.intro }}#}
+            {#        {{ post.specific.body|richtext }}#}
+    {#    {% endfor %}#}
+
+    <script>
+        /* This will insert the JS so that the DataTable of datatables.net works. */
+
+        /* I will use the following datatable: https://datatables.net/examples/basic_init/scroll_x.html */
+
+        /* This datatable will NOT use a modal: it will use a horizontal overflow, and you will have to scroll
+        horizontally.
+
+        I need to add the ID of the table inside the DataTable() function so that the datatables.net plugin can
+        detect my table and add its corresponding CSS and JS functionalities.
+        */
+
+        new DataTable('#artwork-table', {
+            scrollX: true
+
+        });
+    </script>
 {% endblock %}

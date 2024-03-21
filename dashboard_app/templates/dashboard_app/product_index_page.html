@@ -37,7 +37,16 @@
     <!-- Brief description of the page -->
     <div class="intro">{{ page.intro|richtext }}</div>
 
-    <!-- This will show the links to all the Products in a table. -->
+    <!-- This will show the links to all the Products in a table.
+
+    I added an ID, a class, and a style to the table so that the table works with the DataTable() function from
+    datatables.net while looking good at the same time.
+
+    In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
+    header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
+    the rows and cells of the table. The "for" loop is used to iterate over each product and create a new row for each
+    one.
+    -->
     <table id="product-table" class="display nowrap" style="width:100%">
         <thead>
             <tr>
@@ -68,12 +77,15 @@
     <script>
         /* This will insert the JS so that the DataTable of datatables.net works. */
 
-        {# Usaré el siguiente datatable: https://datatables.net/examples/basic_init/scroll_x.html #}
+        /* I will use the following datatable: https://datatables.net/examples/basic_init/scroll_x.html */
 
-        {# Este datatable NO usará un modal: usará un overflow horizontal, y tendrás que hacerle scroll horizontal. Se hizo #}
-        {# así ya que no hay forma de dividir todo el texto del campo "Estatus" en un párrafo de varias líneas. Todo se mete en  #}
-        {# una sola línea, y se entrecortaba el campo de "Estatus". Entonces, la única forma de ver lso 3 estatus a primera vista #}
-        {# era poniendo la opción de overflow horizontal al datatable de datatables.net. #}
+        /* This datatable will NOT use a modal: it will use a horizontal overflow, and you will have to scroll
+        horizontally.
+
+        I need to add the ID of the table inside the DataTable() function so that the datatables.net plugin can
+        detect my table and add its corresponding CSS and JS functionalities.
+        */
+
         new DataTable('#product-table', {
             scrollX: true
 
