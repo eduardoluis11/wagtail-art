@@ -68,6 +68,8 @@ that's what that model is: it stores the products offered by that supplier.
 Remember that these are form fields, NOT MODELS. I won't specify the folder on my "media" folder where I'll upload
 these images nor files in here. I'll do that in the models.py file.
 
+The main image will have a maximum upload size of 60 MB. I'll also add a Bootstrap class to the form field to make it
+look better. 
 """
 
 
@@ -86,8 +88,10 @@ class AddProductForm(forms.Form):
     # # Sale Price (same as list price, initially)
     # sale_price = forms.DecimalField(max_digits=14, decimal_places=2)  # Sale Price
 
-    # main_image = forms.ImageField(upload_to='products/main-images')    # Main Image
-    main_image = forms.ImageField()    # Main Image
+    # main_image = forms.ImageField(upload_to='products/main-images')
+    # Main Image
+    main_image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'max_upload_size': 60,
+                                                                         'class': 'form-control'}))
 
     # # Technical Sheet (Optional)
     # technical_sheet = forms.FileField(required=False)

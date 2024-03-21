@@ -51,13 +51,58 @@
           The "form.as_p" works, but it doesn't render the form as I want it to be.
           -->
         {% if form %}
+
             {{ form.as_p }}
+
+            <div class="row">   <!-- Fila de Bootstrap -->
+                <!-- Div que imprimirá la Lista de Productos de la Cotización seleccionada al principio del
+                formulario.
+
+                MEJORAR LOS ESTILOS.
+                -->
+                <div id="productos-list" class="col-md-12">
+                    <br>
+                    <br>
+                </div>
+                {#                    <div class="col-md-4"></div> #}
+                {# Columna Vacía #}
+                <!-- Fin de la Lista de Productos de la Cotización seleccionada al principio del formulario. -->
+
+                {# Formulario General #}
+                {% for campo in formulario_registrar_pedido %}
+                    <div class="col-6">
+                        <label class="form-label" for="{{ campo.auto_id }}" style="width: 100%">{{ campo.label }}
+                        </label>
+                        {{ campo }}
+                        <br>
+                        <br>
+                    </div>
+                    <div class="col-6"></div>  {# Columna Vacía #}
+
+                {% endfor %}
+                {# Formulario para Enviar un Email con el Pedido #}
+
+            </div> <!-- End of the Row for the Bootstrap Grid -->
+
+
+
+
+
+
         {% else %}
             <p>ERROR: No form</p>
         {% endif %}
 
-        <!-- This renders the forms from my forms.py file. DELETE LATER. -->
+        <!-- This renders the forms from my forms.py file.
+
+         For the time being, this only includes the ImageField that lets you upload the Main Image of the Product.
+         -->
         {{ main_form }}
-        <button type="submit">Submit</button>
+        <br>
+
+        <!-- "Submit" button. I added some Bootstrap classes to it to make it look liek the typical Bootstrap blue
+        button.
+        -->
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 {% endblock %}
