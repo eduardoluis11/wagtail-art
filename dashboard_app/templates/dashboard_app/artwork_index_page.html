@@ -29,13 +29,21 @@
     Django to get the first item of a list. The "post.specific.gallery_images.all|first" gets the first image of the
     gallery, and as item assigns it to the variable item. Then, "image item.image width-75" renders the image. The
     "if item" check is necessary to prevent errors when there are no images.
+
+    I need to use the "specific" keyword from "post.specific.ai_used" to access the custom field "ai_used" of the
+    ArtworkPage model. Why do I mneed to use "specific" for the AI Used, but not for the title? Because the title is a
+    built-in field of the Page Wagtail model. That is, since I can add that field directly from the Wagtail admin, I
+    don't need to use "specific" to access it. However, the "AI Used" field is a custom field that I created using
+    a custom Form in the Wagtail Admin Panel, I need to use "specific" to access it.
     -->
     <table id="artwork-table" class="display nowrap" style="width:100%">
         <thead>
             <tr>
                 <th>Preview</th>
                 <th>Title</th>
-                <th>Intro</th>
+                <th>AI Used</th>
+                <th>Created</th>
+                {#                <th>Intro</th>#}
             </tr>
         </thead>
         <tbody>
@@ -60,7 +68,9 @@
                         </td>
 
                     <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
-                    <td>{{ post.specific.intro }}</td>
+                    {#                    <td>{{ post.specific.intro }}</td>#}
+                    <td>{{ post.specific.ai_used }}</td>
+                    <td>{{ post.specific.date }}</td>
                 </tr>
             {% endfor %}
         </tbody>
