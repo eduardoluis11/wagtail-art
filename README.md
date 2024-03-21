@@ -35,3 +35,7 @@ I used the free version of the 'Nice Admin' template from Bootstrapmade. I am us
     Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
+
+### Use of Pixabay Images
+
+The T-shirt image that I'm currently in the Dashboard app using is from VersionFrancaise from Pixabay. It can be found here: https://pixabay.com/photos/t-shirt-white-clothes-rags-empty-1278404/
