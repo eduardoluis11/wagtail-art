@@ -37,10 +37,46 @@
     <!-- Brief description of the page -->
     <div class="intro">{{ page.intro|richtext }}</div>
 
-    <!-- This will show the links to all the Products. -->
-    {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.intro }}
-        {{ post.specific.body|richtext }}
-    {% endfor %}
+    <!-- This will show the links to all the Products in a table. -->
+    <table id="product-table" class="display nowrap" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Intro</th>
+                <th>Body</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in page.get_children %}
+                <tr>
+                    <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
+                    <td>{{ post.specific.intro }}</td>
+                    <td>{{ post.specific.body|richtext }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    {#    {% for post in page.get_children %}#}
+    {#        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>#}
+    {#        {{ post.specific.intro }}#}
+    {#        {{ post.specific.body|richtext }}#}
+    {#    {% endfor %}#}
+
+    <script>
+        /* This will insert the JS so that the DataTable of datatables.net works. */
+
+        {# Usaré el siguiente datatable: https://datatables.net/examples/basic_init/scroll_x.html #}
+
+        {# Este datatable NO usará un modal: usará un overflow horizontal, y tendrás que hacerle scroll horizontal. Se hizo #}
+        {# así ya que no hay forma de dividir todo el texto del campo "Estatus" en un párrafo de varias líneas. Todo se mete en  #}
+        {# una sola línea, y se entrecortaba el campo de "Estatus". Entonces, la única forma de ver lso 3 estatus a primera vista #}
+        {# era poniendo la opción de overflow horizontal al datatable de datatables.net. #}
+        new DataTable('#product-table', {
+            scrollX: true
+
+        });
+    </script>
 {% endblock %}

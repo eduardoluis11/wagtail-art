@@ -62,6 +62,19 @@ white, or a Django bug that said "there's no "static" tag. You're using an unres
   <!-- Custom CSS for the Dashboard app -->
   <link href="{% static 'css/dashboard-custom-styles.css' %}" rel="stylesheet">
 
+  {# CSS files for the Datatables plugin from datatables.net #}
+  <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+
+
+  {# JS Files for the Datatables plugin from datatables.net #}
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+  {# colResize Plugin to modify the column size to the Datatables.net datatables #}
+  <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colResize.min.js"></script>
+
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jan 29 2024 with Bootstrap v5.3.2
