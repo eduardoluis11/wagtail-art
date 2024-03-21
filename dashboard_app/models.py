@@ -636,6 +636,18 @@ class ProductRegistrationPage(AbstractEmailForm):
     intro = models.CharField(max_length=255, blank=True)
     thank_you_text = models.CharField(max_length=255, blank=True)
 
+    # This adds a class to each field in the form to render each form field with the "form-control" class.
+    def get_form(self, *args, **kwargs):
+
+        # This gets the Wagtail Form
+        form = super().get_form(*args, **kwargs)
+
+        # This adds a class to each field of the Wagtail Form
+        for field_name, field in form.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+        return form
+
     content_panels = AbstractEmailForm.content_panels + [
         FormSubmissionsPanel(),
         FieldPanel("intro"),

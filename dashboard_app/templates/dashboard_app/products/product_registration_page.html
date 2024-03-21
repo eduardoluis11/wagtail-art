@@ -10,6 +10,8 @@
 {#    <!-- Title of the Page -->#}
 {#    <h1>Add Artwork</h1>#}
 
+
+
     <!-- This will render confirmation messages, both of success or error messages -->
     {% if messages %}
 
@@ -52,7 +54,7 @@
           -->
         {% if form %}
 
-            {{ form.as_p }}
+            {#            {{ form.as_p }}#}
 
             <div class="row">   <!-- Fila de Bootstrap -->
                 <!-- Div que imprimirá la Lista de Productos de la Cotización seleccionada al principio del
@@ -60,24 +62,24 @@
 
                 MEJORAR LOS ESTILOS.
                 -->
-                <div id="productos-list" class="col-md-12">
-                    <br>
-                    <br>
-                </div>
+                {#                <div id="productos-list" class="col-md-12">#}
+                {#                    <br>#}
+                {#                    <br>#}
+                {#                </div>#}
                 {#                    <div class="col-md-4"></div> #}
                 {# Columna Vacía #}
                 <!-- Fin de la Lista de Productos de la Cotización seleccionada al principio del formulario. -->
 
-                {# Formulario General #}
-                {% for campo in formulario_registrar_pedido %}
-                    <div class="col-6">
-                        <label class="form-label" for="{{ campo.auto_id }}" style="width: 100%">{{ campo.label }}
+                {# Wagtail Form, which has most of the fields #}
+                {% for field in form %}
+                    <div class="col-md-7">
+                        <label class="form-label" for="{{ field.auto_id }}" style="width: 100%">{{ field.label }}
                         </label>
-                        {{ campo }}
+                        {{ field }}
                         <br>
                         <br>
                     </div>
-                    <div class="col-6"></div>  {# Columna Vacía #}
+                    <div class="col-md-5"></div>  {# Columna Vacía #}
 
                 {% endfor %}
                 {# Formulario para Enviar un Email con el Pedido #}
