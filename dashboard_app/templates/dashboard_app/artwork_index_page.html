@@ -7,7 +7,7 @@
 
 {#{% extends "base.html" %}#}
 
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
     <h1>{{ page.title }}</h1>
@@ -19,10 +19,15 @@
     header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
     the rows and cells of the table. The "for" loop is used to iterate over each artwork and create a new row for
     each one. The DataTables library is used to enhance the table with features like scrolling.
+
+    The post.specific.gallery_images.all will correctly refer to the gallery images of each child page. The inner loop
+    iterates over the gallery images of each child page (post.specific.gallery_images.all), and the "image" tag is used
+    to render each image with a width of 75 pixels.
     -->
     <table id="artwork-table" class="display nowrap" style="width:100%">
         <thead>
             <tr>
+                <th>Preview</th>
                 <th>Title</th>
                 <th>Intro</th>
             </tr>
@@ -30,6 +35,21 @@
         <tbody>
             {% for post in page.get_children %}
                 <tr>
+                    <!-- Imagen Principal del Producto. -->
+                    {# Tengo que poner ".url" para agarrar la URL donde está subida la imagen, y así #}
+                    {# imprimir la imagen. #}
+
+                        <td>
+                            {% for item in post.specific.gallery_images.all %}
+                                {% image item.image width-75 %}
+                            {% endfor %}
+
+                            {#                            {% for item in page.gallery_images.all %}#}
+                                                            {#                            <img src="{{ item.image.url }}" alt="" width="50px">#}
+                            {#                                {% image item.image width-320 %}#}
+                            {#                            {% endfor %}#}
+                        </td>
+
                     <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
                     <td>{{ post.specific.intro }}</td>
                 </tr>
