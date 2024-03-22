@@ -17,7 +17,8 @@
 
   <!-- ======= Header =======
 
-  BUG: I need to fix the name of the Web App on the Navbar, since, right now, both words are on top of each other.
+  I had to remove FlexStart's logo, which was to the left side of the Web app's name (Eduado Fox) to fix a bug in which, in some screens, the word
+  "Eduardo" would be on top of the word "Fox" (the 1st word would be on top of the 2nd word of the Web app's name).
   -->
   <header id="header" class="header fixed-top">
     {#    <!-- This is for screen readers -->#}
@@ -26,7 +27,8 @@
 
       <!-- Navbar's logo. This will redirect you to the home page. -->
       <a href="{% pageurl site_root %}" class="logo d-flex align-items-center">
-        <img src="{% static 'flexstart/assets/img/logo.png' %}" alt="">
+        <!-- I no longer want this. This was FlexStart's logo -->
+        <!-- <img src="{% static 'flexstart/assets/img/logo.png' %}" alt=""> -->
         <span>Eduardo Fox</span>
       </a>
 
