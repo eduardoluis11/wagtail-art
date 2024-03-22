@@ -11,70 +11,85 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    <div class="intro">{{ page.intro|richtext }}</div>
 
-    <!-- This will show the links to all the Artworks in a table.
+    <!-- This adds the White "Card" container to the form -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
 
-    In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
-    header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
-    the rows and cells of the table. The "for" loop is used to iterate over each artwork and create a new row for
-    each one. The DataTables library is used to enhance the table with features like scrolling.
+          <div class="card">
+            <div class="card-body">
 
-    The post.specific.gallery_images.all will correctly refer to the gallery images of each child page. The inner loop
-    iterates over the gallery images of each child page (post.specific.gallery_images.all), and the "image" tag is used
-    to render each image with a width of 75 pixels.
+                <h1>{{ page.title }}</h1>
+                <div class="intro">{{ page.intro|richtext }}</div>
 
-    You can modify the code to display only the first image of each item. You can use the first template tag provided by
-    Django to get the first item of a list. The "post.specific.gallery_images.all|first" gets the first image of the
-    gallery, and as item assigns it to the variable item. Then, "image item.image width-75" renders the image. The
-    "if item" check is necessary to prevent errors when there are no images.
+                <!-- This will show the links to all the Artworks in a table.
 
-    I need to use the "specific" keyword from "post.specific.ai_used" to access the custom field "ai_used" of the
-    ArtworkPage model. Why do I mneed to use "specific" for the AI Used, but not for the title? Because the title is a
-    built-in field of the Page Wagtail model. That is, since I can add that field directly from the Wagtail admin, I
-    don't need to use "specific" to access it. However, the "AI Used" field is a custom field that I created using
-    a custom Form in the Wagtail Admin Panel, I need to use "specific" to access it.
-    -->
-    <table id="artwork-table" class="display nowrap" style="width:100%">
-        <thead>
-            <tr>
-                <th>Preview</th>
-                <th>Title</th>
-                <th>AI Used</th>
-                <th>Created</th>
-                {#                <th>Intro</th>#}
-            </tr>
-        </thead>
-        <tbody>
-            {% for post in page.get_children %}
-                <tr>
-                    <!-- Artwork's main image -->
+                In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
+                header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
+                the rows and cells of the table. The "for" loop is used to iterate over each artwork and create a new row for
+                each one. The DataTables library is used to enhance the table with features like scrolling.
 
-                        <td>
-                            {% with post.specific.gallery_images.all|first as item %}
-                                {% if item %}
-                                    {% image item.image width-75 %}
-                                {% endif %}
-                            {% endwith %}
-                            {#                            {% for item in post.specific.gallery_images.all %}#}
-                            {#                                {% image item.image width-75 %}#}
-                            {#                            {% endfor %}#}
+                The post.specific.gallery_images.all will correctly refer to the gallery images of each child page. The inner loop
+                iterates over the gallery images of each child page (post.specific.gallery_images.all), and the "image" tag is used
+                to render each image with a width of 75 pixels.
 
-                            {#                            {% for item in page.gallery_images.all %}#}
-                                                            {#                            <img src="{{ item.image.url }}" alt="" width="50px">#}
-                            {#                                {% image item.image width-320 %}#}
-                            {#                            {% endfor %}#}
-                        </td>
+                You can modify the code to display only the first image of each item. You can use the first template tag provided by
+                Django to get the first item of a list. The "post.specific.gallery_images.all|first" gets the first image of the
+                gallery, and as item assigns it to the variable item. Then, "image item.image width-75" renders the image. The
+                "if item" check is necessary to prevent errors when there are no images.
 
-                    <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
-                    {#                    <td>{{ post.specific.intro }}</td>#}
-                    <td>{{ post.specific.ai_used }}</td>
-                    <td>{{ post.specific.date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                I need to use the "specific" keyword from "post.specific.ai_used" to access the custom field "ai_used" of the
+                ArtworkPage model. Why do I mneed to use "specific" for the AI Used, but not for the title? Because the title is a
+                built-in field of the Page Wagtail model. That is, since I can add that field directly from the Wagtail admin, I
+                don't need to use "specific" to access it. However, the "AI Used" field is a custom field that I created using
+                a custom Form in the Wagtail Admin Panel, I need to use "specific" to access it.
+                -->
+                <table id="artwork-table" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Title</th>
+                            <th>AI Used</th>
+                            <th>Created</th>
+                            {#                <th>Intro</th>#}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in page.get_children %}
+                            <tr>
+                                <!-- Artwork's main image -->
+
+                                    <td>
+                                        {% with post.specific.gallery_images.all|first as item %}
+                                            {% if item %}
+                                                {% image item.image width-75 %}
+                                            {% endif %}
+                                        {% endwith %}
+                                        {#                            {% for item in post.specific.gallery_images.all %}#}
+                                        {#                                {% image item.image width-75 %}#}
+                                        {#                            {% endfor %}#}
+
+                                        {#                            {% for item in page.gallery_images.all %}#}
+                                                                        {#                            <img src="{{ item.image.url }}" alt="" width="50px">#}
+                                        {#                                {% image item.image width-320 %}#}
+                                        {#                            {% endfor %}#}
+                                    </td>
+
+                                <td><a href="{% pageurl post %}">{{ post.title }}</a></td>
+                                {#                    <td>{{ post.specific.intro }}</td>#}
+                                <td>{{ post.specific.ai_used }}</td>
+                                <td>{{ post.specific.date }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> <!-- End of the white "Card" Container section -->
 
 
 

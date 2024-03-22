@@ -5,90 +5,104 @@
 
 {% block content %}
 
-    <!-- Title -->
-    <h1>{{ page.title }}</h1>
+    <!-- This adds the White "Card" container to the form -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
 
-        <!-- This will render confirmation messages, both of success or error messages -->
-    {% if messages %}
+          <div class="card">
+            <div class="card-body">
 
-        <!-- Flash messages.
+                <!-- Title -->
+                <h1>{{ page.title }}</h1>
 
-        If the message is a success message, it will be displayed in green; meanwhile, if it is an error message,
-        it will be displayed in red.
-        -->
-        <ul class="messages" style="list-style-type:none">
-            {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    <li class="{{ message.tags }}" style="color: green">
-                        {{ message }}
-                    </li>
-                {% elif message.tags == 'error' %}
-                    <li class="{{ message.tags }}" style="color: red">
-                        {{ message }}
-                    </li>
-                {% else %}
-                    <li class="{{ message.tags }}">
-                        {{ message }}
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    {% endif %}
+                    <!-- This will render confirmation messages, both of success or error messages -->
+                {% if messages %}
 
-    <!-- Brief description of the page -->
-    <div class="intro">{{ page.intro|richtext }}</div>
+                    <!-- Flash messages.
 
-    <!-- This will show the links to all the Products in a table.
-
-    I added an ID, a class, and a style to the table so that the table works with the DataTable() function from
-    datatables.net while looking good at the same time.
-
-    In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
-    header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
-    the rows and cells of the table. The "for" loop is used to iterate over each product and create a new row for each
-    one.
-
-    The "post.specific.gallery_images_for_products.all" will correctly refer to the Product images of each child page.
-    The inner loop iterates over the product images of each child page (post.specific.gallery_images.all), and the
-    "image" tag is used to render each image with a width of 75 pixels.
-
-    You can modify the code to display only the first image of each item. You can use the first template tag provided by
-    Django to get the first item of a list. The "post.specific.gallery_images_for_products.all|first" gets the first
-    image of the Product List, and as item assigns it to the variable item. Then, "image item.image width-75" renders
-    the image. The "if item" check is necessary to prevent errors when there are no images.
-
-    The T-shirt image that I'm currently using is from VersionFrancaise from Pixabay. It can be found here:
-    https://pixabay.com/photos/t-shirt-white-clothes-rags-empty-1278404/
-    -->
-    <table id="product-table" class="display nowrap" style="width:100%">
-        <thead>
-            <tr>
-                <th>Preview</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                {#                <th>Intro</th>#}
-                {#                <th>Body</th>#}
-            </tr>
-        </thead>
-        <tbody>
-            {% for post in page.get_children %}
-                <tr>
-                    <!-- This will show the first image of the product. -->
-                    <td>
-                        {% with post.specific.gallery_images_for_products.all|first as item %}
-                            {% if item %}
-                                {% image item.image width-75 %}
+                    If the message is a success message, it will be displayed in green; meanwhile, if it is an error message,
+                    it will be displayed in red.
+                    -->
+                    <ul class="messages" style="list-style-type:none">
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <li class="{{ message.tags }}" style="color: green">
+                                    {{ message }}
+                                </li>
+                            {% elif message.tags == 'error' %}
+                                <li class="{{ message.tags }}" style="color: red">
+                                    {{ message }}
+                                </li>
+                            {% else %}
+                                <li class="{{ message.tags }}">
+                                    {{ message }}
+                                </li>
                             {% endif %}
-                        {% endwith %}
-                    </td>
-                    <td><a href="{% pageurl post %}">{{ post.specific.product_name }}</a></td>
-                    <td>${{ post.specific.list_price }}</td>
-                    {#                    <td>{{ post.specific.intro }}</td>#}
-                    {#                    <td>{{ post.specific.body|richtext }}</td>#}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!-- Brief description of the page -->
+                <div class="intro">{{ page.intro|richtext }}</div>
+
+                <!-- This will show the links to all the Products in a table.
+
+                I added an ID, a class, and a style to the table so that the table works with the DataTable() function from
+                datatables.net while looking good at the same time.
+
+                In this code, the <thead> tag is used to create a header for the table, and the <th> tags are used to create the
+                header cells. The <tbody> tag is used to create the body of the table, and the <tr> and <td> tags are used to create
+                the rows and cells of the table. The "for" loop is used to iterate over each product and create a new row for each
+                one.
+
+                The "post.specific.gallery_images_for_products.all" will correctly refer to the Product images of each child page.
+                The inner loop iterates over the product images of each child page (post.specific.gallery_images.all), and the
+                "image" tag is used to render each image with a width of 75 pixels.
+
+                You can modify the code to display only the first image of each item. You can use the first template tag provided by
+                Django to get the first item of a list. The "post.specific.gallery_images_for_products.all|first" gets the first
+                image of the Product List, and as item assigns it to the variable item. Then, "image item.image width-75" renders
+                the image. The "if item" check is necessary to prevent errors when there are no images.
+
+                The T-shirt image that I'm currently using is from VersionFrancaise from Pixabay. It can be found here:
+                https://pixabay.com/photos/t-shirt-white-clothes-rags-empty-1278404/
+                -->
+                <table id="product-table" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            {#                <th>Intro</th>#}
+                            {#                <th>Body</th>#}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in page.get_children %}
+                            <tr>
+                                <!-- This will show the first image of the product. -->
+                                <td>
+                                    {% with post.specific.gallery_images_for_products.all|first as item %}
+                                        {% if item %}
+                                            {% image item.image width-75 %}
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+                                <td><a href="{% pageurl post %}">{{ post.specific.product_name }}</a></td>
+                                <td>${{ post.specific.list_price }}</td>
+                                {#                    <td>{{ post.specific.intro }}</td>#}
+                                {#                    <td>{{ post.specific.body|richtext }}</td>#}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>  <!-- End of the white "Card" Container section -->
 
 
 

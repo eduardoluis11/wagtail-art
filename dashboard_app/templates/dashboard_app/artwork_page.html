@@ -11,98 +11,114 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    <p class="meta">{{ page.date }}</p>
 
-    <div class="intro">{{ page.intro }}</div>
+    <!-- This adds the White "Card" container to the form -->
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
 
-    {#    <!-- The image itself -->#}
-    {#    <img src="{{ page.image.url }}" alt="{{ page.title }}">#}
+          <div class="card">
+            <div class="card-body">
 
-    <br>
-    <br>
 
-    <!-- This renders the Image(s).
+                <h1>{{ page.title }}</h1>
+                <p class="meta">{{ page.date }}</p>
 
-     I added a ton of line breaks (<br>) so that the images always look inside the "card"
-     that contains the text.
+                <div class="intro">{{ page.intro }}</div>
 
-     I changed the resizing rule. To avoid cropping, you can use the width or height rule
-     instead of fill. The width rule resizes the image to the specified width while maintaining
-     the original aspect ratio. The height rule does the same but with the specified height.
-     Please note that using width or height might result in images that are smaller or larger
-     than expected if their aspect ratio is significantly different from the 320x240 ratio. If
-     maintaining the exact dimensions is crucial, you might need to consider other solutions,
-     such as modifying the images themselves to fit the desired aspect ratio.
-     -->
-    {% for item in page.gallery_images.all %}
-            {#                            <div style="float: inline-start; margin: 10px;">#}
+                {#    <!-- The image itself -->#}
+                {#    <img src="{{ page.image.url }}" alt="{{ page.title }}">#}
 
-            <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
-             should appear to the left side of the screen.
-             -->
-        <div style="float: left; margin: 10px;">
-            {#                                    {% image item.image fill-320x240 %}#}
-            {% image item.image width-320 %}
-            <p>{{ item.caption }}</p>
+                <br>
+                <br>
+
+                <!-- This renders the Image(s).
+
+                 I added a ton of line breaks (<br>) so that the images always look inside the "card"
+                 that contains the text.
+
+                 I changed the resizing rule. To avoid cropping, you can use the width or height rule
+                 instead of fill. The width rule resizes the image to the specified width while maintaining
+                 the original aspect ratio. The height rule does the same but with the specified height.
+                 Please note that using width or height might result in images that are smaller or larger
+                 than expected if their aspect ratio is significantly different from the 320x240 ratio. If
+                 maintaining the exact dimensions is crucial, you might need to consider other solutions,
+                 such as modifying the images themselves to fit the desired aspect ratio.
+                 -->
+                {% for item in page.gallery_images.all %}
+                        {#                            <div style="float: inline-start; margin: 10px;">#}
+
+                        <!-- "Float" doesn't accept "inline-start", so I'll use "left". This way, the images
+                         should appear to the left side of the screen.
+                         -->
+                    <div style="float: left; margin: 10px;">
+                        {#                                    {% image item.image fill-320x240 %}#}
+                        {% image item.image width-320 %}
+                        <p>{{ item.caption }}</p>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                {% endfor %}
+
+                <!-- Prompts used for creating the image -->
+                <h4>Prompt used:</h4>
+                {{ page.prompt|richtext }}
+
+                <br>
+                <br>
+
+                <!-- Does the image have copyright content?  -->
+                <p>
+                    <b>Does the image have copyright content?</b>
+                </p>
+                <p>{{ page.copyright }}</p>
+
+
+                <!-- Please, elaborate why the image has copyright content. It will only be printed if it's "Yes".  -->
+                {% if page.copyright == "Yes" %}
+                    <p><b>Please, elaborate</b></p>
+                    <p>
+                        {{ page.explanation }}
+                    </p>
+                {% endif %}
+
+                <!-- AI used for creating the image  -->
+                <p>
+                    <b>AI used for creating the image</b>
+                </p>
+                <p>{{ page.ai_used }}</p>
+
+                <!-- If the selected AI was "Other", please specify the name of the AI that you used.  -->
+                {% if page.ai_used == "Other" %}
+                    <p><b>Specify the name of the AI that you used if "Other"</b></p>
+                    <p>
+                        {{ page.specify_ai_if_other }}
+                    </p>
+                {% endif %}
+
+
+                <!-- Link to return to the Gallery -->
+                <p><a href="{{ page.get_parent.url }}">Return to the Gallery</a></p>
+
+            </div>
+          </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-    {% endfor %}
-
-    <!-- Prompts used for creating the image -->
-    <h4>Prompt used:</h4>
-    {{ page.prompt|richtext }}
-
-    <br>
-    <br>
-
-    <!-- Does the image have copyright content?  -->
-    <p>
-        <b>Does the image have copyright content?</b>
-    </p>
-    <p>{{ page.copyright }}</p>
-
-
-    <!-- Please, elaborate why the image has copyright content. It will only be printed if it's "Yes".  -->
-    {% if page.copyright == "Yes" %}
-        <p><b>Please, elaborate</b></p>
-        <p>
-            {{ page.explanation }}
-        </p>
-    {% endif %}
-
-    <!-- AI used for creating the image  -->
-    <p>
-        <b>AI used for creating the image</b>
-    </p>
-    <p>{{ page.ai_used }}</p>
-
-    <!-- If the selected AI was "Other", please specify the name of the AI that you used.  -->
-    {% if page.ai_used == "Other" %}
-        <p><b>Specify the name of the AI that you used if "Other"</b></p>
-        <p>
-            {{ page.specify_ai_if_other }}
-        </p>
-    {% endif %}
-
-
-    <!-- Link to return to the Gallery -->
-    <p><a href="{{ page.get_parent.url }}">Return to the Gallery</a></p>
+      </div>
+    </section>  <!-- End of the White "Card" container -->
 
 {% endblock %}
 
