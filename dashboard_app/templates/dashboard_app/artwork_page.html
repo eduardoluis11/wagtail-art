@@ -20,10 +20,15 @@
           <div class="card">
             <div class="card-body">
 
-
+                <br>
+                <!-- Title of the Artwork -->
                 <h1>{{ page.title }}</h1>
-                <p class="meta">{{ page.date }}</p>
 
+                <br>
+                <br>
+                {#                <br>#}
+
+                <!-- Brief Description of the Artwork -->
                 <div class="intro">{{ page.intro }}</div>
 
                 {#    <!-- The image itself -->#}
@@ -77,6 +82,15 @@
                 <!-- Prompts used for creating the image -->
                 <h4>Prompt used:</h4>
                 {{ page.prompt|richtext }}
+
+                <br>
+                <br>
+
+                <!-- Date of Creation of the Artwork -->
+                <p>
+                    <b>Date of Creation</b>
+                </p>
+                <p>{{ page.date }}</p>
 
                 <br>
                 <br>
