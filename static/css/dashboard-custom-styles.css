@@ -1,0 +1,22 @@
+/* Custom styles for the Dashboard app.
+*/
+
+/* Styles that push the Footer to the Bottom of tha page, even if the page doesn't have any content in it.
+
+To make the footer always stick to the bottom of the page, you can use CSS Flexbox. You need to make the body a flex
+container and set the direction of the flex items to column. Then, you can make the main content grow to take up any
+remaining space, pushing the footer to the bottom.
+
+This will make the main content area grow to take up any remaining space, pushing the footer to the bottom of the page.
+
+*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main#main {
+    flex-grow: 1;
+}
+/* End of the styles that push the Footer to the Bottom of the Page. */

@@ -1,0 +1,69 @@
+/* Estilos del Banner de Consentimiento de Cookies.
+
+Este código fue inspirado en los estilos del Banner de Consentimiento de Godson Thomas del siguiente enlace:
+https://github.com/Godsont/Cookie-Consent-Banner/edit/master/style.css .
+
+Los estilos en general son modificados por Bootstrap, NO por estos estilos. */
+
+.container-banner-cookies {
+    /* Esto oculta el banner de las cookies por debajo del navegador web */
+    bottom: -100%;
+
+    /* Esto agrega una animación que hace que el banner salga de abajo de la pantalla */
+    transition: 500ms;
+    position: fixed;
+    background-color: green;
+    color: white;
+
+    /* Esto hace que el banner esté pegado a los márgenes laterales de la ventana del navegador */
+    right: 0;
+    left: 0;
+
+    /* Esto centra el texto del banner de las cookies */
+    padding: 0 2rem;
+}
+
+.container-banner-cookies p {
+    margin: 20px 0;
+}
+
+.container-banner-cookies body {
+    font-family: "Arial", sans-serif;
+}
+
+/* Estilos del botón de "Acepto" del banner de las cookies */
+.boton-aceptar-cookies {
+    cursor: pointer;
+    background-color: black;
+
+    margin-bottom: 20px;
+
+    color: white;
+
+    border-radius: 12px;
+
+    padding: 16px 44px;
+
+    /* Esto elimina el borde del botón */
+    border: 0;
+}
+
+
+
+
+
+/* Después de unos segundos, se activará el banner de las cookies. Esto hará que el banner de las cookies se mueva hacia
+arriba y se haga visible. */
+.container-banner-cookies.active {
+
+    /* Esto hace que el banner de las cookies esté por encima de todo */
+    z-index: 2000;
+
+    /* Esto hacé que el banner de las cookies se mueva hacia arriba */
+    bottom: 0;
+}
+
+/* Esto hace que los enlaces que aparecen en el banner de las cookies se hagan blancos */
+.cookie-container a {
+    color: white;
+}
