@@ -153,6 +153,15 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
+""" Ideally, these are the 3 settings that I need to put here to make the static files work with the S3 Bucket that 
+I'm using from Backblaze. 
+
+I'LL ACTIVATE THEM LATER.
+"""
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [os.path.join(PROJECT_DIR, 'static')]
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 

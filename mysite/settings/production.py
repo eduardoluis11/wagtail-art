@@ -26,6 +26,29 @@ CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+""" Ideally, these are the settings that I need to detect my static files from my S3 Bucket in Backblaze, so that my 
+fly.io hosting server can detect my static files and stop giving me the "Internal Server Error".
+"""
+# import boto3
+# from botocore.client import Config
+# from storages.backends.s3boto3 import S3Boto3Storage
+#
+# AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+# AWS_LOCATION = 'static'
+#
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+# STATICFILES_STORAGE = 'mysite.settings.production.StaticStorage'
+# STATIC_ROOT = 'static'
+#
+# class StaticStorage(S3Boto3Storage):
+#     location = 'static'
+#     default_acl = 'public-read'
+#     file_overwrite = False
+
 MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
 STORAGES["staticfiles"]["BACKEND"] = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
