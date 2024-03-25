@@ -2210,6 +2210,119 @@ Please replace `'AWS_ACCESS_KEY_ID'`, `'AWS_SECRET_ACCESS_KEY'`, and `'AWS_STORA
 
 After making these changes, run the command `python manage.py collectstatic` to collect static files and upload them to your S3 bucket.
 
+==============================================================================================================
+
+/fix I fixed that. However, i still failed to properly deploy my web app into my fly.io hosting server. Once again, the problem was while executing the migrations. This was the new error message. Tell me what the error is, and how to fix it:
+
+Running wagtail-art-13 release_command: python manage.py migrate --noinput
+
+-------
+ ✖ release_command failed
+-------
+Error release_command failed running on machine 32875003f65078 with exit code 1.
+Check its logs: here's the last 100 lines below, or run 'fly logs -i 32875003f65078':
+  Pulling container image registry.fly.io/wagtail-art-13:deployment-01HSVBXP67PGSJWHA7G6NRQTJD
+  Successfully prepared image registry.fly.io/wagtail-art-13:deployment-01HSVBXP67PGSJWHA7G6NRQTJD (12.101240702s)
+  Configuring firecracker
+  [    0.037882] PCI: Fatal: No config space access function found
+   INFO Starting init (commit: 02be9e0)...
+   INFO Preparing to run: `python manage.py migrate --noinput` as root
+   INFO [fly api proxy] listening at /.fly/api
+  2024/03/25 18:20:16 listening on [fdaa:6:f71b:a7b:12:8229:79d1:2]:22 (DNS: [fdaa::3]:53)
+  Machine created and started in 13.303s
+  System check identified some issues:
+  WARNINGS:
+  ?: (wagtailadmin.W004) The AWS_S3_FILE_OVERWRITE setting is set to True
+        HINT: This should be set to False. The incorrect setting can cause documents and other user-uploaded files to be silently overwritten or deleted.
+  Traceback (most recent call last):
+    File "/code/manage.py", line 10, in <module>
+      execute_from_command_line(sys.argv)
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+      utility.execute()
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/__init__.py", line 436, in execute
+      self.fetch_command(subcommand).run_from_argv(self.argv)
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/base.py", line 412, in run_from_argv
+      self.execute(*args, **cmd_options)
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/base.py", line 458, in execute
+      output = self.handle(*args, **options)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/base.py", line 106, in wrapper
+      res = handle_func(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/lib/python3.11/site-packages/django/core/management/commands/migrate.py", line 117, in handle
+      executor = MigrationExecutor(connection, self.migration_progress_callback)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/executor.py", line 18, in __init__
+      self.loader = MigrationLoader(self.connection)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/loader.py", line 58, in __init__
+      self.build_graph()
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/loader.py", line 276, in build_graph
+      self.graph.validate_consistency()
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/graph.py", line 198, in validate_consistency
+      [n.raise_error() for n in self.node_map.values() if isinstance(n, DummyNode)]
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/graph.py", line 198, in <listcomp>
+      [n.raise_error() for n in self.node_map.values() if isinstance(n, DummyNode)]
+       ^^^^^^^^^^^^^^^
+    File "/usr/local/lib/python3.11/site-packages/django/db/migrations/graph.py", line 60, in raise_error
+      raise NodeNotFoundError(self.error_message, self.key, origin=self.origin)
+  django.db.migrations.exceptions.NodeNotFoundError: Migration blog.0011_termsandconditionspage dependencies reference nonexistent parent node ('wagtailcore', '0091_remove_revision_submitted_for_moderation')
+   INFO Main child exited normally with code: 1
+   INFO Starting clean up.
+   WARN hallpass exited, pid: 315, status: signal: 15 (SIGTERM)
+   WARN can't run hallpass: an unhandled IO error occurred: No such file or directory (os error 2)
+  ERROR error opening /dev/kmsg: No such file or directory (os error 2)
+  [    4.324834] reboot: Restarting system
+  machine restart policy set to 'no', not restarting
+-------
+Checking DNS configuration for wagtail-art-13.fly.dev
+Error: release command failed - aborting deployment. error release_command machine 32875003f65078 exited with non-zero status of 1
 
 
+
+
+**Problem 1: AWS_S3_FILE_OVERWRITE setting warning**
+
+The warning message indicates that the `AWS_S3_FILE_OVERWRITE` setting is set to `True`. This can cause documents and other user-uploaded files to be silently overwritten or deleted. It is recommended to set this to `False`.
+
+Here is how the relevant line in your `settings.py` file looks before and after the fix:
+
+**Before:**
+```python
+AWS_S3_FILE_OVERWRITE = True
+```
+
+**After:**
+```python
+AWS_S3_FILE_OVERWRITE = False
+```
+
+**Problem 2: Migration Error**
+
+The error message indicates that there is a missing migration dependency. The migration `blog.0011_termsandconditionspage` is trying to reference a nonexistent parent node (`wagtailcore`, `0091_remove_revision_submitted_for_moderation`).
+
+To fix this, you need to ensure that all the migrations are in place and that there are no circular dependencies. If the migration `0091_remove_revision_submitted_for_moderation` is not needed, you can remove it from the dependencies of the `blog.0011_termsandconditionspage` migration.
+
+Here is how the relevant line in your `blog/migrations/0011_termsandconditionspage.py` file looks before and after the fix:
+
+**Before:**
+```python
+dependencies = [
+    ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
+    ...
+]
+```
+
+**After:**
+```python
+dependencies = [
+    ...
+]
+```
+
+Please note that the "After" code block is just an example. You need to replace the `...` with the actual dependencies for the `blog.0011_termsandconditionspage` migration, excluding the `('wagtailcore', '0091_remove_revision_submitted_for_moderation')` dependency.
+
+Please ensure to run `python manage.py makemigrations` and `python manage.py migrate` after making these changes.
+
+==============================================================================================================
 
