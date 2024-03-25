@@ -54,9 +54,13 @@ telepath==0.3.1
 tqdm==4.66.2
 typing_extensions==4.10.0
 tzdata==2024.1
-urllib3==2.2.0
+urllib3==2.2.1
 wagtail==6.0.1
 wagtail-ai==2.0.1
 webencodings==0.5.1
 Willow==1.8.0
-
+gunicorn>=21.2.0,<22.0.0
+psycopg[binary]>=3.1.10,<3.2.0
+dj-database-url>=2.1.0,<3.0.0
+whitenoise>=5.0,<5.1
+django-storages[s3]==1.14.2

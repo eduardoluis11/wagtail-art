@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# This will make my .gitignore to ignore all of my .env files (including my .env.production file)
+.env*
+
 # C extensions
 *.so
 
