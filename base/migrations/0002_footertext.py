@@ -6,11 +6,23 @@ import wagtail.fields
 import wagtail.models
 from django.db import migrations, models
 
+from wagtail.snippets.models import register_snippet
+
+from django.db import models, migrations
+from django.db.models import deletion
+# from wagtail.core import fields, models as wagtail_models
+
+# from wagtail.core.models import Revision  # Import the correct model
+
+
+
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
         ('base', '0001_initial'),
+        # This migration does NOT exist
         # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
@@ -28,8 +40,76 @@ class Migration(migrations.Migration):
                 ('expire_at', models.DateTimeField(blank=True, null=True, verbose_name='expiry date/time')),
                 ('expired', models.BooleanField(default=False, editable=False, verbose_name='expired')),
                 ('body', wagtail.fields.RichTextField()),
+                # If the 'wagtailcore.revision' model does not exist or has been deleted, you can remove the references to it
+                # ('latest_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', verbose_name='latest revision')),
+                # ('live_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', verbose_name='live revision')),
+
+                # BUGGY CODE: I can't deploy my app with this.
+                # THE CAUSE OF THE BUG IS BECAUSE THESE LINES OF CODE Don't work with Postgres!
+                # ('latest_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore_revision', verbose_name='latest revision')),
+                # ('live_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore_revision', verbose_name='live revision')),
+
+                # ('latest_revision',
+                #  models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                #                    related_name='+', to='wagtailcore_revision', verbose_name='latest revision')),
+                # ('live_revision',
+                #  models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                #                    related_name='+', to='wagtailcore_revision', verbose_name='live revision')),
+
+                # ('latest_revision', models.ForeignKey(
+                #     blank=True,
+                #     editable=False,
+                #     null=True,
+                #     on_delete=models.SET_NULL,
+                #     related_name='+',
+                #     to='Revision',  # Use the correct model name
+                #     verbose_name='latest revision'
+                # )),
+                #
+                # ('live_revision', models.ForeignKey(
+                #     blank=True,
+                #     editable=False,
+                #     null=True,
+                #     on_delete=models.SET_NULL,
+                #     related_name='+',
+                #     to='Revision',  # Use the correct model name
+                #     verbose_name='live revision'
+                # )),
+
+                # ('latest_revision',
+                #  models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+',
+                #                    to='wagtailcore.revision', verbose_name='latest revision')),
+                # ('live_revision',
+                #  models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+',
+                #                    to='wagtailcore.revision', verbose_name='live revision')),
+
+                # ('latest_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore.revision', verbose_name='latest revision')),
+                # ('live_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore.revision', verbose_name='live revision')),
+
+                # ('latest_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore.Revision', verbose_name='latest revision')),
+                # ('live_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=deletion.SET_NULL, related_name='+', to='wagtailcore.Revision', verbose_name='live revision')),
+
+
+                # THIS WORKS ON DJANGO 5 with psycopg2==2.9.9!
                 ('latest_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.revision', verbose_name='latest revision')),
                 ('live_revision', models.ForeignKey(blank=True, editable=False, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.revision', verbose_name='live revision')),
+                # ('latest_revision', models.ForeignKey(
+                #     blank=True,
+                #     null=True,
+                #     on_delete=models.SET_NULL,  # Use models.SET_NULL instead of django.db.models.deletion.SET_NULL
+                #     related_name='+',
+                #     to='wagtailcore.Revision',  # Note the capital 'R' in 'Revision'
+                #     verbose_name='latest revision'
+                # )),
+                # ('live_revision', models.ForeignKey(
+                #     blank=True,
+                #     null=True,
+                #     on_delete=models.SET_NULL,
+                #     related_name='+',
+                #     to='wagtailcore.Revision',
+                #     verbose_name='live revision'
+                # )),
+
                 ('locale', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='wagtailcore.locale')),
             ],
             options={

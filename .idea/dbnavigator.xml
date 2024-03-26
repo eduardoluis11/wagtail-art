@@ -24,13 +24,17 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" object-ref="schemas/db/tables/django_migrations" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="ca15e921-4190-4789-9a82-b660b71c2fa9" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_artworkpage" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.django_migrations" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailcore_revision" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailimages_image" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_productpagegalleryimage" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_artworkpagegalleryimage" active-filter-id="EMPTY_FILTER" />
@@ -58,7 +62,7 @@
           <tns-folder value="" />
           <tns-profile value="" />
           <files>
-            <file path="D:\Wistarr\Portfolio\Galeria de Arte Dashboard\codigo\wagtail-art-nuevo\wagtail-art\db.sqlite3" schema="db" />
+            <file path="C:\Users\Eduar\Desktop\Subir a fly io 22 Marzo 24\wagtail-art\db.sqlite3" schema="db" />
           </files>
           <type value="NONE" />
           <user value="" />

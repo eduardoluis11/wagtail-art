@@ -17,6 +17,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# Aquí se guarda la clave de Django en el archivo .env, es decir, en las
+# variables de entorno (fuente: https://codinggear.blog/django-environment-variables/)
+from dotenv import load_dotenv
+
+
 # import wagtail_ai.prompts
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -100,9 +105,23 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+
+    # # This is the default database that Django uses. It's the SQLite one.
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+    # }
+    
+    # Base de datos de PostgreSQL.
+    # PONER LAS CREDENCIALES DE TU BASE DE DATOS en el .env.
+    # TENGO QUE PONER LAS CREDENCIALES MANUALMENTE si quiero hacer migraciones.
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 

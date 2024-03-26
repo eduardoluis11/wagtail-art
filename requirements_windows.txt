@@ -59,4 +59,5 @@ wagtail==6.0.1
 wagtail-ai==2.0.1
 webencodings==0.5.1
 Willow==1.8.0
+psycopg2==2.9.9
 
