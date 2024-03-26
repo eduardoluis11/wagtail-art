@@ -52,6 +52,11 @@ fly.io hosting server can detect my static files and stop giving me the "Interna
 MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
 STORAGES["staticfiles"]["BACKEND"] = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+""" S3 Bucket settings for Backblaze.
+
+The warning message indicates that the AWS_S3_FILE_OVERWRITE setting is set to True. This can cause documents and other 
+user-uploaded files to be silently overwritten or deleted. It is recommended to set this to False.
+"""
 if "AWS_STORAGE_BUCKET_NAME" in os.environ:
     AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
@@ -66,6 +71,9 @@ if "AWS_STORAGE_BUCKET_NAME" in os.environ:
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
+
+    # This is to prevent a warning message from appearing while deploying my web app to fly.io
+    AWS_S3_FILE_OVERWRITE = False
 
 LOGGING = {
     "version": 1,
