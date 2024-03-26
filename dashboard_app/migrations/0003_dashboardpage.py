@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('blog', '0012_privacypolicypage'),
         ('dashboard_app', '0002_productindexpage'),
-        ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
+        # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
     operations = [

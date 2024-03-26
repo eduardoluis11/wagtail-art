@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('dashboard_app', '0009_artworkpage_ai_used_artworkpage_specify_ai_if_other'),
-        ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
+        # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
     operations = [

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('base', '0002_footertext'),
-        ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
+        # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
     operations = [
