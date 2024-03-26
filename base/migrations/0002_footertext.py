@@ -14,6 +14,9 @@ from django.db.models import deletion
 
 # from wagtail.core.models import Revision  # Import the correct model
 
+# ESTO PARECE HABER CORREGIDO EL BUG DE POSTGRES Y wagtailcore.revision!
+from wagtail.models import Revision
+
 
 
 

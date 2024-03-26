@@ -24,15 +24,14 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" object-ref="schemas/db/tables/django_migrations" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="ca15e921-4190-4789-9a82-b660b71c2fa9" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.dashboard_app_artworkpage" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailcore_page" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.django_migrations" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailcore_revision" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="ca15e921-4190-4789-9a82-b660b71c2fa9" dataset="db.wagtailimages_image" active-filter-id="EMPTY_FILTER" />

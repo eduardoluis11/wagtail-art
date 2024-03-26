@@ -106,23 +106,24 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 DATABASES = {
 
-    # # This is the default database that Django uses. It's the SQLite one.
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    # }
-    
-    # Base de datos de PostgreSQL.
-    # PONER LAS CREDENCIALES DE TU BASE DE DATOS en el .env.
-    # TENGO QUE PONER LAS CREDENCIALES MANUALMENTE si quiero hacer migraciones.
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
+    # This is the default database that Django uses. It's the SQLite one.
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
+    
+    # # Base de datos de PostgreSQL.BUG
+    # # PONER LAS CREDENCIALES DE TU BASE DE DATOS en el .env.
+    # # I need to manually type the postgres credentials here if I want to use the "makemigrations" and "migrate"
+    # # commands.
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME':
+    #     'USER':
+    #     'PASSWORD':
+    #     'HOST':
+    #     'PORT':
+    # }
 }
 
 
