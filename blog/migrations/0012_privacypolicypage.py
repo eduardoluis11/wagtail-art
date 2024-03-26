@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('blog', '0011_termsandconditionspage'),
-        ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
+        # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
     operations = [
