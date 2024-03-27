@@ -140,10 +140,16 @@ Source of the Wagtail code of this file: https://docs.wagtail.org/en/stable/gett
                         <!-- Intro and text of the article.   -->
                         <!-- I removed the div with the "entry-content" class, since it ruined the 1x2 Bootstrap Grid,
                         which was removing the sidebar on the right, and putting it at the bottom of the page.
+
+                        I want to add more space between the intro and the body of the article, so I'll add a <br> tag.
                         -->
                         {#                        <div class="entry-content">#}
-                            {{ page.intro }}
+                            <!-- Intro of the entry. This will also show up in the Blog Entry list. -->
+                            <b>{{ page.intro }}</b>
+                            <br>
+                            <br>
 
+                            <!-- Body of the entry. -->
                             {{ page.body|richtext }}
 
                             <!-- This renders the images, if the Blog Entry has any.
