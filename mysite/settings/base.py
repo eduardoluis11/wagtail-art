@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "dashboard_app",     # <- Our new dashboard_app for employees app.
     "wagtail.contrib.settings",     # <- Add this to add models across all the web pages in the project
     "portfolio",     # <- Our new portfolio app.
-    # "wagtail_ai",    # <- Wagtail AI's app so that I can use ChatGPT.
+    "wagtail_ai",    # <- Wagtail AI's app so that I can use ChatGPT.
     "home",
     "search",
     "wagtail.contrib.forms",
@@ -217,25 +217,25 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
-# """ This installs the Wagtail AI pip module so that I can use ChatGPT to generate me entries on my blog while
-# editing entries on the "Wordpress" stile text editor of each blog entry. The ChatGPT module also lets me fix any
-# grammar mistakes.
-# """
-# WAGTAIL_AI = {
-#     "BACKENDS": {
-#         "default": {
-#             "CLASS": "wagtail_ai.ai.llm.LLMBackend",
-#             "CONFIG": {
-#                 # Model ID recognizable by the "LLM" library.
-#                 # This is for using OpenAI's ChatGPT Default free model.
-#                 "MODEL_ID": "gpt-3.5-turbo",
+""" This installs the Wagtail AI pip module so that I can use ChatGPT to generate me entries on my blog while
+editing entries on the "Wordpress" stile text editor of each blog entry. The ChatGPT module also lets me fix any
+grammar mistakes.
+"""
+WAGTAIL_AI = {
+    "BACKENDS": {
+        "default": {
+            "CLASS": "wagtail_ai.ai.llm.LLMBackend",
+            "CONFIG": {
+                # Model ID recognizable by the "LLM" library.
+                # This is for using OpenAI's ChatGPT Default free model.
+                "MODEL_ID": "gpt-3.5-turbo",
 
-#                 # This is for inserting my ChatGPT's API Key
-#                 "INIT_KWARGS": {"key": os.environ.get('OPENAI_API_KEY')},
-#             },
-#         }
-#     }
-# }
+                # This is for inserting my ChatGPT's API Key
+                "INIT_KWARGS": {"key": os.environ.get('OPENAI_API_KEY')},
+            },
+        }
+    }
+}
 
 """ Custom prompts for the ChatGPT model. 
 
