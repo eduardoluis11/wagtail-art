@@ -1,22 +1,49 @@
-<!-- Source of this code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html  -->
+<!-- Page that displays the Results of all Blog pages with the selected Tag.
 
-{% extends "base.html" %}
+If you click on a tag in the List of Blog Entries (in the Blog Index page), you will be taken to this page, which will
+display all Blog pages that have that tag.
+
+Source of some of this code: https://docs.wagtail.org/en/stable/getting_started/tutorial.html
+
+-->
+
+{% extends "blog-layout.html" %}
 {% load wagtailcore_tags %}
 
 {% block content %}
 
-    {% if request.GET.tag %}
-        <h4>Showing pages tagged "{{ request.GET.tag }}"</h4>
-    {% endif %}
+        <!-- ======= Title Section pf the search function =======
+    -->
+    <section id="blog" class="blog">
 
-    {% for blogpage in blogpages %}
-        <p>
-            <strong><a href="{% pageurl blogpage %}">{{ blogpage.title }}</a></strong><br>
-            <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br>
-        </p>
+        <!-- ======= Container with the same margins as the Navbar =======
 
-    {% empty %}
-        No pages found with that tag.
-    {% endfor %}
+        I used the <a> tag for the title so that the title has the styles for the titles from the FlexStart theme.
+        -->
+        <div class="container">
+            <article class="entry entry-single">
+                <h2 class="entry-title">
+                    {#                    <a>Search</a>#}
+                    {% if request.GET.tag %}
+                        <a>Showing pages tagged "{{ request.GET.tag }}"</a>
+                    {% endif %}
+                </h2>
+
+
+
+
+            {% for blogpage in blogpages %}
+                <p>
+                    <strong><a href="{% pageurl blogpage %}">{{ blogpage.title }}</a></strong><br>
+                    <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br>
+                </p>
+
+            {% empty %}
+                No pages found with that tag.
+            {% endfor %}
+
+            </article> <!-- End of the Card Container with all the Text of the Tag Search Function -->
+        </div> <!-- End of the Container with the Navbar's margins -->
+    </section> <!-- End of the Title Section of the Tag Search function -->
 
 {% endblock %}
