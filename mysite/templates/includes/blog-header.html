@@ -15,9 +15,13 @@
     {#    <a href="#main" class="skip-link">Skip to content</a>#}
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <!-- Navbar's logo. This will redirect you to the home page. -->
+      <!-- Navbar's logo. This will redirect you to the home page.
+
+      I eliminated the image logo since, in some screens, it made the first word of the logo to be on top
+      of the second word. That is, the logo would look ugly in screens of certain sizes.
+      -->
       <a href="{% pageurl site_root %}" class="logo d-flex align-items-center">
-        <img src="{% static 'flexstart/assets/img/logo.png' %}" alt="">
+        {#        <img src="{% static 'flexstart/assets/img/logo.png' %}" alt="">#}
         <span>Eduardo Fox</span>
       </a>
 
