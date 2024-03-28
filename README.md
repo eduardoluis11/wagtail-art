@@ -1,12 +1,20 @@
 # wagtail-art
 
-An art gallery web app made in Django using Wagtail. This is a personal portfolio project.
+A blog and art gallery Django web app made by Eduardo Salinas that uses the Wagtail framework. This is a personal portfolio project.
 
-## Copyright Information
+## Notes
 
-Most of the code in this web app was taken from Wagtail's official documentation and tutorials, which can be found [here](https://docs.wagtail.io/en/stable/getting_started/index.html).
+### Wagtail AI and the requirements.txt file
+
+The requirements.txt file doesn't include the Wagtail AI package because Wagtail AI only runs in Python 3.11 and over, but the requirements.txt file made to deploy the web app in hosting servers that use Python 3.9. So, if you end up deploying my web app into a hosting server, you won't be able to use the ChatGPT API in my Wagtail web app.
+
+If you want to test the Wagtail AI feature, please install the web app locally in a Windows machine using the requirements found in the requirements_windows.txt file. This file works with Python versions 3.11 and over, and runs the ChatGPT API on my Wagtail app.
 
 ## Legal Information
+
+### Copyright Information
+
+Most of the code in this web app was taken from Wagtail's official documentation and tutorials, which can be found [here](https://docs.wagtail.io/en/stable/getting_started/index.html).
 
 ### Use of ChatGPT
 
