@@ -6,7 +6,7 @@ A blog and art gallery Django web app made by Eduardo Salinas that uses the Wagt
 
 ### Wagtail AI and the requirements.txt file
 
-The requirements.txt file doesn't include the Wagtail AI package because Wagtail AI only runs in Python 3.11 and over, but the requirements.txt file made to deploy the web app in hosting servers that use Python 3.9. So, if you end up deploying my web app into a hosting server, you won't be able to use the ChatGPT API in my Wagtail web app.
+The requirements.txt file doesn't include the Wagtail AI package because Wagtail AI only runs in Python 3.11 and over, but the requirements.txt file only has packages that allow you to deploy the web app in hosting servers that use Python 3.9. So, if you end up deploying my web app into a hosting server, you won't be able to use the ChatGPT API in my Wagtail web app.
 
 If you want to test the Wagtail AI feature, please install the web app locally in a Windows machine using the requirements found in the requirements_windows.txt file. This file works with Python versions 3.11 and over, and runs the ChatGPT API on my Wagtail app.
 
