@@ -6,7 +6,6 @@ from wagtail.contrib.forms.panels import FormSubmissionsPanel
 from django.contrib.auth import logout
 
 # This should let me modify the form fields in the Wagtail admin panel in the "Field Type" menu.
-from wagtail.contrib.forms.models import FORM_FIELD_CHOICES
 
 
 # Create your models here.
@@ -239,28 +238,20 @@ from wagtail.admin.panels import FieldPanel, FieldRowPanel
 from wagtail.search import index
 
 # I need all this libraries to create all the functionalities for the Product Registration Page
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 # from wagtail.core.models import Page
 # from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 # from wagtail.contrib.forms.views import process_form_submission
 
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase
+from modelcluster.fields import ParentalKey
 
 # New imports added for ParentalKey, Orderable, InlinePanel
 # Add these:
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from wagtail.models import Page, Orderable
-from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.search import index
-from wagtail.snippets.models import register_snippet
+from wagtail.models import Orderable
+from wagtail.admin.panels import InlinePanel, MultiFieldPanel
 
 # This will let me import all the blog pages in the blog_page.html for the side navbar.
 from django.shortcuts import render
@@ -271,23 +262,14 @@ from django.core.paginator import Paginator
 from wagtail.images.models import Image
 
 # These will let me create an Abstract Form to create a front-end form to create new instances of Artwork Pages.
-from wagtail.contrib.forms.models import AbstractForm, AbstractFormField
-from modelcluster.fields import ParentalKey
 
 # I will use Django forms to create the form for creating instances of Artwork Pages.
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 # from wagtail.core.models import Page
 # from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 
 # from wagtail.contrib.forms.views import process_form_submission
-from .forms import AddArtworkForm, AddProductForm
-from django.core.exceptions import ObjectDoesNotExist
-import datetime
+from .forms import AddProductForm
 
 
 # from django import forms
@@ -305,8 +287,6 @@ import datetime
 # from .models import Producto, PrecioDeCompraDelProveedor, ImagenSecundariaDeUnProducto
 
 
-from django.core.exceptions import ObjectDoesNotExist
-import datetime
 
 
 # This is the Index page for the Dashboard for Employees app . This will be the parent page for all of my blog posts.

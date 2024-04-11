@@ -1,15 +1,10 @@
 from django.shortcuts import render
 
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 # This imports my forms from forms.py
-from .forms import AddArtworkForm, AddProductForm
+from .forms import AddProductForm
 
 # This imports the models
-from .models import ArtworkPage
 
 # Create your views here.
 
