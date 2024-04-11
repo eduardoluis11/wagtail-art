@@ -4,20 +4,19 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0010_artworkregistrationpage_formfield'),
+        ("dashboard_app", "0010_artworkregistrationpage_formfield"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='formfield',
-            name='page',
+            model_name="formfield",
+            name="page",
         ),
         migrations.DeleteModel(
-            name='ArtworkRegistrationPage',
+            name="ArtworkRegistrationPage",
         ),
         migrations.DeleteModel(
-            name='FormField',
+            name="FormField",
         ),
     ]

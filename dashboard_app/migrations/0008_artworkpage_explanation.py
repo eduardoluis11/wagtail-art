@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0007_artworkpage_copyright'),
+        ("dashboard_app", "0007_artworkpage_copyright"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='artworkpage',
-            name='explanation',
-            field=models.TextField(blank=True, null=True, verbose_name='Please, elaborate'),
+            model_name="artworkpage",
+            name="explanation",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Please, elaborate"
+            ),
         ),
     ]

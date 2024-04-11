@@ -4,20 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0008_artworkpage_explanation'),
+        ("dashboard_app", "0008_artworkpage_explanation"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='artworkpage',
-            name='ai_used',
-            field=models.CharField(choices=[('Midjourney', 'Midjourney'), ('Bing / Copilot Designer', 'Bing / Copilot Designer'), ('DALL-E', 'DALL-E'), ('Ideogram', 'Ideogram'), ('Other', 'Other')], default='Midjourney', max_length=100, verbose_name='AI used'),
+            model_name="artworkpage",
+            name="ai_used",
+            field=models.CharField(
+                choices=[
+                    ("Midjourney", "Midjourney"),
+                    ("Bing / Copilot Designer", "Bing / Copilot Designer"),
+                    ("DALL-E", "DALL-E"),
+                    ("Ideogram", "Ideogram"),
+                    ("Other", "Other"),
+                ],
+                default="Midjourney",
+                max_length=100,
+                verbose_name="AI used",
+            ),
         ),
         migrations.AddField(
-            model_name='artworkpage',
-            name='specify_ai_if_other',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Specify AI if 'Other'"),
+            model_name="artworkpage",
+            name="specify_ai_if_other",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                verbose_name="Specify AI if 'Other'",
+            ),
         ),
     ]

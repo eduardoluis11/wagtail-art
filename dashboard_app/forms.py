@@ -1,6 +1,5 @@
-""" Here are all the Forms that I'll use in my web app.
+"""Here are all the Forms that I'll use in my web app."""
 
-"""
 # This will let me use Django forms
 from django import forms
 
@@ -90,8 +89,11 @@ class AddProductForm(forms.Form):
 
     # main_image = forms.ImageField(upload_to='products/main-images')
     # Main Image
-    main_image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'max_upload_size': 60,
-                                                                         'class': 'form-control'}))
+    main_image = forms.ImageField(
+        widget=forms.ClearableFileInput(
+            attrs={"max_upload_size": 60, "class": "form-control"}
+        )
+    )
 
     # # Technical Sheet (Optional)
     # technical_sheet = forms.FileField(required=False)
@@ -123,17 +125,17 @@ Remember that Django forms use "forms.Type_of_Field" to create the fields, NOT "
 class AddArtworkForm(forms.Form):
     # This is for the dropdown menu that will ask the user if the image has copyright content
     COPYRIGHT_CHOICES = [
-        ('Yes', 'Yes'),
-        ('No', 'No'),
+        ("Yes", "Yes"),
+        ("No", "No"),
     ]
 
     # These are the choices for the dropdown menu to select the AI used for creating the image
     AI_CHOICES = [
-        ('Midjourney', 'Midjourney'),
-        ('Bing / Copilot Designer', 'Bing / Copilot Designer'),
-        ('DALL-E', 'DALL-E'),
-        ('Ideogram', 'Ideogram'),
-        ('Other', 'Other'),
+        ("Midjourney", "Midjourney"),
+        ("Bing / Copilot Designer", "Bing / Copilot Designer"),
+        ("DALL-E", "DALL-E"),
+        ("Ideogram", "Ideogram"),
+        ("Other", "Other"),
     ]
 
     # Date of the image. The text "Image date" is like the verbose name / label from traditional Django models.
@@ -149,23 +151,22 @@ class AddArtworkForm(forms.Form):
     prompt = forms.CharField()
 
     # Does the image have any form of copyright content?
-    copyright = forms.ChoiceField(choices=COPYRIGHT_CHOICES, initial='No',
-                                  label="Does it have copyright content?")
+    copyright = forms.ChoiceField(
+        choices=COPYRIGHT_CHOICES, initial="No", label="Does it have copyright content?"
+    )
 
     # Please, explain why this image has copyright content. OPTIONAL
     explanation = forms.CharField(required=False, label="Please, elaborate")
 
     # AI used to create the image. It needs to be a Dropdown Menu.
-    ai_used = forms.ChoiceField(choices=AI_CHOICES, initial='Midjourney', label="AI used")
+    ai_used = forms.ChoiceField(
+        choices=AI_CHOICES, initial="Midjourney", label="AI used"
+    )
 
     # Specify the name of the AI if the AI selected is "Other" (OPTIONAL)
-    specify_ai_if_other = forms.CharField(max_length=100, required=False, label="Specify AI if 'Other'")
-
-
-
-
-
-
+    specify_ai_if_other = forms.CharField(
+        max_length=100, required=False, label="Specify AI if 'Other'"
+    )
 
 
 # class FormularioRegistrarProductos(forms.Form):
@@ -227,4 +228,3 @@ class AddArtworkForm(forms.Form):
 #     # Ficha Técnica (Opcional)
 #     ficha_tecnica = forms.FileField(required=False,
 #                                     widget=forms.ClearableFileInput(attrs={'class': 'form-control-customizado'}))
-

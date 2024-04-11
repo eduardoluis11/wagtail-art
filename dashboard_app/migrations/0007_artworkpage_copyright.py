@@ -4,15 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0006_artworkpagegalleryimage'),
+        ("dashboard_app", "0006_artworkpagegalleryimage"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='artworkpage',
-            name='copyright',
-            field=models.CharField(choices=[('Yes', 'Yes'), ('No', 'No')], default='No', max_length=3, verbose_name='Does it have copyright content?'),
+            model_name="artworkpage",
+            name="copyright",
+            field=models.CharField(
+                choices=[("Yes", "Yes"), ("No", "No")],
+                default="No",
+                max_length=3,
+                verbose_name="Does it have copyright content?",
+            ),
         ),
     ]

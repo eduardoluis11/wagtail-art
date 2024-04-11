@@ -221,9 +221,6 @@ from wagtail.contrib.forms.models import FORM_FIELD_CHOICES
 #         return f"{self.rfc} - {self.nombre_del_proveedor}"
 
 
-
-
-
 # Wagtail Pages
 
 
@@ -246,6 +243,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 # from wagtail.core.models import Page
 # from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
@@ -281,9 +279,11 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 # from wagtail.core.models import Page
 # from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+
 # from wagtail.contrib.forms.views import process_form_submission
 from .forms import AddArtworkForm, AddProductForm
 from django.core.exceptions import ObjectDoesNotExist
@@ -298,14 +298,11 @@ import datetime
 # from django.apps import apps
 
 
-
-
 # # This takes all my forms from my forms.py file. I NEED TO CHANGE THE NAMES OF THE FORMS LATER.
 # from .forms import FormularioRegistrarProductos, FormsetImagenesSecundariasParaUnProducto
 
 # # These are the models that I'll need to use. I NEED TO CREATE THESE MODELS LATER.
 # from .models import Producto, PrecioDeCompraDelProveedor, ImagenSecundariaDeUnProducto
-
 
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -316,16 +313,16 @@ import datetime
 class DashboardIndexPage(Page):
     intro = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
-        FieldPanel('intro')
-    ]
+    content_panels = Page.content_panels + [FieldPanel("intro")]
 
     # This correctly sends the URL from that selected slug / URL to the template as a Jinja variable. However, this
     # would only work if I copied and pasted the Side Navbar in every single Dashboard page. So, instead of using this,
     # I will hard-code the URLs in the Side Navbar in the template, and I won't use this snippet.
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context['artwork_index_page'] = ArtworkIndexPage.objects.get(slug='list-of-artworks')
+        context["artwork_index_page"] = ArtworkIndexPage.objects.get(
+            slug="list-of-artworks"
+        )
         return context
 
 
@@ -339,14 +336,14 @@ class DashboardPage(Page):
     body = RichTextField(blank=True)
 
     search_fields = Page.search_fields + [
-        index.SearchField('intro'),
-        index.SearchField('body'),
+        index.SearchField("intro"),
+        index.SearchField("body"),
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('date'),
-        FieldPanel('intro'),
-        FieldPanel('body'),
+        FieldPanel("date"),
+        FieldPanel("intro"),
+        FieldPanel("body"),
     ]
 
 
@@ -400,7 +397,7 @@ class ArtworkIndexPage(Page):
     #     return context
 
     content_panels = Page.content_panels + [
-        FieldPanel('intro'),
+        FieldPanel("intro"),
     ]
 
 
@@ -425,20 +422,19 @@ panel to the Wagtail admin interface for the copyright field, allowing it to be 
 
 
 class ArtworkPage(Page):
-
     # This is for the dropdown menu that will ask the user if the image has copyright content
     COPYRIGHT_CHOICES = [
-        ('Yes', 'Yes'),
-        ('No', 'No'),
+        ("Yes", "Yes"),
+        ("No", "No"),
     ]
 
     # These are the choices for the dropdown menu to select the AI used for creating the image
     AI_CHOICES = [
-        ('Midjourney', 'Midjourney'),
-        ('Bing / Copilot Designer', 'Bing / Copilot Designer'),
-        ('DALL-E', 'DALL-E'),
-        ('Ideogram', 'Ideogram'),
-        ('Other', 'Other'),
+        ("Midjourney", "Midjourney"),
+        ("Bing / Copilot Designer", "Bing / Copilot Designer"),
+        ("DALL-E", "DALL-E"),
+        ("Ideogram", "Ideogram"),
+        ("Other", "Other"),
     ]
 
     # Date of the image. The text "Image date" is like the verbose name / label from traditional Django models.
@@ -449,33 +445,51 @@ class ArtworkPage(Page):
     prompt = RichTextField(blank=True)
 
     # Does the image have any form of copyright content?
-    copyright = models.CharField(max_length=3, choices=COPYRIGHT_CHOICES, default='No',
-                                 verbose_name="Does it have copyright content?")
+    copyright = models.CharField(
+        max_length=3,
+        choices=COPYRIGHT_CHOICES,
+        default="No",
+        verbose_name="Does it have copyright content?",
+    )
 
     # Please, explain why this image has copyright content. OPTIONAL
-    explanation = models.TextField(blank=True, null=True, verbose_name="Please, elaborate")
+    explanation = models.TextField(
+        blank=True, null=True, verbose_name="Please, elaborate"
+    )
 
     # AI used to create the image. It needs to be a Dropdown Menu.
-    ai_used = models.CharField(max_length=100, choices=AI_CHOICES, default='Midjourney', verbose_name="AI used")
+    ai_used = models.CharField(
+        max_length=100, choices=AI_CHOICES, default="Midjourney", verbose_name="AI used"
+    )
 
     # Specify the name of the AI if the AI selected is "Other" (OPTIONAL)
-    specify_ai_if_other = models.CharField(max_length=100, blank=True, null=True, verbose_name="Specify AI if 'Other'")
+    specify_ai_if_other = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name="Specify AI if 'Other'"
+    )
 
     search_fields = Page.search_fields + [
-        index.SearchField('intro'),
-        index.SearchField('prompt'),
+        index.SearchField("intro"),
+        index.SearchField("prompt"),
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('date'),
-        FieldPanel('intro'),
-        FieldPanel('prompt'),
-        FieldPanel('copyright'),    # Dropdown Menu that asks if the image has copyright content.
-        FieldPanel('explanation'),  # Optional field to explain why the image has copyright content.
-        FieldPanel('ai_used'),      # Dropdown Menu that asks which AI was used to create the image.
-        FieldPanel('specify_ai_if_other'),  # Field to specify the name of the AI if the AI selected is "Other".
+        FieldPanel("date"),
+        FieldPanel("intro"),
+        FieldPanel("prompt"),
+        FieldPanel(
+            "copyright"
+        ),  # Dropdown Menu that asks if the image has copyright content.
+        FieldPanel(
+            "explanation"
+        ),  # Optional field to explain why the image has copyright content.
+        FieldPanel(
+            "ai_used"
+        ),  # Dropdown Menu that asks which AI was used to create the image.
+        FieldPanel(
+            "specify_ai_if_other"
+        ),  # Field to specify the name of the AI if the AI selected is "Other".
         # This will allow me to upload images. I think this comes from ArtworkPageGalleryImage().
-        InlinePanel('gallery_images', label="Gallery images"),
+        InlinePanel("gallery_images", label="Gallery images"),
     ]
 
 
@@ -498,22 +512,22 @@ ordered in a specific sequence.
 
 
 class ArtworkPageGalleryImage(Orderable):
-
     # A Parental Key is pretty similar to the Wagtail version of an FK. This is taking the Artwork Page as an FK.
-    page = ParentalKey(ArtworkPage, on_delete=models.CASCADE, related_name='gallery_images')
+    page = ParentalKey(
+        ArtworkPage, on_delete=models.CASCADE, related_name="gallery_images"
+    )
 
     # This is the actual image. This is a ForeignKey to the Image model provided by Wagtail.
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+        "wagtailimages.Image", on_delete=models.CASCADE, related_name="+"
     )
     caption = models.CharField(blank=True, max_length=250)
 
     # This is the panel that will appear in the Wagtail admin interface when editing an Artwork Page.
     panels = [
-
         # This will let me select an image to upload.
-        FieldPanel('image'),
-        FieldPanel('caption'),
+        FieldPanel("image"),
+        FieldPanel("caption"),
     ]
 
 
@@ -538,8 +552,12 @@ ImageField and FileField respectively, which allow for file upload.
 
 
 class CustomImageField(AbstractFormField):
-    page = ParentalKey('ProductRegistrationPage', on_delete=models.CASCADE, related_name='custom_image_field')
-    image = models.ImageField(upload_to='uploads/', blank=True)
+    page = ParentalKey(
+        "ProductRegistrationPage",
+        on_delete=models.CASCADE,
+        related_name="custom_image_field",
+    )
+    image = models.ImageField(upload_to="uploads/", blank=True)
 
     # panels = AbstractFormField.panels + [
     #     FieldPanel('image'),
@@ -551,7 +569,7 @@ class CustomImageField(AbstractFormField):
 
     @classmethod
     def get_field_choices(cls):
-        return super().get_field_choices() + [('image', 'Image')]
+        return super().get_field_choices() + [("image", "Image")]
 
 
 """ Generic FileField Form Field for Wagtail forms.
@@ -562,11 +580,15 @@ the documentation for the CustomImageField class for more information.
 
 
 class CustomFileField(AbstractFormField):
-    page = ParentalKey('ProductRegistrationPage', on_delete=models.CASCADE, related_name='custom_file_field')
-    file = models.FileField(upload_to='uploads/', blank=True)
+    page = ParentalKey(
+        "ProductRegistrationPage",
+        on_delete=models.CASCADE,
+        related_name="custom_file_field",
+    )
+    file = models.FileField(upload_to="uploads/", blank=True)
 
     panels = AbstractFormField.panels + [
-        FieldPanel('file'),
+        FieldPanel("file"),
     ]
 
 
@@ -638,13 +660,12 @@ class ProductRegistrationPage(AbstractEmailForm):
 
     # This adds a class to each field in the form to render each form field with the "form-control" class.
     def get_form(self, *args, **kwargs):
-
         # This gets the Wagtail Form
         form = super().get_form(*args, **kwargs)
 
         # This adds a class to each field of the Wagtail Form
         for field_name, field in form.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs["class"] = "form-control"
 
         return form
 
@@ -654,22 +675,31 @@ class ProductRegistrationPage(AbstractEmailForm):
         # This adds most of the form fields to the Form that will be created from the Wagtail admin panel
         InlinePanel("form_fields", label="Form fields"),
         # This adds the ImageField field to the Forms on the Wagtail Admin Panel
-        InlinePanel('custom_image_field', label="Custom Image Field"),
+        InlinePanel("custom_image_field", label="Custom Image Field"),
         # This adds the FileField field to the Forms on the Wagtail Admin Panel
-        InlinePanel('custom_file_field', label="Custom File Field"),
+        InlinePanel("custom_file_field", label="Custom File Field"),
         FieldPanel("thank_you_text"),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel("from_address"),
-                FieldPanel("to_address"),
-            ]),
-            FieldPanel("subject"),
-        ], "Email"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("from_address"),
+                        FieldPanel("to_address"),
+                    ]
+                ),
+                FieldPanel("subject"),
+            ],
+            "Email",
+        ),
     ]
 
     # This will let me render the ImageField and FileField in the Wagtail admin panel
     def get_form_fields(self):
-        return list(self.form_fields.all()) + list(self.custom_image_field.all()) + list(self.custom_file_field.all())
+        return (
+            list(self.form_fields.all())
+            + list(self.custom_image_field.all())
+            + list(self.custom_file_field.all())
+        )
 
     # This will let me process the files uploaded via the ImageField and FileField fields when submitting the form
     def process_form_submission(self, form):
@@ -683,7 +713,6 @@ class ProductRegistrationPage(AbstractEmailForm):
 
         super().process_form_submission(form)
 
-
     # Form for creating a new Artwork Page
     main_form = AddProductForm()
 
@@ -693,10 +722,8 @@ class ProductRegistrationPage(AbstractEmailForm):
     # Serve() function. This will execute traditional Django code. This will send the form and detect if the user
     # made a POST request (sent the form).
     def serve(self, request, *args, **kwargs):
-
         # If the user submits the form via a POST request
-        if request.method == 'POST':
-
+        if request.method == "POST":
             # This declares the form, which is imported from forms.py
             main_form = AddProductForm(request.POST, request.FILES)
 
@@ -710,20 +737,18 @@ class ProductRegistrationPage(AbstractEmailForm):
             # If the forms are sanitized and valid
             # if main_form.is_valid():
             if form.is_valid() and main_form.is_valid():
-
                 # Handle the form/formset submission
                 # This is where you put the logic that was in your Django view
 
                 # Create a new instance of a ProductPage with a Query Set
                 product_page = ProductPage(
-                    title=form.cleaned_data['product_name'],
-                    product_name=form.cleaned_data['product_name'],
-                    sku_code=form.cleaned_data['sku_code'],
-                    description=form.cleaned_data['description'],
-                    unit_of_measurement=form.cleaned_data['unit_of_measurement'],
-                    category=form.cleaned_data['category'],
-                    list_price=form.cleaned_data['list_price'],
-
+                    title=form.cleaned_data["product_name"],
+                    product_name=form.cleaned_data["product_name"],
+                    sku_code=form.cleaned_data["sku_code"],
+                    description=form.cleaned_data["description"],
+                    unit_of_measurement=form.cleaned_data["unit_of_measurement"],
+                    category=form.cleaned_data["category"],
+                    list_price=form.cleaned_data["list_price"],
                 )
 
                 # # Save the product_page instance
@@ -731,11 +756,9 @@ class ProductRegistrationPage(AbstractEmailForm):
 
                 # Create a new Wagtail Image instance with the uploaded file
                 uploaded_image = Image.objects.create(
-                    title=main_form.cleaned_data['main_image'].name,
-                    file=main_form.cleaned_data['main_image']
+                    title=main_form.cleaned_data["main_image"].name,
+                    file=main_form.cleaned_data["main_image"],
                 )
-
-
 
                 # gallery_image = ProductPageGalleryImage(
                 #     page=product_page,
@@ -748,7 +771,8 @@ class ProductRegistrationPage(AbstractEmailForm):
 
                 # Fetch the parent page instance from the database
                 parent_page = ProductIndexPage.objects.get(
-                    slug='list-of-products')  # replace 'product-index-page' with the actual slug of the parent page
+                    slug="list-of-products"
+                )  # replace 'product-index-page' with the actual slug of the parent page
 
                 # Add the parent page here, replace `parent_page` with the actual parent page instance
                 # You might need to fetch the parent page instance from the database
@@ -785,7 +809,6 @@ class ProductRegistrationPage(AbstractEmailForm):
                 # context['main_form'] = main_form
                 # return render(request, 'dashboard_app/products/product_registration_page.html', context)
             else:
-
                 # Add error messages to the messages library
                 messages.error(request, form.errors)
 
@@ -794,7 +817,6 @@ class ProductRegistrationPage(AbstractEmailForm):
 
         # If the user first enters the page, this will render the Form
         else:
-
             # Form for creating a new Artwork Page
             main_form = AddProductForm()
 
@@ -804,12 +826,16 @@ class ProductRegistrationPage(AbstractEmailForm):
 
             # This should send the Form via a Jinja variable to the template. The "main_form" is the Jinja variable that
             # contains the form. Both the word inside the brackets and the word after the equal sign must be the same.
-            context['main_form'] = main_form
-            context['form'] = self.get_form()  # Pass the form to the template context
+            context["main_form"] = main_form
+            context["form"] = self.get_form()  # Pass the form to the template context
             # context['formset'] = formset
 
             # This renders the page with the form
-            return render(request, 'dashboard_app/products/product_registration_page.html', context)
+            return render(
+                request,
+                "dashboard_app/products/product_registration_page.html",
+                context,
+            )
 
 
 """ Form fields.
@@ -969,7 +995,6 @@ class FormField(AbstractFormField):
 #
 
 
-
 # class ArtworkPageForm(forms.ModelForm):
 #     class Meta:
 #         model = apps.get_model('dashboard_app', 'ArtworkPage')
@@ -1005,27 +1030,27 @@ class ProductIndexPage(Page):
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
-        productpages = self.get_children().live().order_by('-first_published_at')
+        productpages = self.get_children().live().order_by("-first_published_at")
 
         # Create a Paginator object to add Pagination. This way, if there are more than 10 products, the page will
         # display only 10 products at a time, and the user can navigate to the next page to see the rest of the entries.
         paginator = Paginator(productpages, 10)  # Show 10 blog entries per page
 
         # Get the page number from the request
-        page = request.GET.get('page')
+        page = request.GET.get("page")
 
         # Get the Page object for the current page
         productpages = paginator.get_page(page)
 
         # Add the Page object to the context. "productpages" is like the Jinja variable that contains all of the blog
         # entries from the Query Set.
-        context['productpages'] = productpages
+        context["productpages"] = productpages
 
         # This is like the "return render request" from he traditional Django views.
         return context
 
     content_panels = Page.content_panels + [
-        FieldPanel('intro'),
+        FieldPanel("intro"),
     ]
 
 
@@ -1075,21 +1100,25 @@ class ProductPage(Page):
     sku_code = models.CharField(max_length=40)  # SKU (Stock Keeping Unit) Code
     description = models.CharField(max_length=500)  # Description
     unit_of_measurement = models.CharField(max_length=20)  # Unit of Measurement
-    category = models.CharField(max_length=100)    # Category
+    category = models.CharField(max_length=100)  # Category
     list_price = models.DecimalField(max_digits=14, decimal_places=2)  # List Price
     main_image = models.ForeignKey(
-        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )  # Main Image
 
     content_panels = Page.content_panels + [
-        FieldPanel('product_name'),
-        FieldPanel('sku_code'),
-        FieldPanel('description'),
-        FieldPanel('unit_of_measurement'),
-        FieldPanel('category'),
-        FieldPanel('list_price'),
+        FieldPanel("product_name"),
+        FieldPanel("sku_code"),
+        FieldPanel("description"),
+        FieldPanel("unit_of_measurement"),
+        FieldPanel("category"),
+        FieldPanel("list_price"),
         # This lets you insert images on the Wagtail Admin Panel. This works by using the ProductPageGalleryImage model.
-        InlinePanel('gallery_images_for_products', label="Gallery images"),
+        InlinePanel("gallery_images_for_products", label="Gallery images"),
         # ImageChooserPanel('main_image'),
     ]
 
@@ -1116,15 +1145,19 @@ string is the related name that links the BlogPage model to the BlogPageGalleryI
 
 
 class ProductPageGalleryImage(Orderable):
-    page = ParentalKey(ProductPage, on_delete=models.CASCADE, related_name='gallery_images_for_products')
+    page = ParentalKey(
+        ProductPage,
+        on_delete=models.CASCADE,
+        related_name="gallery_images_for_products",
+    )
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+        "wagtailimages.Image", on_delete=models.CASCADE, related_name="+"
     )
     caption = models.CharField(blank=True, max_length=250)
 
     panels = [
-        FieldPanel('image'),
-        FieldPanel('caption'),
+        FieldPanel("image"),
+        FieldPanel("caption"),
     ]
 
 
@@ -1139,7 +1172,8 @@ would be required to log in.
 class LogoutPage(Page):
     def serve(self, request, *args, **kwargs):
         logout(request)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect("/")
+
 
 # """ Artwork Form Field from the Artowrk Form Page. This uses an Abstract Form.
 #
@@ -1215,8 +1249,6 @@ class LogoutPage(Page):
 #
 #         # Call the superclass's process_form_submission method to handle any additional form processing
 #         return super().process_form_submission(form)
-
-
 
 
 """ Product Registration Form Page. This is the "view" with the Form to create new products. 

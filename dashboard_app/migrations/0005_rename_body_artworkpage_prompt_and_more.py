@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0004_artworkindexpage_artworkpage_and_more'),
+        ("dashboard_app", "0004_artworkindexpage_artworkpage_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='artworkpage',
-            old_name='body',
-            new_name='prompt',
+            model_name="artworkpage",
+            old_name="body",
+            new_name="prompt",
         ),
         migrations.AlterField(
-            model_name='artworkpage',
-            name='date',
-            field=models.DateField(verbose_name='Image date'),
+            model_name="artworkpage",
+            name="date",
+            field=models.DateField(verbose_name="Image date"),
         ),
     ]

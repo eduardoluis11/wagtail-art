@@ -5,27 +5,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0015_alter_customfilefield_page_and_more'),
+        ("dashboard_app", "0015_alter_customfilefield_page_and_more"),
         # ('wagtailcore', '0091_remove_revision_submitted_for_moderation'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ProductPage',
+            name="ProductPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('product_name', models.CharField(max_length=200)),
-                ('sku_code', models.CharField(max_length=40)),
-                ('description', models.CharField(max_length=500)),
-                ('unit_of_measurement', models.CharField(max_length=20)),
-                ('category', models.CharField(max_length=100)),
-                ('list_price', models.DecimalField(decimal_places=2, max_digits=14)),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("product_name", models.CharField(max_length=200)),
+                ("sku_code", models.CharField(max_length=40)),
+                ("description", models.CharField(max_length=500)),
+                ("unit_of_measurement", models.CharField(max_length=20)),
+                ("category", models.CharField(max_length=100)),
+                ("list_price", models.DecimalField(decimal_places=2, max_digits=14)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('wagtailcore.page',),
+            bases=("wagtailcore.page",),
         ),
     ]

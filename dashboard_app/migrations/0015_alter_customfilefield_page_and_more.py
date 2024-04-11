@@ -6,20 +6,27 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard_app', '0014_customfilefield_customimagefield'),
+        ("dashboard_app", "0014_customfilefield_customimagefield"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customfilefield',
-            name='page',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='custom_file_field', to='dashboard_app.productregistrationpage'),
+            model_name="customfilefield",
+            name="page",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="custom_file_field",
+                to="dashboard_app.productregistrationpage",
+            ),
         ),
         migrations.AlterField(
-            model_name='customimagefield',
-            name='page',
-            field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='custom_image_field', to='dashboard_app.productregistrationpage'),
+            model_name="customimagefield",
+            name="page",
+            field=modelcluster.fields.ParentalKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="custom_image_field",
+                to="dashboard_app.productregistrationpage",
+            ),
         ),
     ]
